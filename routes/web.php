@@ -14,8 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function (){
+    return view('home');
+});
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth','verified']);
 Route::get('/kebijakan-privasi', 'HomeController@kebijakanPrivasi')->name('kebijakan-privasi');
 

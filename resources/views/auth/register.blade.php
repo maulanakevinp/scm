@@ -33,7 +33,7 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                             </div>
-                            <input class="form-control @error('nama') is-invalid @enderror" placeholder="Nama" type="text" name="nama">
+                            <input class="form-control @error('nama') is-invalid @enderror" placeholder="Nama" type="text" name="nama" value="{{ old('nama') }}" >
                             @error('nama')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -78,7 +78,12 @@
                     <div class="row my-4">
                         <div class="col-12">
                             <div class="custom-control custom-control-alternative custom-checkbox">
-                            <input class="custom-control-input" id="customCheckRegister" type="checkbox">
+                            <input class="custom-control-input  @error('kebijakan') is-invalid @enderror" id="customCheckRegister" type="checkbox" name="kebijakan" required>
+                            @error('kebijakan')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                             <label class="custom-control-label" for="customCheckRegister">
                                 <span class="text-muted">Saya setuju dengan <a href="{{route('kebijakan-privasi')}}">Kebijakan Privasi</a></span>
                             </label>

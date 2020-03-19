@@ -17,24 +17,29 @@ class UsersSeeder extends Seeder
             'peran'     => 1,
             'nama'      => 'Pemilik UD. Special',
             'email'     => 'pemilik@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
             'password'  => Hash::make('12341234'),
+
         ]);
         User::create([
             'peran'     => 2,
             'nama'      => 'Kepala UD. Special',
             'email'     => 'kepala@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
             'password'  => Hash::make('12341234'),
         ]);
         User::create([
             'peran'     => 3,
             'nama'      => 'Yunita',
             'email'     => 'yunita@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
             'password'  => Hash::make('12341234'),
         ]);
         User::create([
             'peran'     => 4,
             'nama'      => 'Kevin',
             'email'     => 'kevin@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
             'password'  => Hash::make('12341234'),
         ]);
     }

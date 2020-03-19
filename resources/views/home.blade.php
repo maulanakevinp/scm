@@ -9,7 +9,7 @@
             <div class="card bg-secondary shadow border-0">
                 <div class="card-body px-lg-5 py-lg-5">
                     <h1 class="text-center">
-                        Selamat datang di UD. Special
+                        Selamat datang @auth {{auth()->user()->nama}} @endauth di UD. Special
                     </h1>
                 </div>
             </div>
