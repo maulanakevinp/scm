@@ -63,18 +63,77 @@
           </div>
           <!-- Navbar items -->
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link nav-link-icon" href="{{ route('register') }}">
-                <i class="ni ni-circle-08"></i>
-                <span class="nav-link-inner--text">Daftar</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-link-icon" href="{{ route('login') }}">
-                <i class="ni ni-key-25"></i>
-                <span class="nav-link-inner--text">Masuk</span>
-              </a>
-            </li>
+            @guest
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('register') }}">
+                        <i class="ni ni-circle-08"></i>
+                        <span class="nav-link-inner--text">Daftar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('login') }}">
+                        <i class="ni ni-key-25"></i>
+                        <span class="nav-link-inner--text">Masuk</span>
+                    </a>
+                </li>
+            @else
+                @can('isKepala')
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                            <i class="ni ni-planet"></i>
+                            <span class="nav-link-inner--text">Dashboard</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('isProdusen')
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                            <i class="ni ni-app"></i>
+                            <span class="nav-link-inner--text">Manajemen Produk</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('isDistributor')
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                        <i class="ni ni-basket"></i>
+                        <span class="nav-link-inner--text">Beli Produk</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                        <i class="ni ni-email-83"></i>
+                        <span class="nav-link-inner--text">Pesanan</span>
+                    </a>
+                </li>
+                @endcan
+                @can('isSuperadmin')
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                            <i class="ni ni-circle-08"></i>
+                            <span class="nav-link-inner--text">Manajemen Pengguna</span>
+                        </a>
+                    </li>
+                @endcan
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <i class="ni ni-single-02"></i>
+                        {{ Auth::user()->nama }}<span class="caret"></span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('home') }}">Profil</a>
+                        <a class="dropdown-item" href="{{ route('home') }}">Setting</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            @endguest
           </ul>
         </div>
       </div>
