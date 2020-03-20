@@ -115,24 +115,22 @@
                         </a>
                     </li>
                 @endcan
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
                         <i class="ni ni-single-02"></i>
-                        {{ Auth::user()->nama }}<span class="caret"></span>
+                        <span class="nav-link-inner--text">Profil</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('home') }}">Profil</a>
-                        <a class="dropdown-item" href="{{ route('home') }}">Setting</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="ni ni-user-run"></i>
+                        <span class="nav-link-inner--text">Keluar</span>
+                    </a>
+                </li>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             @endguest
           </ul>
         </div>
