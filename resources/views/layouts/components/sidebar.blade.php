@@ -6,23 +6,10 @@
     </button>
     <!-- Brand -->
     <a class="navbar-brand pt-0" href="{{ route('home') }}">
-        <h1 class="text-primary"><b>{{ config('app.name') }}</b></h1>
+        <h1 class="text-primary font-weight-900">{{ config('app.name') }}</h1>
     </a>
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
-        <li class="nav-item dropdown">
-            <a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="ni ni-bell-55"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
-                aria-labelledby="navbar-default_dropdown_1">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-        </li>
         <li class="nav-item dropdown">
             <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
@@ -69,6 +56,8 @@
                 </div>
             </div>
         </div>
+        <!-- Form -->
+        @yield('form-search-mobile')
         <!-- Navigation -->
         <ul class="navbar-nav">
             @can('isPemilik')
@@ -124,7 +113,7 @@
                     @else
                         <a class="nav-link" href="{{ route('users.index') }}">
                     @endif
-                        <i class="ni ni-circle-08 text-blue"></i>
+                        <i class="fas fa-users text-blue"></i>
                         <span class="nav-link-inner--text">Manajemen Pengguna</span>
                     </a>
                 </li>
@@ -135,7 +124,7 @@
                 @else
                     <a class="nav-link" href="{{ route('profil') }}">
                 @endif
-                    <i class="ni ni-single-02 text-yellow"></i> User profile
+                    <i class="ni ni-single-02 text-yellow"></i> Profil Pengguna
                 </a>
             </li>
         </ul>
