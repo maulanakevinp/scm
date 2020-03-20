@@ -20,4 +20,9 @@ class HomeController extends Controller
     {
         return view('auth.policy');
     }
+
+    public function dashboard()
+    {
+        # code...
+    }
 }

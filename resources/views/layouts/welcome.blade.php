@@ -116,7 +116,7 @@
                     </li>
                 @endcan
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                    <a class="nav-link nav-link-icon" href="{{ route('profil') }}">
                         <i class="ni ni-single-02"></i>
                         <span class="nav-link-inner--text">Profil</span>
                     </a>
