@@ -10,11 +10,10 @@ Profil Pengguna
 
 @section('content-header')
 
-<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-    style="background-image: url({{ asset('/img/cover-bg-profil.jpg') }}); background-size: cover; background-position: center top;">
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="background-image: url({{ asset('/img/cover-bg-profil.jpg') }}); background-size: cover; background-position: center top;">
 
     <!-- Mask -->
-    <span class="mask bg-gradient-default opacity-8"></span>
+    <span class="mask bg-gradient-primary opacity-6"></span>
     <!-- Header container -->
     <div class="container-fluid d-flex align-items-center">
 
@@ -31,7 +30,6 @@ Profil Pengguna
 @endsection
 
 @section('content')
-@include('layouts.components.alert')
 
 <div class="row">
     <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
@@ -77,11 +75,13 @@ Profil Pengguna
                         <h3 class="mb-0">Akun Saya</h3>
                     </div>
                     <div class="col-4 text-right">
-                        <a href="#!" class="btn btn-sm btn-primary">Pengaturan</a>
+                        <a href="{{ route('pengaturan') }}" class="btn btn-sm btn-primary">Pengaturan</a>
                     </div>
                 </div>
             </div>
             <div class="card-body">
+                @include('layouts.components.alert')
+
                 <form action="{{ route('update-profil', Auth::user()) }}" method="POST">
                     @csrf @method('patch')
                     <h6 class="heading-small text-muted mb-4">Informasi Pengguna</h6>
@@ -100,7 +100,7 @@ Profil Pengguna
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Email <a href="#" class="badge badge-primary" title="Ganti email"><span class="fas fa-edit"></span></a></label>
+                                    <label class="form-control-label" for="input-email">Email <a href="{{ route('pengaturan') }}" class="badge badge-primary" title="Ganti email"><span class="fas fa-edit"></span></a></label>
                                     <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="{{ Auth::user()->email }}" disabled>
                                 </div>
                             </div>

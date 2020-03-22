@@ -152,7 +152,7 @@ Manajemen Pengguna
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <a href="#" class="avatar rounded-circle mr-3">
-                                            <img alt="{{ asset(Storage::url(Auth::user()->avatar)) }}" src="{{ asset(Storage::url(Auth::user()->avatar)) }}">
+                                            <img alt="{{ asset(Storage::url($user->avatar)) }}" src="{{ asset(Storage::url($user->avatar)) }}">
                                         </a>
                                     </div>
                                 </th>

@@ -70,7 +70,7 @@
                                 <i class="ni ni-single-02"></i>
                                 <span>Profil Saya</span>
                             </a>
-                            <a href="{{ url('') }}" class="dropdown-item">
+                            <a href="{{ route('pengaturan') }}" class="dropdown-item">
                                 <i class="ni ni-settings-gear-65"></i>
                                 <span>Pengaturan</span>
                             </a>
@@ -94,6 +94,22 @@
 
         <!-- Page content -->
         <div class="container-fluid mt--7">
+            @if (Auth::user()->email_verified_at == null)
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span class="alert-icon"><i class="ni ni-bell-55"></i> <strong>Perhatian!</strong></span>
+                    <span class="alert-text">
+                        {{ __('auth.verify_email_check') }}
+                        {{ __('auth.verify_not_receive_email') }},
+                        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('auth.verify_resent_email') }}</button>.
+                        </form>
+                    </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             @yield('content')
             <!-- Footer -->
             <footer class="footer">

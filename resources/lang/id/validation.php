@@ -30,7 +30,7 @@ return [
         'array' => ':attribute harus ada di antara :min dan :max items.',
     ],
     'boolean' => ':attribute harus benar atau salah.',
-    'confirmed' => ':attribute konfirmasi tidak cocok.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
     'date' => ':attribute bukan tanggal yang valid.',
     'date_equals' => ':attribute harus sama dengan tanggal :date.',
     'date_format' => ':attribute tidak cocok dengan format :format.',

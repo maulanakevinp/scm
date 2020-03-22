@@ -25,8 +25,8 @@ Route::get('/kebijakan-privasi', 'HomeController@kebijakanPrivasi')->name('kebij
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
-    Route::get('/pengaturan', 'UsersController@gantiPassword')->name('pengaturan');
-    Route::patch('/update-password/{user}', 'UsersController@updatePassword')->name('update-password');
+    Route::get('/pengaturan', 'UsersController@pengaturan')->name('pengaturan');
+    Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
     Route::get('/profil', 'UsersController@profil')->name('profil');
     Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
     Route::post('/update-avatar/{id}', 'UsersController@updateAvatar')->name('update-avatar');
