@@ -22,6 +22,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ url('') }}">
+    <meta name="auth-id" content="{{ Auth::user()->id }}">
     <title>
         {{ config('app.name') }} - @yield('title')
     </title>
@@ -89,6 +91,7 @@
         <!-- End Navbar -->
         <!-- Header -->
         @yield('content-header')
+
         <!-- Page content -->
         <div class="container-fluid mt--7">
             @yield('content')
@@ -118,7 +121,6 @@
                 token: "ee6fab19c5a04ac1a32a645abde4613a",
                 application: "argon-dashboard-free"
             });
-
     </script>
     @stack('scripts')
 </body>

@@ -20,15 +20,16 @@ Route::get('/', function (){
     return view('home');
 });
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth','verified']);
+Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth']);
 Route::get('/kebijakan-privasi', 'HomeController@kebijakanPrivasi')->name('kebijakan-privasi');
 
-Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
+Route::group(['middleware' => ['web', 'auth']], function () {
 
-    Route::get('/ganti-password', 'UsersController@gantiPassword')->name('ganti-password');
+    Route::get('/pengaturan', 'UsersController@gantiPassword')->name('pengaturan');
     Route::patch('/update-password/{user}', 'UsersController@updatePassword')->name('update-password');
     Route::get('/profil', 'UsersController@profil')->name('profil');
     Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
+    Route::post('/update-avatar/{id}', 'UsersController@updateAvatar')->name('update-avatar');
 
     Route::group(['middleware' => ['can:isPemilik']], function () {
         Route::get('dashboard', 'HomeController@dashboard')->name('dasboard');

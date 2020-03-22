@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+
+use function GuzzleHttp\json_encode;
 
 class UsersController extends Controller
 {
@@ -89,9 +92,23 @@ class UsersController extends Controller
         return view('users.profil');
     }
 
-    public function updateProfil()
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfil(Request $request, User $user)
     {
-        # code...
+        $data = $request->validate([
+            'nama'          => ['required', 'max:32', 'string'],
+            'alamat'        => ['nullable','string'],
+            'nomor_hp'      => ['nullable','digits_between:11,13'],
+            'tentang_saya'  => ['nullable','string']
+        ]);
+        $user->update($data);
+        return redirect()->back()->with('success','Profil berhasil di perbarui');
     }
 
     public function gantiPassword()
@@ -102,5 +119,15 @@ class UsersController extends Controller
     public function updatePassword()
     {
         # code...
+    }
+
+    public function updateAvatar(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->avatar != 'noimage.jpg') {
+            File::delete(storage_path('app/'.$user->avatar));
+        }
+        $user->avatar = $request->file('avatar')->store('public/avatar');
+        $user->save();
     }
 }
