@@ -43,6 +43,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     });
     Route::group(['middleware' => ['can:isSuperadmin']], function () {
+        Route::get('users/cari', 'UsersController@cari')->name('users.cari');
         Route::resource('users', 'UsersController');
     });
 });

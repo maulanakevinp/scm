@@ -9,9 +9,9 @@ Manajemen Pengguna
 @endsection
 
 @section('form-search-mobile')
-<form class="mt-4 mb-3 d-md-none">
+<form form action="{{ route('users.cari') }}" method="GET" class="mt-4 mb-3 d-md-none">
     <div class="input-group input-group-rounded input-group-merge">
-        <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
+        <input name="cari" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('cari') }}>
         <div class="input-group-prepend">
             <div class="input-group-text">
                 <span class="fa fa-search"></span>
@@ -22,13 +22,13 @@ Manajemen Pengguna
 @endsection
 
 @section('form-search')
-    <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+    <form action="{{ route('users.cari') }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
         <div class="form-group mb-0">
             <div class="input-group input-group-alternative">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                 </div>
-                <input class="form-control" placeholder="Search" type="text">
+                <input name="cari" class="form-control" placeholder="Cari ..." type="text" value="{{ request('cari') }}">
             </div>
         </div>
     </form>
@@ -46,7 +46,7 @@ Manajemen Pengguna
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Total Pengguna</h5>
-                                    <span class="h2 font-weight-bold mb-0">{{ $users->count() }}</span>
+                                    <span class="h2 font-weight-bold mb-0">{{ $totalUser }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -63,7 +63,7 @@ Manajemen Pengguna
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Total Distributor</h5>
-                                    <span class="h2 font-weight-bold mb-0">{{ $users->where('peran',3)->count() }}</span>
+                                    <span class="h2 font-weight-bold mb-0">{{ $totalDistributor }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-warning text-white rounded-circle shadow">

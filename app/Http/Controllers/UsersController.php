@@ -19,7 +19,28 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::paginate(5);
-        return view('users.index',compact('users'));
+        $totalUser = User::all()->count();
+        $distributor = 'Distributor';
+        $totalDistributor = User::whereHas('role', function($q) use($distributor){
+            $q->where('peran',$distributor);
+        })->count();
+        return view('users.index',compact('users','totalUser','totalDistributor'));
+    }
+
+    public function cari(Request $request)
+    {
+        $users = User::orWhereHas('role', function($q) use ($request){
+                $q->where('peran','like','%'.$request->cari.'%');
+            })->orWhere('nama','like','%'.$request->cari.'%')
+                ->orWhere('email','like','%'.$request->cari.'%')
+                ->orWhere('nomor_hp','like','%'.$request->cari.'%')
+                ->paginate(5);
+        $totalUser = User::all()->count();
+        $distributor = 'Distributor';
+        $totalDistributor = User::whereHas('role', function($q) use($distributor){
+            $q->where('peran',$distributor);
+        })->count();
+        return view('users.index',compact('users','totalUser','totalDistributor'));
     }
 
     /**
