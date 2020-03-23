@@ -35,7 +35,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('dashboard', 'HomeController@dashboard')->name('dasboard');
     });
     Route::group(['middleware' => ['can:isProdusen']], function () {
-        // Route::resource('products', 'ProductsController');
+        Route::resource('products', 'ProductsController');
 
     });
     Route::group(['middleware' => ['can:isDistributor']], function () {
