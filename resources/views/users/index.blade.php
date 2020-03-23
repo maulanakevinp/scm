@@ -81,6 +81,7 @@ Manajemen Pengguna
 @endsection
 
 @section('content')
+@include('layouts.components.alert')
 <!-- Dark table -->
 <div class="row">
     <div class="col">

@@ -148,7 +148,14 @@ Ubah Profil Pengguna
                             <textarea name="tentang_saya" rows="4" class="form-control form-control-alternative" placeholder="Beberapa kata tentang anda ...">{{ old('tentang_saya',$user->tentang_saya) }}</textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Simpan Perubahan</button>
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary btn-block">Simpan Perubahan</button>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ route('users.show',$user) }}" class="btn btn-block btn-light">Batal</a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

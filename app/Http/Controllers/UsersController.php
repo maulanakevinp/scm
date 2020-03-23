@@ -83,7 +83,7 @@ class UsersController extends Controller
         $data['password'] = Hash::make($request->password);
         $user = User::create($data);
         $user->sendEmailVerificationNotification();
-        return redirect()->back()->with('success','Pengguna berhasil ditambahkan');
+        return redirect()->route('users.show',$user)->with('success','Pengguna berhasil ditambahkan');
     }
 
     /**
@@ -147,7 +147,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         if ($user->avatar != 'noimage.jpg') {
-            File::delete(public_path('storage'.'/'.$user->avatar));
+            File::delete(storage_path('app/'.$user->avatar));
         }
         User::destroy($user->id);
         return redirect('/users')->with('success','Pengguna bernama "'.$user->nama.'" berhasil dihapus');
