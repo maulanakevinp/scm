@@ -4,6 +4,10 @@
 Manajemen Pengguna
 @endsection
 
+@section('styles')
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+@endsection
+
 @section('form-search-mobile')
 <form class="mt-4 mb-3 d-md-none">
     <div class="input-group input-group-rounded input-group-merge">
@@ -41,19 +45,15 @@ Manajemen Pengguna
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                                    <span class="h2 font-weight-bold mb-0">350,897</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Pengguna</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $users->count() }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                        <i class="fas fa-chart-bar"></i>
+                                        <i class="fas fa-users"></i>
                                     </div>
                                 </div>
                             </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last month</span>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -62,8 +62,8 @@ Manajemen Pengguna
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Distributor</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $users->where('peran',3)->count() }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -71,52 +71,6 @@ Manajemen Pengguna
                                     </div>
                                 </div>
                             </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last week</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                                    <span class="h2 font-weight-bold mb-0">924</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                                <span class="text-nowrap">Since yesterday</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                                    <span class="h2 font-weight-bold mb-0">49,65%</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                                        <i class="fas fa-percent"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                                <span class="text-nowrap">Since last month</span>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -132,7 +86,14 @@ Manajemen Pengguna
     <div class="col">
         <div class="card bg-default shadow">
             <div class="card-header bg-transparent border-0">
-                <h3 class="text-white mb-0">Daftar Pengguna</h3>
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="mb-0 text-white">Daftar Pengguna</h3>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus" title="Tambah Pengguna"></i></a>
+                    </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table align-items-center table-dark table-flush">
@@ -151,13 +112,15 @@ Manajemen Pengguna
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
-                                        <a href="#" class="avatar rounded-circle mr-3">
-                                            <img alt="{{ asset(Storage::url($user->avatar)) }}" src="{{ asset(Storage::url($user->avatar)) }}">
+                                        <a href="#" class="avatar rounded-circle">
+                                            <img class="img-foto" alt="{{ asset(Storage::url($user->avatar)) }}" src="{{ asset(Storage::url($user->avatar)) }}">
                                         </a>
                                     </div>
                                 </th>
                                 <td>
-                                    {{ $user->email }}
+                                    <a href="{{ route("users.show",$user) }}">
+                                        {{ $user->email }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $user->nama }}
@@ -179,9 +142,9 @@ Manajemen Pengguna
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <a class="dropdown-item" href="{{ route('users.show',$user) }}"><i class="fas fa-fw fa-eye"></i>Detail</a>
+                                            <a class="dropdown-item" href="{{ route('users.edit',$user) }}"><i class="fas fa-fw fa-edit"></i>Ubah</a>
+                                            <a class="dropdown-item hapus" data-nama="{{ $user->nama }}" data-id="{{ $user->id }}" data-toggle="modal" href="#modal-delete"><i class="fas fa-fw fa-trash"></i>Hapus</a>
                                         </div>
                                     </div>
                                 </td>
@@ -198,4 +161,88 @@ Manajemen Pengguna
         </div>
     </div>
 </div>
+
+<!-- The Modal -->
+<div id="foto-profil" class="modal-full">
+    <!-- The Close Button -->
+    <span class="tutup">&times;</span>
+    <!-- Modal Content (The Image) -->
+    <div class="container">
+        <img class="image-zoom mw-100 img-center" id="img01">
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+    <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+        <div class="modal-content bg-gradient-danger">
+
+            <div class="modal-header">
+                <h6 class="modal-title" id="modal-title-delete">Hapus Pengguna?</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="py-3 text-center">
+                    <i class="ni ni-bell-55 ni-3x"></i>
+                    <h4 class="heading mt-4">Perhatian!!</h4>
+                    <p>Menghapus pengguna akan menghapus semua data yang dimilikinya</p>
+                    <p><strong id="nama-hapus"></strong></p>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <form id="form-hapus" action="" method="POST" >
+                    @csrf @method('delete')
+                    <button type="submit" class="btn btn-white">Yakin</button>
+                </form>
+                <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Tidak</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function(){
+            const baseUrl = $('meta[name="base-url"]').attr('content');
+
+            // Get the modal
+            const modal = document.getElementById("foto-profil");
+
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            const img = document.querySelectorAll('.img-foto');
+            const modalImg = document.getElementById("img01");
+            for (let index = 0; index < img.length; index++) {
+                img[index].onclick = function(){
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                };
+            }
+
+            // Get the <span> element that tutups the modal
+            const span = document.getElementsByClassName("tutup")[0];
+
+            // When the user clicks on <span> (x), tutup the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            document.addEventListener('keyup',(e) => {
+                if(e.key === "Escape") modal.style.display = "none";
+            });
+
+            $('.hapus').on('click', function(){
+                $('#nama-hapus').html('Apakah Anda yakin ingin menghapus ' + $(this).data('nama') + '???');
+                $('#form-hapus').attr('action', baseUrl + '/users/' + $(this).data('id'));
+            });
+
+        });
+
+    </script>
+@endpush

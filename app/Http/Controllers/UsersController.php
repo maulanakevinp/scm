@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
-use function GuzzleHttp\json_encode;
 
 class UsersController extends Controller
 {
@@ -30,7 +29,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -41,7 +41,28 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'peran'                 => ['required'],
+            'email'                 => ['required','email','string','max:32','unique:users'],
+            'nama'                  => ['required','string','max:32'],
+            'avatar'                => ['nullable','image','mimes:jpeg,png','max:2048'],
+            'alamat'                => ['nullable','string'],
+            'nomor_hp'              => ['nullable','digits_between:11,13'],
+            'tentang_saya'          => ['nullable','string'],
+            'password'              => ['required','string','min:8','confirmed'],
+            'password_confirmation' => ['required','string','min:8'],
+        ]);
+
+        if ($request->file('avatar')) {
+            $data['avatar'] = $request->file('avatar')->store('public/avatar');
+        } else {
+            $data['avatar'] = 'noimage.jpg';
+        }
+
+        $data['password'] = Hash::make($request->password);
+        $user = User::create($data);
+        $user->sendEmailVerificationNotification();
+        return redirect()->back()->with('success','Pengguna berhasil ditambahkan');
     }
 
     /**
@@ -52,7 +73,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -63,7 +84,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('users.edit', compact('user','roles'));
     }
 
     /**
@@ -75,7 +97,24 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = $request->validate([
+            'peran'         => ['required'],
+            'email'         => ['required','email','string','max:32',Rule::unique('users','email')->ignore($user)],
+            'nama'          => ['required','string','max:32'],
+            'alamat'        => ['nullable','string'],
+            'nomor_hp'      => ['nullable','digits_between:11,13'],
+            'tentang_saya'  => ['nullable','string']
+        ]);
+
+        if ($request->peran != $user->peran || $request->nama != $user->nama || $request->alamat != $user->alamat || $request->nomor_hp != $user->nomor_hp || $request->tentang_saya != $user->tentang_saya) {
+            if ($request->email != $user->email) {
+                $user->sendEmailVerificationNotification();
+            }
+            $user->update($data);
+            return redirect()->back()->with('success','Profil Pengguna berhasil di perbarui');
+        } else {
+            return redirect()->back()->with('error','Tidak ada perubahan yang berhasil disimpan');
+        }
     }
 
     /**
@@ -86,7 +125,11 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->avatar != 'noimage.jpg') {
+            File::delete(public_path('storage'.'/'.$user->avatar));
+        }
+        User::destroy($user->id);
+        return redirect('/users')->with('success','Pengguna bernama "'.$user->nama.'" berhasil dihapus');
     }
 
     public function profil()
@@ -128,9 +171,9 @@ class UsersController extends Controller
         $email = false;
         $password = false;
         $request->validate([
-            'email'                     => ['nullable','string','email','max:32',Rule::unique('users','email')->ignore($user)],
-            'password'             => ['nullable','string','min:8','confirmed'],
-            'password_lama'                  => ['required','string','min:8'],
+            'email'         => ['nullable','string','email','max:32',Rule::unique('users','email')->ignore($user)],
+            'password'      => ['nullable','string','min:8','confirmed'],
+            'password_lama' => ['required','string','min:8'],
         ]);
         if (Hash::check($request->password_lama, $user->password)) {
             if ($request->email == '' && $request->password == '') {
