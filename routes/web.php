@@ -35,11 +35,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('dashboard', 'HomeController@dashboard')->name('dasboard');
     });
     Route::group(['middleware' => ['can:isProdusen']], function () {
-        Route::resource('products', 'ProductsController');
+        Route::get('product/cari', 'ProductController@cari')->name('product.cari');
+        Route::resource('product', 'ProductController');
 
     });
     Route::group(['middleware' => ['can:isDistributor']], function () {
-        // Route::resource('orders', 'OrdersController');
+        Route::resource('order', 'OrderController');
 
     });
     Route::group(['middleware' => ['can:isSuperadmin']], function () {

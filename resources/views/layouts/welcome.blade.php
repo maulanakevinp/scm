@@ -67,74 +67,73 @@
                     <!-- Navbar items -->
                     <ul class="navbar-nav ml-auto">
                         @guest
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('register') }}">
-                                <i class="ni ni-circle-08"></i>
-                                <span class="nav-link-inner--text">Daftar</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('login') }}">
-                                <i class="ni ni-key-25"></i>
-                                <span class="nav-link-inner--text">Masuk</span>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-icon" href="{{ route('register') }}">
+                                    <i class="ni ni-circle-08"></i>
+                                    <span class="nav-link-inner--text">Daftar</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-icon" href="{{ route('login') }}">
+                                    <i class="ni ni-key-25"></i>
+                                    <span class="nav-link-inner--text">Masuk</span>
+                                </a>
+                            </li>
                         @else
-                        @can('isKepala')
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('home') }}">
-                                <i class="ni ni-planet"></i>
-                                <span class="nav-link-inner--text">Dashboard</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('isProdusen')
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('home') }}">
-                                <i class="ni ni-app"></i>
-                                <span class="nav-link-inner--text">Manajemen Produk</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('isDistributor')
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('home') }}">
-                                <i class="ni ni-basket"></i>
-                                <span class="nav-link-inner--text">Beli Produk</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('home') }}">
-                                <i class="ni ni-email-83"></i>
-                                <span class="nav-link-inner--text">Pesanan</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('isSuperadmin')
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('users.index') }}">
-                                <i class="ni ni-circle-08"></i>
-                                <span class="nav-link-inner--text">Manajemen Pengguna</span>
-                            </a>
-                        </li>
-                        @endcan
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('profil') }}">
-                                <i class="ni ni-single-02"></i>
-                                <span class="nav-link-inner--text">Profil</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="ni ni-user-run"></i>
-                                <span class="nav-link-inner--text">Keluar</span>
-                            </a>
-                        </li>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                            @can('isKepala')
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-icon" href="{{ route('dashboard') }}">
+                                        <i class="ni ni-planet"></i>
+                                        <span class="nav-link-inner--text">Dashboard</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('isProdusen')
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-icon" href="{{ route('product.index') }}">
+                                        <i class="ni ni-app"></i>
+                                        <span class="nav-link-inner--text">Manajemen Produk</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('isDistributor')
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                                        <i class="ni ni-basket"></i>
+                                        <span class="nav-link-inner--text">Beli Produk</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                                        <i class="ni ni-email-83"></i>
+                                        <span class="nav-link-inner--text">Pesanan</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('isSuperadmin')
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-icon" href="{{ route('users.index') }}">
+                                        <i class="ni ni-circle-08"></i>
+                                        <span class="nav-link-inner--text">Manajemen Pengguna</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-icon" href="{{ route('profil') }}">
+                                    <i class="ni ni-single-02"></i>
+                                    <span class="nav-link-inner--text">Profil</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-icon" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="ni ni-user-run"></i>
+                                    <span class="nav-link-inner--text">Keluar</span>
+                                </a>
+                            </li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         @endguest
                     </ul>
                 </div>

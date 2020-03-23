@@ -74,10 +74,10 @@
             @endcan
             @can('isProdusen')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'products')
-                        <a class="nav-link active" href="{{ url('products') }}">
+                    @if (Request::segment(1) == 'product')
+                        <a class="nav-link active" href="{{ route('product.index') }}">
                     @else
-                        <a class="nav-link" href="{{ url('products') }}">
+                        <a class="nav-link" href="{{ route('product.index') }}">
                     @endif
                         <i class="ni ni-app text-blue"></i>
                         <span class="nav-link-inner--text">Manajemen Produk</span>
@@ -87,9 +87,9 @@
             @can('isDistributor')
                 <li class="nav-item">
                     @if (Request::segment(1) == 'orders')
-                        <a class="nav-link active" href="{{ url('orders') }}">
+                        <a class="nav-link active" href="{{ route('order.index') }}">
                     @else
-                        <a class="nav-link" href="{{ url('orders') }}">
+                        <a class="nav-link" href="{{ route('order.index') }}">
                     @endif
                         <i class="ni ni-basket text-blue"></i>
                         <span class="nav-link-inner--text">Beli Produk</span>

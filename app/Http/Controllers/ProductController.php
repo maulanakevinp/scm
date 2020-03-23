@@ -14,7 +14,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(5);
+        $totalProduk = Product::all()->count();
+        return view('products.index', compact('products','totalProduk'));
+    }
+
+    public function cari(Request $request)
+    {
+        $products = Product::where('nama','like','%'.$request->cari.'%')
+                            ->orWhere('harga','like','%'.$request->cari.'%')
+                            ->orWhere('persediaan','like','%'.$request->cari.'%');
+        $totalProduk = Product::all()->count();
+        return view('products.index', compact('products','totalProduk'));
     }
 
     /**
@@ -24,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +46,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'nama'              => ['required','string','max:32'],
+            'harga'             => ['required','digits_between:3,11','min:0'],
+            'foto'              => ['nullable','image','mimes:jpeg,png','max:2048'],
+            'persediaan'        => ['nullable','numeric','min:0'],
+            'persediaan_min'    => ['nullable','numeric','min:0'],
+            'persediaan_max'    => ['nullable','numeric','min:0'],
+            'permintaan_min'    => ['nullable','numeric','min:0'],
+            'permintaan_max'    => ['nullable','numeric','min:0'],
+            'produksi_min'      => ['nullable','numeric','min:0'],
+            'produksi_max'      => ['nullable','numeric','min:0'],
+        ]);
+
+        if ($request->file('foto')) {
+            $data['foto'] = $request->file('foto')->store('public/foto-produk');
+        } else {
+            $data['foto'] = 'public/noimage-produk.jpg';
+        }
+
+        $product = Product::create($data);
+        return redirect()->route('product.show',$product)->with('success','Produk berhasil ditambahkan');
     }
 
     /**
@@ -46,7 +77,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -57,7 +88,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**

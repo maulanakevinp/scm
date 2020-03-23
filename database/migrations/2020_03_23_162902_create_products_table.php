@@ -15,15 +15,17 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('produk');
-            $table->double('permintaan_min');
-            $table->double('permintaan_max');
-            $table->double('persediaan');
-            $table->double('persediaan_min');
-            $table->double('persediaan_max');
-            $table->double('produksi');
-            $table->double('produksi_min');
-            $table->double('produksi_max');
+            $table->string('nama',32);
+            $table->integer('harga');
+            $table->text('foto')->nullable();
+            $table->double('permintaan_min')->nullable();
+            $table->double('permintaan_max')->nullable();
+            $table->double('persediaan')->nullable();
+            $table->double('persediaan_min')->nullable();;
+            $table->double('persediaan_max')->nullable();;
+            $table->double('produksi')->nullable();;
+            $table->double('produksi_min')->nullable();;
+            $table->double('produksi_max')->nullable();;
             $table->timestamps();
         });
     }
