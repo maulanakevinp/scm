@@ -85,8 +85,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $totalPermintaan = Order::where('product_id',$product->id)->count();
-        return view('products.show', compact('product','totalPermintaan'));
+        $totalOrder = Order::where('product_id',$product->id)->count();
+        return view('products.show', compact('product','totalOrder'));
     }
 
     /**

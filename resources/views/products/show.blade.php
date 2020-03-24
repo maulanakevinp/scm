@@ -21,10 +21,10 @@ Detail Produk {{ $product->nama }}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Permintaan</h5>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Pesanan</h5>
                                     <span class="h2 font-weight-bold mb-0">
-                                        @if ($totalPermintaan)
-                                            {{ $totalPermintaan }}
+                                        @if ($totalOrder)
+                                            {{ $totalOrder }}
                                         @else
                                             0
                                         @endif
@@ -299,8 +299,8 @@ Detail Produk {{ $product->nama }}
 
             setInterval(function(){
                 if (navigator.onLine) {
-                    $('#updated-at').load(baseUrl + '/product/get-updated-at/' +id ).fadeIn("slow")
-                    $('#created-at').load(baseUrl + '/product/get-created-at/' +id ).fadeIn("slow")
+                    $('#updated-at').load(baseUrl + '/product/get-updated-at/' +id ).fadeIn("slow");
+                    $('#created-at').load(baseUrl + '/product/get-created-at/' +id ).fadeIn("slow");
                 } else {
                     alert('Harap periksa koneksi internet anda');
                 }

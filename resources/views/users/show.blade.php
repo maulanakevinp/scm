@@ -215,8 +215,8 @@ Detail Pengguna
             const baseUrl = $('meta[name="base-url"]').attr('content');
             setInterval(function(){
                 if (navigator.onLine) {
-                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow")
-                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow")
+                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow");
+                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow");
                 } else {
                     alert('Harap periksa koneksi internet anda');
                 }
