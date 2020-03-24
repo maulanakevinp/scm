@@ -6,7 +6,7 @@ Detail Produk {{ $product->nama }}
 
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
-    <meta id" content="{{ $product->id }}">
+    <meta name="product-id" content="{{ $product->id }}">
 
 @endsection
 
@@ -283,7 +283,7 @@ Detail Produk {{ $product->nama }}
             }
 
             // Get the <span> element that tutups the modal
-            const span = document.getElementsByClass)[0];
+            const span = document.getElementsByClassName("tutup")[0];
 
             // When the user clicks on <span> (x), tutup the modal
             span.onclick = function() {
@@ -294,8 +294,8 @@ Detail Produk {{ $product->nama }}
                 if(e.key === "Escape") modal.style.display = "none";
             });
 
-            const id = $('meta[id"]').attr('content');
-            const baseUrl = $('meta[url"]').attr('content');
+            const id = $('meta[name="product-id"]').attr('content');
+            const baseUrl = $('meta[name="base-url"]').attr('content');
 
             setInterval(function(){
                 if (navigator.onLine) {
