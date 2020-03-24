@@ -15,7 +15,7 @@ Tambah Produk
             <div class="col">
                 <div class="card shadow h-100">
                     <div class="card-header border-0">
-                        <h2 class="mb-0">Tambah Produk</h2>
+                        <h2 class="mb-0">TAMBAH PRODUK</h2>
                     </div>
                 </div>
             </div>
