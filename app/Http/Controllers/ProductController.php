@@ -29,7 +29,8 @@ class ProductController extends Controller
     {
         $products = Product::where('nama','like','%'.$request->cari.'%')
                             ->orWhere('harga','like','%'.$request->cari.'%')
-                            ->orWhere('persediaan','like','%'.$request->cari.'%');
+                            ->orWhere('persediaan','like','%'.$request->cari.'%')
+                            ->paginate(5);
         $totalProduk = Product::all()->count();
         return view('products.index', compact('products','totalProduk'));
     }
