@@ -81,7 +81,12 @@ Profil Pengguna
             </div>
             <div class="card-body">
                 @include('layouts.components.alert')
-
+                <div class="row">
+                    <div class="col-6 h6" id="created-at">
+                    </div>
+                    <div class="col-6 text-right h6" id="updated-at">
+                    </div>
+                </div>
                 <form action="{{ route('update-profil', Auth::user()) }}" method="POST">
                     @csrf @method('patch')
                     <h6 class="heading-small text-muted mb-4">Informasi Pengguna</h6>
@@ -185,14 +190,14 @@ Profil Pengguna
                 inputAvatar.click();
             };
 
+            const baseUrl = $('meta[name="base-url"]').attr('content');
+            const id = $('meta[name="auth-id"]').attr('content');
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
             inputAvatar.onchange = function () {
                 if (this.files && this.files[0]) {
                     const avatar = inputAvatar.files[0];
                     let formData = new FormData();
                     let oFReader = new FileReader();
-                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                    const baseUrl = $('meta[name="base-url"]').attr('content');
-                    const id = $('meta[name="auth-id"]').attr('content');
                     formData.append("avatar", this.files[0]);
                     formData.append("_token", csrfToken);
                     oFReader.readAsDataURL(avatar);
@@ -219,6 +224,14 @@ Profil Pengguna
                     }
                 }
             };
+            setInterval(function(){
+                if (navigator.onLine) {
+                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow")
+                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow")
+                } else {
+                    alert('Harap periksa koneksi internet anda');
+                }
+            }, 1000);
         });
 
     </script>

@@ -50,7 +50,7 @@ Manajemen Produk
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                        <i class="fas fa-users"></i>
+                                        <i class="ni ni-bag-17"></i>
                                     </div>
                                 </div>
                             </div>
@@ -87,12 +87,14 @@ Manajemen Produk
                             <th scope="col">Nama</th>
                             <th scope="col">Harga</th>
                             <th scope="col">Persediaan</th>
+                            <th scope="col">Permintaan</th>
+                            <th scope="col">Produksi</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (!$products->count())
-                            <tr><td colspan="5" class="text-center">Tidak ada data yang tersedia</td></tr>
+                            <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
                         @else
                             @foreach ($products as $product)
                                 <tr>
@@ -107,11 +109,25 @@ Manajemen Produk
                                         {{ $product->nama }}
                                     </td>
                                     <td>
-                                        Rp. {{ $product->harga }}
+                                        Rp. {{ $product->harga }} / {{ $product->satuan }}
                                     </td>
                                     <td>
                                         @if ($product->persediaan)
                                             {{ $product->persediaan }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($product->permintaan)
+                                            {{ $product->permintaan }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($product->produksi)
+                                            {{ $product->produksi }}
                                         @else
                                             -
                                         @endif
@@ -221,7 +237,7 @@ Manajemen Produk
 
             $('.hapus').on('click', function(){
                 $('#nama-hapus').html('Apakah Anda yakin ingin menghapus ' + $(this).data('nama') + '???');
-                $('#form-hapus').attr('action', baseUrl + '/users/' + $(this).data('id'));
+                $('#form-hapus').attr('action', baseUrl + '/product/' + $(this).data('id'));
             });
 
         });

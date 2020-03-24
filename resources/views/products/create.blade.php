@@ -57,7 +57,9 @@ Tambah Produk
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-harga">Harga <span class="text-red">*</span></label>
                                     <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga') }}" type="text">
@@ -68,7 +70,18 @@ Tambah Produk
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-satuan">Satuan <span class="text-red">*</span></label>
+                                    <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan') }}" type="text">
+                                    @error('satuan')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-persediaan">Persediaan</label>
                                     <input name="persediaan" type="number" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan') }}">

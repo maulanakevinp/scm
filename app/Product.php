@@ -10,6 +10,8 @@ class Product extends Model
         'nama',
         'harga',
         'foto',
+        'satuan',
+        'permintaan',
         'permintaan_min',
         'permintaan_max',
         'persediaan',

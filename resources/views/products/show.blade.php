@@ -6,6 +6,8 @@ Detail Produk {{ $product->nama }}
 
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <meta id" content="{{ $product->id }}">
+
 @endsection
 
 @section('content-header')
@@ -19,12 +21,41 @@ Detail Produk {{ $product->nama }}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Produk</h5>
-                                    <span class="h2 font-weight-bold mb-0">5</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Permintaan</h5>
+                                    <span class="h2 font-weight-bold mb-0">
+                                        @if ($totalPermintaan)
+                                            {{ $totalPermintaan }}
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
                                         <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card card-stats mb-4 mb-xl-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Produksi</h5>
+                                    <span class="h2 font-weight-bold mb-0">
+                                        @if ($product->produksi)
+                                            {{ $product->prodoksi }}
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-default text-white rounded-circle shadow">
+                                        <i class="fas fa-history"></i>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +90,7 @@ Detail Produk {{ $product->nama }}
                         {{ $product->nama }}
                     </h3>
                     <div class="h5 font-weight-300">
-                        Rp. {{ $product->harga }}
+                        Rp. {{ $product->harga }} / {{ $product->satuan }}
                     </div>
                     @if ($product->persediaan)
                         <div class="h5 mt-4">
@@ -93,36 +124,37 @@ Detail Produk {{ $product->nama }}
             </div>
             <div class="card-body">
                 @include('layouts.components.alert')
-
+                <div class="row">
+                    <div class="col-6 h6" id="created-at">
+                    </div>
+                    <div class="col-6 text-right h6" id="updated-at">
+                    </div>
+                </div>
                 <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
                 <div class="pl-lg-4">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-nama">Nama</label>
-                                <input disabled name="nama" type="text" id="input-nama" class="form-control form-control-alternative @error('nama') is-invalid @enderror" placeholder="Masukkan nama ..." value="{{ old('nama',$product->nama) }}">
+                                <input disabled  type="text" id="input-nama" class="form-control form-control-alternative" value="{{ $product->nama }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-harga">Harga</label>
-                                <input disabled name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga',$product->harga) }}" type="text">
-                                @error('harga')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled  id="input-harga" class="form-control form-control-alternative" value="{{ $product->harga }}" type="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-satuan">Satuan</label>
+                                <input disabled id="input-satuan" class="form-control form-control-alternative" value="{{ $product->satuan }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-persediaan">Persediaan</label>
-                                <input disabled name="persediaan" type="number" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan',$product->persediaan) }}">
-                                @error('persediaan')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-persediaan" class="form-control form-control-alternative" value="{{ $product->persediaan ? $product->persediaan : '-' }}">
                             </div>
                         </div>
                     </div>
@@ -135,23 +167,13 @@ Detail Produk {{ $product->nama }}
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-permintaan_min">Permintaan Minimal</label>
-                                <input disabled name="permintaan_min" type="number" id="input-permintaan_min" class="form-control form-control-alternative @error('permintaan_min') is-invalid @enderror" placeholder="Masukkan permintaan minimal ..." value="{{ old('permintaan_min',$product->permintaan_min) }}">
-                                @error('permintaan_min')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-permintaan_min" class="form-control form-control-alternative" value="{{ $product->permintaan_min ? $product->permintaan_min : '-' }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-permintaan_max">Permintaan Maximal</label>
-                                <input disabled name="permintaan_max" type="number" id="input-permintaan_max" class="form-control form-control-alternative @error('permintaan_max') is-invalid @enderror" placeholder="Masukkan permintaan maximal ..." value="{{ old('permintaan_max',$product->permintaan_max) }}">
-                                @error('permintaan_max')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-permintaan_max" class="form-control form-control-alternative" value="{{ $product->permintaan_max ? $product->permintaan_max : '-' }}">
                             </div>
                         </div>
                     </div>
@@ -164,23 +186,13 @@ Detail Produk {{ $product->nama }}
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-persediaan_min">Persediaan Minimal</label>
-                                <input disabled name="persediaan_min" type="number" id="input-persediaan_min" class="form-control form-control-alternative @error('persediaan_min') is-invalid @enderror" placeholder="Masukkan persediaan minimal ..." value="{{ old('persediaan_min',$product->persediaan_min) }}">
-                                @error('persediaan_min')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-persediaan_min" class="form-control form-control-alternative" value="{{ $product->persediaan_min ? $product->persediaan_min : '-' }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-persediaan_max">Persediaan Maximal</label>
-                                <input disabled name="persediaan_max" type="number" id="input-persediaan_max" class="form-control form-control-alternative @error('persediaan_max') is-invalid @enderror" placeholder="Masukkan persediaan maximal ..." value="{{ old('persediaan_max',$product->persediaan_max) }}">
-                                @error('persediaan_max')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-persediaan_max" class="form-control form-control-alternative" value="{{ $product->persediaan_max ? $product->persediaan_max : '-' }}">
                             </div>
                         </div>
                     </div>
@@ -193,23 +205,13 @@ Detail Produk {{ $product->nama }}
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-produksi_min">Produksi Minimal</label>
-                                <input disabled name="produksi_min" type="number" id="input-produksi_min" class="form-control form-control-alternative @error('produksi_min') is-invalid @enderror" placeholder="Masukkan produksi mininimal ..." value="{{ old('produksi_min',$product->produksi_min) }}">
-                                @error('produksi_min')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-produksi_min" class="form-control form-control-alternative" value="{{ $product->produksi_min ? $product->produksi_min : '-' }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label" for="input-produksi_max">Produksi Maximal</label>
-                                <input disabled name="produksi_max" type="number" id="input-produksi_max" class="form-control form-control-alternative @error('produksi_max') is-invalid @enderror" placeholder="Masukkan produksi maximal ..." value="{{ old('produksi_max',$product->produksi_max) }}">
-                                @error('produksi_max')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input disabled id="input-produksi_max" class="form-control form-control-alternative" value="{{ $product->produksi_max ? $product->produksi_max : '-'}}">
                             </div>
                         </div>
                     </div>
@@ -281,7 +283,7 @@ Detail Produk {{ $product->nama }}
             }
 
             // Get the <span> element that tutups the modal
-            const span = document.getElementsByClassName("tutup")[0];
+            const span = document.getElementsByClass)[0];
 
             // When the user clicks on <span> (x), tutup the modal
             span.onclick = function() {
@@ -291,6 +293,18 @@ Detail Produk {{ $product->nama }}
             document.addEventListener('keyup',(e) => {
                 if(e.key === "Escape") modal.style.display = "none";
             });
+
+            const id = $('meta[id"]').attr('content');
+            const baseUrl = $('meta[url"]').attr('content');
+
+            setInterval(function(){
+                if (navigator.onLine) {
+                    $('#updated-at').load(baseUrl + '/product/get-updated-at/' +id ).fadeIn("slow")
+                    $('#created-at').load(baseUrl + '/product/get-created-at/' +id ).fadeIn("slow")
+                } else {
+                    alert('Harap periksa koneksi internet anda');
+                }
+            }, 1000);
         });
     </script>
     <script src="{{ asset('js/script.js') }}"></script>

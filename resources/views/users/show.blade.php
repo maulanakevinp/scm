@@ -5,6 +5,8 @@ Detail Pengguna
 @endsection
 
 @section('styles')
+    <meta name="user-id" content="{{ $user->id }}">
+
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 @endsection
 
@@ -88,6 +90,12 @@ Detail Pengguna
                 </div>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-6 h6" id="created-at">
+                    </div>
+                    <div class="col-6 text-right h6" id="updated-at">
+                    </div>
+                </div>
                 <h6 class="heading-small text-muted mb-4">Informasi Pengguna</h6>
                 <div class="pl-lg-4">
                     <div class="row">
@@ -179,27 +187,40 @@ Detail Pengguna
 
 @push('scripts')
     <script>
-        // Get the modal
-        const modal = document.getElementById("foto-profil");
+        $(document).ready(function(){
+            // Get the modal
+            const modal = document.getElementById("foto-profil");
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        const img = document.getElementById("avatar");
-        const modalImg = document.getElementById("img01");
-        img.onclick = function(){
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            const img = document.getElementById("avatar");
+            const modalImg = document.getElementById("img01");
+            img.onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
 
-        // Get the <span> element that tutups the modal
-        const span = document.getElementsByClassName("tutup")[0];
+            // Get the <span> element that tutups the modal
+            const span = document.getElementsByClassName("tutup")[0];
 
-        // When the user clicks on <span> (x), tutup the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
+            // When the user clicks on <span> (x), tutup the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
 
-        document.addEventListener('keyup',(e) => {
-            if(e.key === "Escape") modal.style.display = "none";
+            document.addEventListener('keyup',(e) => {
+                if(e.key === "Escape") modal.style.display = "none";
+            });
+
+            const id = $('meta[name="user-id"]').attr('content');
+            const baseUrl = $('meta[name="base-url"]').attr('content');
+            setInterval(function(){
+                if (navigator.onLine) {
+                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow")
+                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow")
+                } else {
+                    alert('Harap periksa koneksi internet anda');
+                }
+            }, 1000);
         });
     </script>
 @endpush

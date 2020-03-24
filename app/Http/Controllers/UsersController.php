@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -237,5 +238,21 @@ class UsersController extends Controller
         }
         $user->avatar = $request->file('avatar')->store('public/avatar');
         $user->save();
+    }
+
+    public function getUpdatedAt($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->updated_at == $user->created_at) {
+            echo 'Diperbarui : -';
+        } else {
+            echo 'Diperbarui : '. Carbon::parse($user->updated_at)->diffForHumans();
+        }
+    }
+
+    public function getCreatedAt($id)
+    {
+        $user = User::findOrFail($id);
+        echo 'Bergabung : '. Carbon::parse($user->created_at)->diffForHumans();
     }
 }

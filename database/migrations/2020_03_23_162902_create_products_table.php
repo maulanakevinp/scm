@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('nama',32);
             $table->integer('harga');
             $table->text('foto')->nullable();
+            $table->string('satuan',16);
+            $table->double('permintaan')->nullable();
             $table->double('permintaan_min')->nullable();
             $table->double('permintaan_max')->nullable();
             $table->double('persediaan')->nullable();

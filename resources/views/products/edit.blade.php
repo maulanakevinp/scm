@@ -11,24 +11,11 @@ Detail Produk {{ $product->nama }}
 @section('content-header')
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
-        <div class="header-body">
-            <!-- Card stats -->
-            <div class="row">
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Produk</h5>
-                                    <span class="h2 font-weight-bold mb-0">5</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card shadow h-100">
+                    <div class="card-header border-0">
+                        <h2 class="mb-0">UBAH PRODUK</h2>
                     </div>
                 </div>
             </div>
@@ -60,7 +47,7 @@ Detail Produk {{ $product->nama }}
                         {{ $product->nama }}
                     </h3>
                     <div class="h5 font-weight-300">
-                        Rp. {{ $product->harga }}
+                        Rp. {{ $product->harga }} / {{ $product->satuan }}
                     </div>
                     @if ($product->persediaan)
                         <div class="h5 mt-4">
@@ -74,23 +61,7 @@ Detail Produk {{ $product->nama }}
     <div class="col-xl-8 order-xl-1">
         <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
-                <div class="row">
-                    <div class="col-8">
-                        <h3 class="mb-0">Ubah Produk {{ $product->nama }}</h3>
-                    </div>
-                    <div class="col-4 text-right">
-                        <div class="dropdown">
-                            <a class="btn btn-sm btn-icon-only" href="#" role="button" title="Option"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a class="dropdown-item" href="{{ route('product.edit',$product) }}"><i class="fas fa-fw fa-edit"></i>Ubah</a>
-                                <a class="dropdown-item" data-toggle="modal" href="#modal-delete"><i class="fas fa-fw fa-trash"></i>Hapus</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h3 class="mb-0">Ubah Produk {{ $product->nama }}</h3>
             </div>
             <div class="card-body">
                 @include('layouts.components.alert')
@@ -110,6 +81,17 @@ Detail Produk {{ $product->nama }}
                                     <label class="form-control-label" for="input-harga">Harga</label>
                                     <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga',$product->harga) }}" type="text">
                                     @error('harga')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-satuan">Satuan</label>
+                                    <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan',$product->satuan) }}" type="text">
+                                    @error('satuan')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -318,7 +300,7 @@ Detail Produk {{ $product->nama }}
                     const csrfToken = $('meta[name="csrf-token"]').attr('content');
                     const baseUrl = $('meta[name="base-url"]').attr('content');
                     const id = $(this).data('id');
-                    formData.append("avatar", this.files[0]);
+                    formData.append("foto", this.files[0]);
                     formData.append("_token", csrfToken);
                     oFReader.readAsDataURL(avatar);
                     let fsize = avatar.size||avatar.fileSize;
@@ -327,7 +309,7 @@ Detail Produk {{ $product->nama }}
                     }
                     else {
                         $.ajax({
-                            url: baseUrl + "/update-foto-produk/" + id,
+                            url: baseUrl + "/product/update-foto/" + id,
                             method: 'post',
                             data: formData,
                             contentType: false,
