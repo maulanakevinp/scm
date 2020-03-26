@@ -86,7 +86,7 @@
             @endcan
             @can('isDistributor')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'product')
+                    @if (Request::segment(1) == 'belanja')
                         <a class="nav-link active" href="{{ route('belanja') }}">
                     @else
                         <a class="nav-link" href="{{ route('belanja') }}">

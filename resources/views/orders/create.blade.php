@@ -98,15 +98,16 @@
                     <!-- Permintaan -->
                     <div class="form-group">
                         <label class="form-control-label" for="input-permintaan">Jumlah Permintaan</label>
-                        <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan') }}">
+                        <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan') }}" autofocus>
                         @error('permintaan')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                     </div>
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="persediaan" value="{{ $product->persediaan }}">
+                    <hr class="my-4" />
+                    <h2>Total Harga = <span id="total-harga">Rp. 0</span></h2>
+                    <hr class="my-4" />
                     <div class="row">
                         <div class="col-6">
                             <button type="submit" class="btn btn-primary btn-block">Pesan Sekarang</button>
@@ -134,32 +135,38 @@
 @endsection
 @push('scripts')
     <script>
-        const modal = document.getElementById("foto-profil");
+        $(document).ready(function(){
+            const modal = document.getElementById("foto-profil");
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        const img = document.getElementById("avatar");
-        const modalImg = document.getElementById("img01");
-        img.onclick = function(){
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            const img = document.getElementById("avatar");
+            const modalImg = document.getElementById("img01");
+            img.onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
 
-        // Get the <span> element that tutups the modal
-        const span = document.getElementsByClassName("tutup")[0];
+            // Get the <span> element that tutups the modal
+            const span = document.getElementsByClassName("tutup")[0];
 
-        // When the user clicks on <span> (x), tutup the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
+            // When the user clicks on <span> (x), tutup the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
 
-        document.addEventListener('keyup',(e) => {
-            if(e.key === "Escape") modal.style.display = "none";
+            document.addEventListener('keyup',(e) => {
+                if(e.key === "Escape") modal.style.display = "none";
+            });
+
+            $('#input-permintaan').on('keyup', function(){
+                let totalHarga = $(this).val() * {{ $product->harga }};
+                $('#total-harga').html('Rp. '+ totalHarga);
+            });
+
+            $('#input-permintaan').on('change', function(){
+                let totalHarga = $(this).val() * {{ $product->harga }};
+                $('#total-harga').html('Rp. '+ totalHarga);
+            });
         });
-
-        const btnGantiAvatar = document.getElementById("btn-ganti-avatar");
-        const inputAvatar = document.getElementById("input-avatar");
-        btnGantiAvatar.onclick = function () {
-            inputAvatar.click();
-        };
     </script>
 @endpush

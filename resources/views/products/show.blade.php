@@ -92,7 +92,18 @@ Detail Produk {{ $product->nama }}
 @endsection
 
 @section('content')
-
+@if ($product->foto == 'public/noimage-produk.jpg' || $product->persediaan == null || $product->persediaan_min == null || $product->persediaan_max == null || $product->permintaan_min == null || $product->permintaan_max == null || $product->produksi_min == null || $product->produksi_max == null )
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <span class="alert-icon"><i class="ni ni-bell-55"></i></span>
+        <span class="alert-text">
+            <strong>Perhatian!!!</strong>
+            Harap isi semua data dan foto agar dapat dipesan distributor
+        </span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
 <div class="row">
     <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
         <div class="card card-profile shadow">
@@ -147,6 +158,7 @@ Detail Produk {{ $product->nama }}
             </div>
             <div class="card-body">
                 @include('layouts.components.alert')
+
                 <div class="row">
                     <div class="col-6 h6" id="created-at">
                     </div>

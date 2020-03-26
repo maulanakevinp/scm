@@ -203,7 +203,7 @@ Detail Produk {{ $product->nama }}
                             <button type="submit" class="btn btn-primary btn-block">Simpan Perubahan</button>
                         </div>
                         <div class="col-6">
-                            <a href="{{ route('product.show',$product) }}" class="btn btn-block btn-light">Batal</a>
+                            <a href="{{ route('product.show',$product) }}" class="btn btn-block btn-light">Kembali</a>
                         </div>
                     </div>
                 </form>

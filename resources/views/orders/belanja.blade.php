@@ -57,7 +57,7 @@
         @if (!$products->count())
             <div class="card">
                 <div class="card-body">
-                    <p class="font-weight-bold">Produk yang anda cari tidak tersedia</p>
+                    <p class="font-weight-bold">Produk tidak tersedia</p>
                 </div>
             </div>
         @else
