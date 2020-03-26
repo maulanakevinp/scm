@@ -44,6 +44,7 @@ class OrderController extends Controller
         $data['produksi'] = $this->produksi($request, $product);
         $data['keterangan'] = 'Belum di setujui';
         $data['product_id'] = $product->id;
+        $data['persediaan'] = $product->persediaan;
 
         $order = Order::create($data);
         return redirect(route('order.show',$order))->with('success','Pesanan berhasil terkirim');
