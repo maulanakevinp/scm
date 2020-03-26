@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -22,9 +23,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product)
     {
-        //
+        return view('orders.create', compact('product'));
     }
 
     /**
@@ -81,5 +82,30 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function belanja()
+    {
+        $products = Product::paginate(6);
+        return view('orders.belanja', compact('products'));
+    }
+
+    public function cari(Request $request)
+    {
+        $products = Product::where('nama','like','%'.$request->cari.'%')
+                            ->orWhere('harga','like','%'.$request->cari.'%')
+                            ->orWhere('persediaan','like','%'.$request->cari.'%')
+                            ->paginate(6);
+        return view('orders.belanja', compact('products'));
+    }
+
+    public function pesan(Request $request, Product $product)
+    {
+        # code...
     }
 }

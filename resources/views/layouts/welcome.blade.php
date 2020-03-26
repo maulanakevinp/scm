@@ -98,14 +98,14 @@
                             @endcan
                             @can('isDistributor')
                                 <li class="nav-item">
-                                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
+                                    <a class="nav-link nav-link-icon" href="{{ route('belanja') }}">
                                         <i class="ni ni-basket"></i>
-                                        <span class="nav-link-inner--text">Beli Produk</span>
+                                        <span class="nav-link-inner--text">Belanja</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link nav-link-icon" href="{{ route('home') }}">
-                                        <i class="ni ni-email-83"></i>
+                                    <a class="nav-link nav-link-icon" href="{{ route('order.index') }}">
+                                        <i class="fas fa-receipt"></i>
                                         <span class="nav-link-inner--text">Pesanan</span>
                                     </a>
                                 </li>

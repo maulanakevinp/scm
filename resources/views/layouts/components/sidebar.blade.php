@@ -87,22 +87,22 @@
             @can('isDistributor')
                 <li class="nav-item">
                     @if (Request::segment(1) == 'product')
-                        <a class="nav-link active" href="{{ route('product.index') }}">
+                        <a class="nav-link active" href="{{ route('belanja') }}">
                     @else
-                        <a class="nav-link" href="{{ route('product.index') }}">
+                        <a class="nav-link" href="{{ route('belanja') }}">
                     @endif
-                        <i class="ni ni-basket text-orange"></i>
+                        <i class="ni ni-basket text-primary"></i>
                         <span class="nav-link-inner--text">Belanja</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'transaction')
-                        <a class="nav-link active" href="{{ url('') }}">
+                    @if (Request::segment(1) == 'order')
+                        <a class="nav-link active" href="{{ route('order.index') }}">
                     @else
-                        <a class="nav-link" href="{{ url('') }}">
+                        <a class="nav-link" href="{{ route('order.index') }}">
                     @endif
-                        <i class="ni ni-money-coins text-green"></i>
-                        <span class="nav-link-inner--text">Transaksi</span>
+                        <i class="fas fa-receipt text-green"></i>
+                        <span class="nav-link-inner--text">Pesanan</span>
                     </a>
                 </li>
             @endcan

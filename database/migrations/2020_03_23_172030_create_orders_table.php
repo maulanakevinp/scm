@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->double('permintaan');
             $table->double('persediaan');
-            $table->double('produksi');
+            $table->double('produksi')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
