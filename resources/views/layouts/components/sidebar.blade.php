@@ -86,23 +86,23 @@
             @endcan
             @can('isDistributor')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'orders')
-                        <a class="nav-link active" href="{{ route('order.index') }}">
+                    @if (Request::segment(1) == 'product')
+                        <a class="nav-link active" href="{{ route('product.index') }}">
                     @else
-                        <a class="nav-link" href="{{ route('order.index') }}">
+                        <a class="nav-link" href="{{ route('product.index') }}">
                     @endif
-                        <i class="ni ni-basket text-blue"></i>
-                        <span class="nav-link-inner--text">Beli Produk</span>
+                        <i class="ni ni-basket text-orange"></i>
+                        <span class="nav-link-inner--text">Belanja</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'pesanan')
-                        <a class="nav-link active" href="{{ url('pesanan') }}">
+                    @if (Request::segment(1) == 'transaction')
+                        <a class="nav-link active" href="{{ url('') }}">
                     @else
-                        <a class="nav-link text-orange" href="{{ url('pesanan') }}">
+                        <a class="nav-link" href="{{ url('') }}">
                     @endif
-                        <i class="ni ni-email-83"></i>
-                        <span class="nav-link-inner--text">Pesanan</span>
+                        <i class="ni ni-money-coins text-green"></i>
+                        <span class="nav-link-inner--text">Transaksi</span>
                     </a>
                 </li>
             @endcan
@@ -124,7 +124,15 @@
                 @else
                     <a class="nav-link" href="{{ route('profil') }}">
                 @endif
-                    <i class="ni ni-single-02 text-yellow"></i> Profil Pengguna
+                    <i class="ni ni-single-02 text-yellow"></i> Profil Saya
+                </a>
+            </li>
+        </ul>
+        <hr class="my-3">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="ni ni-user-run"></i> Keluar
                 </a>
             </li>
         </ul>

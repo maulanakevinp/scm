@@ -15,4 +15,20 @@
             </div>
         </div>
     </div>
+
+    @can('isDistributor')
+        <div class="row justify-content-center mt-5">
+            @foreach ($products as $product)
+                <div class="card col-lg-3" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ asset(Storage::url($product->foto)) }}" alt="{{ asset(Storage::url($product->foto)) }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $product->nama }}</h5>
+                        <p class="card-text">Rp. {{ $product->harga }} / {{ $product->satuan }}</p>
+                        <a href="#" class="btn btn-primary">Pesan</a>
+                    </div>
+                </div>
+            @endforeach
+            {{ $products->links() }}
+        </div>
+    @endcan
 @endsection
