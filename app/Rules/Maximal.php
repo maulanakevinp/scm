@@ -31,7 +31,7 @@ class Maximal implements Rule
         if ($this->max == null) {
             $this->kosong = true;
         } else {
-            if ($value <= $this->max) {
+            if ($value < $this->max) {
                 return true;
             } else {
                 return false;

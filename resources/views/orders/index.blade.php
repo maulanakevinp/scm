@@ -101,7 +101,7 @@ Pesanan Saya
                                         {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                     </td>
                                     <td>
-                                        @if ($order->updated_at != $order->created_at)
+                                        @if ($order->keterangan == "Diterima")
                                             {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                         @else
                                             -

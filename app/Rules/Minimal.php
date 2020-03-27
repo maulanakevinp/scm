@@ -30,7 +30,7 @@ class Minimal implements Rule
         if ($this->min == null) {
             $this->kosong = true;
         } else {
-            if ($value >= $this->min) {
+            if ($value > $this->min) {
                 return true;
             } else {
                 return false;
