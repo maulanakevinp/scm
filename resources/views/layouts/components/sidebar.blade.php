@@ -102,7 +102,7 @@
                         <a class="nav-link" href="{{ route('order.index') }}">
                     @endif
                         <i class="fas fa-receipt text-green"></i>
-                        <span class="nav-link-inner--text">Pesanan</span>
+                        <span class="nav-link-inner--text">Pesanan Saya</span>
                     </a>
                 </li>
             @endcan

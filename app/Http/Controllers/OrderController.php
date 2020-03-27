@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Product;
-use App\Rules\Antara;
+use App\Rules\Maximal;
+use App\Rules\Minimal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class OrderController extends Controller
 {
@@ -16,7 +18,27 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::paginate(5);
+        return view('orders.index', compact('orders'));
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cariPesanan(Request $request)
+    {
+        $orders = Order::orWhere('id','like','%'.$request->cari.'%')
+                        ->orWhereHas('product',function ($q) use ($request){
+                            $q->where('nama','like','%'.$request->cari.'%');
+                        })
+                        ->orWhereHas('product',function ($q) use ($request){
+                            $q->where('harga','like','%'.$request->cari.'%');
+                        })
+                        ->orWhere('permintaan','like','%'.$request->cari.'%')
+                        ->orWhere('keterangan','like','%'.$request->cari.'%')
+                        ->paginate(5);
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -38,11 +60,12 @@ class OrderController extends Controller
     public function store(Request $request, Product $product)
     {
         $data = $request->validate([
-            'permintaan' => ['required', new Antara($product->permintaan_min, $product->permintaan_max)]
+            'permintaan' => ['required', new Minimal($product->permintaan_min), new Maximal($product->permintaan_max)]
         ]);
 
         $data['produksi'] = $this->produksi($request, $product);
-        $data['keterangan'] = 'Belum di setujui';
+        $data['keterangan'] = 'Belum diproses';
+        $data['bukti_transfer'] = 'public/noimage-produk.jpg';
         $data['product_id'] = $product->id;
         $data['persediaan'] = $product->persediaan;
 
@@ -82,13 +105,14 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $data = $request->validate([
-            'permintaan' => ['required', new Antara($order->product->permintaan_min, $order->product->permintaan_max)]
+            'permintaan' => ['required', new Minimal($order->product->permintaan_min), new Maximal($order->product->permintaan_max)]
         ]);
 
         $data['produksi'] = $this->produksi($request, $order->product);
+        $data['keterangan'] = 'Belum diproses';
 
-        $order = Order::create($data);
-        return redirect(route('order.show',$order))->with('success','Pesanan berhasil terkirim');
+        $order->update($data);
+        return redirect(route('order.show',$order))->with('success','Pesanan berhasil diperbarui');
     }
 
     /**
@@ -99,8 +123,11 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        Product::destroy($order->id);
-        return redirect('/order')->with('success','Pesanan berhasil dihapus');
+        if ($order->bukti_transfer != 'public/noimage-produk.jpg') {
+            File::delete(storage_path('app/'.$order->bukti_transfer));
+        }
+        Order::destroy($order->id);
+        return redirect('/order')->with('success','Pesanan berhasil dibatalkan');
     }
 
     /**
@@ -158,5 +185,16 @@ class OrderController extends Controller
 
         $produksi = $az / $a;
         return (int)$produksi;
+    }
+
+    public function updateBuktiTransfer(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->bukti_transfer != 'public/noimage-produk.jpg') {
+            File::delete(storage_path('app/'.$order->bukti_transfer));
+        }
+        $order->bukti_transfer = $request->file('bukti_transfer')->store('public/bukti-transfer');
+        $order->keterangan = 'Belum diproses';
+        $order->save();
     }
 }

@@ -106,7 +106,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link nav-link-icon" href="{{ route('order.index') }}">
                                         <i class="fas fa-receipt"></i>
-                                        <span class="nav-link-inner--text">Pesanan</span>
+                                        <span class="nav-link-inner--text">Pesanan Saya</span>
                                     </a>
                                 </li>
                             @endcan

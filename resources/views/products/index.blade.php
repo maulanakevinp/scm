@@ -87,6 +87,7 @@ Manajemen Produk
                             <th scope="col">Nama</th>
                             <th scope="col">Harga</th>
                             <th scope="col">Persediaan</th>
+                            <th scope="col">Pesanan</th>
                             <th scope="col">Permintaan</th>
                             <th scope="col">Produksi</th>
                             <th scope="col"></th>
@@ -114,6 +115,13 @@ Manajemen Produk
                                     <td>
                                         @if ($product->persediaan)
                                             {{ $product->persediaan }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($product->orders)
+                                            {{ $product->orders->count() }}
                                         @else
                                             -
                                         @endif

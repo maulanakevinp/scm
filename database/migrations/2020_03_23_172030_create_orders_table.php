@@ -19,8 +19,9 @@ class CreateOrdersTable extends Migration
             $table->double('permintaan');
             $table->double('persediaan');
             $table->double('produksi');
-            $table->text('bukti_transaksi')->nullable();
-            $table->enum('keterangan',['Belum di proses', 'Sedang dalam proses', 'Diterima'])->nullable();
+            $table->text('bukti_transfer')->nullable();
+            $table->text('alasan_penolakan')->nullable();
+            $table->enum('keterangan',['Belum diproses', 'Sedang dalam proses', 'Ditolak', 'Diterima'])->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');

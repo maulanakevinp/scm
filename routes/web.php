@@ -47,6 +47,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/belanja/cari', 'OrderController@cari')->name('belanja.cari');
         Route::get('/belanja', 'OrderController@belanja')->name('belanja');
         Route::get('/belanja/pesan/{product}', 'OrderController@create')->name('pesan');
+        Route::get('/order/cari', 'OrderController@cariPesanan')->name('order.cari');
+        Route::post('/order/update-bukti-transfer/{id}', 'OrderController@updateBuktiTransfer')->name('order.update-bukti-transfer');
         Route::post('/order/store/{product}', 'OrderController@store')->name('order.store');
         Route::resource('/order', 'OrderController')->except(['create','store']);
     });

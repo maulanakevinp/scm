@@ -23,8 +23,8 @@ Detail Produk {{ $product->nama }}
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Total Pesanan</h5>
                                     <span class="h2 font-weight-bold mb-0">
-                                        @if ($totalOrder)
-                                            {{ $totalOrder }}
+                                        @if ($product->orders)
+                                            {{ $product->orders->count() }}
                                         @else
                                             0
                                         @endif
