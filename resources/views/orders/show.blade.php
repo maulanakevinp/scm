@@ -36,6 +36,7 @@
     @elseif($order->keterangan == 'Ditolak')
         <div class="alert alert-danger" role="alert">
             <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
+            <p>({{ $order->alasan_penolakan }})</p>
         </div>
     @else
         <div class="alert alert-success" role="alert">
