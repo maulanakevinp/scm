@@ -40,7 +40,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/product/get-updated-at/{id}', 'ProductController@getUpdatedAt');
         Route::get('/product/get-created-at/{id}', 'ProductController@getCreatedAt');
         Route::get('/product/cari', 'ProductController@cari')->name('product.cari');
-        Route::get('/product/order/{id}', 'OrderController@edit')->name('order.edit');
+        Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
         Route::post('/product/update-foto/{id}', 'ProductController@updateFoto')->name('product.update-foto');
         Route::resource('/product', 'ProductController');
     });
