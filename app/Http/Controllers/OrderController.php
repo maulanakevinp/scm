@@ -201,6 +201,6 @@ class OrderController extends Controller
 
     public function verification(Request $request, Order $order)
     {
-        # code...
+        return 'Sabar masih dalam proses pengembangan';
     }
 }
