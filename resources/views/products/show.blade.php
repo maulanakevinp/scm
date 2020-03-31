@@ -219,22 +219,22 @@ Detail Produk {{ $product->nama }}
     <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
         <li class="nav-item">
             <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">
-                <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk
+                <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">
-                <i class="ni ni-atom mr-2"></i>Pesanan dalam proses
+                <i class="ni ni-atom mr-2"></i>Pesanan dalam proses <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam proses')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">
-                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman
+                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam pengiriman')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">
-                <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai
+                <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Diterima')->count() }}</span>
             </a>
         </li>
     </ul>
@@ -256,10 +256,10 @@ Detail Produk {{ $product->nama }}
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!$product->orders->count())
+                            @if (!$product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count())
                                 <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
                             @else
-                                @foreach ($product->orders->where('keterangan','Belum diproses') as $order)
+                                @foreach ($product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg') as $order)
                                     <tr>
                                         <th scope="row">
                                             {{ $order->id }}
@@ -403,7 +403,7 @@ Detail Produk {{ $product->nama }}
                             @if (!$product->orders->where('keterangan','Diterima')->count())
                                 <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
                             @else
-                                @foreach ($product->orders>where('keterangan','Diterima') as $order)
+                                @foreach ($product->orders->where('keterangan','Diterima') as $order)
                                     <tr>
                                         <th scope="row">
                                             {{ $order->id }}

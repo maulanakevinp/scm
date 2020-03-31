@@ -38,6 +38,10 @@
         <div class="alert alert-warning" role="alert">
             <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
         </div>
+    @elseif($order->keterangan == 'Sedang dalam pengiriman')
+        <div class="alert alert-default" role="alert">
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
+        </div>
     @elseif($order->keterangan == 'Ditolak')
         <div class="alert alert-danger" role="alert">
             <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
@@ -151,8 +155,9 @@
                         <h2>Total Harga = <span id="total-harga">Rp. {{ $order->permintaan * $order->product->harga }}</span></h2>
                         <hr class="my-4" />
                         <div class="row">
-                            @if ($order->keterangan == 'Sedang dalam proses')
+                            @if ($order->keterangan == 'Sedang dalam pengiriman')
                                 <div class="col-6">
+                                    <input type="hidden" name="verifikasi" value="1">
                                     <button type="submit" class="btn btn-success btn-block">Terima</button>
                                 </div>
                             @elseif($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak' )
@@ -163,7 +168,7 @@
                                     <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Batal</a>
                                 </div>
                             @endif
-                            <div class="@if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') col-4 @elseif($order->keterangan == 'Diterima') col-12 @else col-6 @endif">
+                            <div class="@if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') col-4 @elseif($order->keterangan == 'Diterima' || $order->keterangan == 'Sedang dalam proses') col-12 @else col-6 @endif">
                                 <a href="{{ route('order.index') }}" class="btn btn-block btn-light">Kembali</a>
                             </div>
                         </div>

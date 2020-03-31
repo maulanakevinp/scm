@@ -49,7 +49,12 @@
                         </div>
                         @if ($order->product->persediaan)
                             <div class="h5 mt-4">
-                                Persediaan : {{ $order->product->persediaan }}
+                                @if ($order->keterangan == 'Belum diproses')
+                                    Persediaan : {{ $order->product->persediaan }}
+                                @else
+                                    Persediaan : {{ $order->persediaan }} <br>
+                                    Produksi : {{ $order->produksi }}
+                                @endif
                             </div>
                         @endif
                     </div>
@@ -85,13 +90,21 @@
                         <h2>Total Harga = <span id="total-harga">Rp. {{ $order->permintaan * $order->product->harga }}</span></h2>
                         <hr class="my-4" />
                         <div class="row">
-                            <div class="col-4">
-                                <input type="hidden" name="verifikasi" value="1">
-                                <button type="submit" class="btn btn-success btn-block">Terima</button>
-                            </div>
-                            <div class="col-4">
-                                <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Tolak</a>
-                            </div>
+                            @if ($order->keterangan == "Belum diproses")
+                                <div class="col-4">
+                                    <input type="hidden" name="verifikasi" value="1">
+                                    <button type="submit" class="btn btn-success btn-block">Terima</button>
+                                </div>
+                                <div class="col-4">
+                                    <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Tolak</a>
+                                </div>
+                            @elseif($order->keterangan == "Sedang dalam proses")
+                                <div class="col-4">
+                                    <input type="hidden" name="verifikasi" value="2">
+                                    <button type="submit" class="btn btn-success btn-block">Kirim</button>
+                                </div>
+                            @endif
+
                             <div class="col-4">
                                 <a href="{{ route('product.show',$order->product) }}" class="btn btn-block btn-light">Kembali</a>
                             </div>

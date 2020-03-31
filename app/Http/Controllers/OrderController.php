@@ -107,8 +107,12 @@ class OrderController extends Controller
             'permintaan' => ['required', new Minimal($order->product->permintaan_min), new Maximal($order->product->permintaan_max)]
         ]);
 
-        $data['produksi'] = $this->produksi($request, $order->product);
-        $data['keterangan'] = 'Belum diproses';
+        if ($request->verifikasi == 1) {
+            $data['keterangan'] = 'Diterima';
+        } else {
+            $data['keterangan'] = 'Belum diproses';
+        }
+
 
         $order->update($data);
         return redirect(route('order.show',$order))->with('success','Pesanan berhasil diperbarui');
@@ -206,14 +210,19 @@ class OrderController extends Controller
             ]);
             $order->alasan_penolakan = $request->alasan_penolakan;
             $order->keterangan = "Ditolak";
-        } else {
+        } elseif ($request->verifikasi == 1) {
             $order->keterangan = "Sedang dalam proses";
-            $order->produksi = $this->produksi($order->permintaan, $order->product);
+            $product->permintaan = ($product->permintaan + $order->permintaan);
             $order->persediaan = $product->persediaan;
+            $order->produksi = $this->produksi($product->permintaan, $product);
+            $product->persediaan = ($product->persediaan - $order->permintaan + $order->produksi);
+            $product->produksi = ($product->produksi + $order->produksi);
+            $product->save();
+        } elseif($request->verifikasi == 2) {
+            $product->permintaan = ($product->permintaan - $order->permintaan);
+            $product->produksi = ($product->produksi - $order->produksi);
+            $order->keterangan = "Sedang dalam pengiriman";
         }
-
-        $product->persediaan = ($product->persediaan - $order->persediaan);
-        $product->produksi = ($product->produksi + $order->produksi);
 
         $order->save();
 
