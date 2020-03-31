@@ -300,28 +300,33 @@ Detail Produk {{ $product->nama }}
                     const csrfToken = $('meta[name="csrf-token"]').attr('content');
                     const baseUrl = $('meta[name="base-url"]').attr('content');
                     const id = $(this).data('id');
+                    const ext = this.files[0].name.split('.').pop().toLowerCase();
                     formData.append("foto", this.files[0]);
                     formData.append("_token", csrfToken);
                     oFReader.readAsDataURL(avatar);
                     let fsize = avatar.size||avatar.fileSize;
-                    if(fsize > 2000000) {
-                        alert("Ukuran gambar terlalu besar. Max 2mb");
-                    }
-                    else {
-                        $.ajax({
-                            url: baseUrl + "/product/update-foto/" + id,
-                            method: 'post',
-                            data: formData,
-                            contentType: false,
-                            cache: false,
-                            processData: false,
-                            beforeSend:function(){
-                                img.src = baseUrl + '/img/loading.gif';
-                            },
-                            success:function(data){
-                                window.location.href = baseUrl + '/product/' + id + '/edit' ;
-                            }
-                        });
+                    if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) {
+                        alert("File harus berupa gambar yang memiliki ekstensi (png, jpg, jpeg)");
+                    } else {
+                        if(fsize > 2000000) {
+                            alert("Ukuran gambar terlalu besar. Max 2mb");
+                        }
+                        else {
+                            $.ajax({
+                                url: baseUrl + "/product/update-foto/" + id,
+                                method: 'post',
+                                data: formData,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                beforeSend:function(){
+                                    img.src = baseUrl + '/img/loading.gif';
+                                },
+                                success:function(data){
+                                    window.location.href = baseUrl + '/product/' + id + '/edit' ;
+                                }
+                            });
+                        }
                     }
                 }
             };

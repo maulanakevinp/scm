@@ -271,36 +271,41 @@
             inputBuktiTransfer.onchange = function () {
                 if (this.files && this.files[0]) {
                     const buktiTransfer = inputBuktiTransfer.files[0];
-                    let formData = new FormData();
-                    let oFReader = new FileReader();
                     const csrfToken = $('meta[name="csrf-token"]').attr('content');
                     const baseUrl = $('meta[name="base-url"]').attr('content');
                     const id = $(this).data('id');
+                    let formData = new FormData();
+                    let oFReader = new FileReader();
+                    const ext = this.files[0].name.split('.').pop().toLowerCase();
                     formData.append("bukti_transfer", this.files[0]);
                     formData.append("_token", csrfToken);
                     oFReader.readAsDataURL(buktiTransfer);
                     let fsize = buktiTransfer.size||buktiTransfer.fileSize;
-                    if(fsize > 2000000) {
-                        alert("Ukuran gambar terlalu besar. Max 2mb");
-                    }
-                    else {
-                        $.ajax({
-                            url: baseUrl + "/order/update-bukti-transfer/" + id,
-                            method: 'post',
-                            data: formData,
-                            contentType: false,
-                            cache: false,
-                            processData: false,
-                            beforeSend:function(){
-                                $('#img-bukti-transfer').attr('src',baseUrl + '/img/loading.gif');
-                            },
-                            success:function(){
-                                window.location.href = baseUrl + '/order/' + id;
-                            },
-                            error: function(data){
-                                alert('Error');
-                            }
-                        });
+                    if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) {
+                        alert("File harus berupa gambar yang memiliki ekstensi (png, jpg, jpeg)");
+                    } else {
+                        if(fsize > 2000000) {
+                            alert("Ukuran gambar terlalu besar. Max 2mb");
+                        }
+                        else {
+                            $.ajax({
+                                url: baseUrl + "/order/update-bukti-transfer/" + id,
+                                method: 'post',
+                                data: formData,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                beforeSend:function(){
+                                    $('#img-bukti-transfer').attr('src',baseUrl + '/img/loading.gif');
+                                },
+                                success:function(){
+                                    window.location.href = baseUrl + '/order/' + id;
+                                },
+                                error: function(data){
+                                    alert('Error');
+                                }
+                            });
+                        }
                     }
                 }
             };
