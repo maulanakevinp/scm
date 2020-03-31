@@ -198,4 +198,9 @@ class OrderController extends Controller
         $order->keterangan = 'Belum diproses';
         $order->save();
     }
+
+    public function verification(Request $request, Order $order)
+    {
+        # code...
+    }
 }
