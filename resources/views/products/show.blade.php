@@ -105,7 +105,7 @@ Detail Produk {{ $product->nama }}
     </div>
 @endif
 <div class="row">
-    <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+    <div class="col-xl-3 order-xl-2 mb-5 mb-xl-0">
         <div class="card card-profile shadow">
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
@@ -135,7 +135,7 @@ Detail Produk {{ $product->nama }}
             </div>
         </div>
     </div>
-    <div class="col-xl-8 order-xl-1">
+    <div class="col-xl-9 order-xl-1">
         <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
                 <div class="row">
@@ -159,103 +159,231 @@ Detail Produk {{ $product->nama }}
             <div class="card-body">
                 @include('layouts.components.alert')
 
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col-6 h6" id="created-at">
                     </div>
                     <div class="col-6 text-right h6" id="updated-at">
                     </div>
                 </div>
-                <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
-                <div class="pl-lg-4">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-nama">Nama</label>
-                                <input disabled  type="text" id="input-nama" class="form-control form-control-alternative" value="{{ $product->nama }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-harga">Harga</label>
-                                <input disabled  id="input-harga" class="form-control form-control-alternative" value="{{ $product->harga }}" type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-satuan">Satuan</label>
-                                <input disabled id="input-satuan" class="form-control form-control-alternative" value="{{ $product->satuan }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-persediaan">Persediaan</label>
-                                <input disabled id="input-persediaan" class="form-control form-control-alternative" value="{{ $product->persediaan ? $product->persediaan : '-' }}">
-                            </div>
-                        </div>
+
+                <div class="row">
+                    <div class="col-lg-4 border-right h5">
+                        <table class="">
+                            <tbody>
+                                <tr class="">
+                                    <td>Permintaan Maximal</td>
+                                    <td>: {{ $product->permintaan_max }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Permintaan Minimal</td>
+                                    <td>: {{ $product->permintaan_min }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <hr class="my-4" />
-                <!-- Batasan Permintaan -->
-                <h6 class="heading-small text-muted mb-4">Batasan Permintaan</h6>
-                <div class="pl-lg-4">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-permintaan_min">Permintaan Minimal</label>
-                                <input disabled id="input-permintaan_min" class="form-control form-control-alternative" value="{{ $product->permintaan_min ? $product->permintaan_min : '-' }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-permintaan_max">Permintaan Maximal</label>
-                                <input disabled id="input-permintaan_max" class="form-control form-control-alternative" value="{{ $product->permintaan_max ? $product->permintaan_max : '-' }}">
-                            </div>
-                        </div>
+                    <div class="col-lg-4 border-right h5" >
+                        <table class="">
+                            <tbody>
+                                <tr>
+                                    <td>Persediaan Maximal</td>
+                                    <td>: {{ $product->persediaan_max }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Persediaan Minimal</td>
+                                    <td>: {{ $product->persediaan_min }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <hr class="my-4" />
-                <!-- Batasan persediaan -->
-                <h6 class="heading-small text-muted mb-4">Batasan persediaan</h6>
-                <div class="pl-lg-4">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-persediaan_min">Persediaan Minimal</label>
-                                <input disabled id="input-persediaan_min" class="form-control form-control-alternative" value="{{ $product->persediaan_min ? $product->persediaan_min : '-' }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-persediaan_max">Persediaan Maximal</label>
-                                <input disabled id="input-persediaan_max" class="form-control form-control-alternative" value="{{ $product->persediaan_max ? $product->persediaan_max : '-' }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="my-4" />
-                <!-- Batasan produksi -->
-                <h6 class="heading-small text-muted mb-4">Batasan produksi</h6>
-                <div class="pl-lg-4">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-produksi_min">Produksi Minimal</label>
-                                <input disabled id="input-produksi_min" class="form-control form-control-alternative" value="{{ $product->produksi_min ? $product->produksi_min : '-' }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label" for="input-produksi_max">Produksi Maximal</label>
-                                <input disabled id="input-produksi_max" class="form-control form-control-alternative" value="{{ $product->produksi_max ? $product->produksi_max : '-'}}">
-                            </div>
-                        </div>
+                    <div class="col-lg-4 h5" >
+                        <table class="">
+                            <tbody>
+                                <tr>
+                                    <td>Produksi Maximal</td>
+                                    <td>: {{ $product->produksi_max }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Produksi Minimal</td>
+                                    <td>: {{ $product->produksi_min }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<h2 class="h1 mt-3 mb-0">Pesanan</h2>
+<div class="nav-wrapper pt-2">
+    <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">
+                <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">
+                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan sedang diantar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">
+                <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="card bg-default shadow h-100 ">
+    <div class="card-body p-0">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
+                <div class="table-responsive">
+                    <table class="table align-items-center table-dark table-flush">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">Email Pemesan</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Tanggal Pesan</th>
+                                <th scope="col">Tanggal Disetujui</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!$product->orders->count())
+                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                            @else
+                                @foreach ($product->orders->where('keterangan','Belum diproses') as $order)
+                                    <tr>
+                                        <th scope="row">
+                                            {{ $order->id }}
+                                        </th>
+                                        <td>
+                                            {{ $order->user->email }}
+                                        </td>
+                                        <td>
+                                            {{ $order->permintaan }}
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                        </td>
+                                        <td>
+                                            @if ($order->keterangan == "Diterima")
+                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                <div class="table-responsive">
+                    <table class="table align-items-center table-dark table-flush">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">Email Pemesan</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Tanggal Pesan</th>
+                                <th scope="col">Tanggal Disetujui</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!$product->orders->where('keterangan','Sedang dalam proses')->count())
+                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                            @else
+                                @foreach ($product->orders->where('keterangan','Sedang dalam proses') as $order)
+                                    <tr>
+                                        <th scope="row">
+                                            {{ $order->id }}
+                                        </th>
+                                        <td>
+                                            {{ $order->user->email }}
+                                        </td>
+                                        <td>
+                                            {{ $order->permintaan }}
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                        </td>
+                                        <td>
+                                            @if ($order->keterangan == "Diterima")
+                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                <div class="table-responsive">
+                    <table class="table align-items-center table-dark table-flush">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">Email Pemesan</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Tanggal Pesan</th>
+                                <th scope="col">Tanggal Disetujui</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!$product->orders->where('keterangan','Diterima')->count())
+                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                            @else
+                                @foreach ($product->orders>where('keterangan','Diterima') as $order)
+                                    <tr>
+                                        <th scope="row">
+                                            {{ $order->id }}
+                                        </th>
+                                        <td>
+                                            {{ $order->user->email }}
+                                        </td>
+                                        <td>
+                                            {{ $order->permintaan }}
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                        </td>
+                                        <td>
+                                            @if ($order->keterangan == "Diterima")
+                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
     <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">

@@ -40,6 +40,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/product/get-updated-at/{id}', 'ProductController@getUpdatedAt');
         Route::get('/product/get-created-at/{id}', 'ProductController@getCreatedAt');
         Route::get('/product/cari', 'ProductController@cari')->name('product.cari');
+        Route::get('/product/order/{id}', 'OrderController@edit')->name('order.edit');
         Route::post('/product/update-foto/{id}', 'ProductController@updateFoto')->name('product.update-foto');
         Route::resource('/product', 'ProductController');
     });
@@ -50,7 +51,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/order/cari', 'OrderController@cariPesanan')->name('order.cari');
         Route::post('/order/update-bukti-transfer/{id}', 'OrderController@updateBuktiTransfer')->name('order.update-bukti-transfer');
         Route::post('/order/store/{product}', 'OrderController@store')->name('order.store');
-        Route::resource('/order', 'OrderController')->except(['create','store']);
+        Route::resource('/order', 'OrderController')->except(['create','store','edit']);
     });
     Route::group(['middleware' => ['can:isSuperadmin']], function () {
         Route::get('/users/cari', 'UsersController@cari')->name('users.cari');

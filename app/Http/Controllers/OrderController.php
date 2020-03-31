@@ -63,6 +63,7 @@ class OrderController extends Controller
             'permintaan' => ['required', new Minimal($product->permintaan_min), new Maximal($product->permintaan_max)]
         ]);
 
+        $data['user_id'] = auth()->user()->id;
         $data['produksi'] = $this->produksi($request, $product);
         $data['keterangan'] = 'Belum diproses';
         $data['bukti_transfer'] = 'public/noimage-produk.jpg';

@@ -164,6 +164,15 @@ class ProductController extends Controller
         if ($product->foto != 'public/noimage-produk.jpg') {
             File::delete(storage_path('app/'.$product->foto));
         }
+
+        if ($product->orders) {
+            foreach ($product->orders as $order) {
+                if ($order->bukti_transfer != 'public/noimage-produk.jpg') {
+                    File::delete(storage_path('app/'.$order->bukti_transfer));
+                }
+            }
+        }
+
         Product::destroy($product->id);
         return redirect('/product')->with('success','Produk "'.$product->nama.'" berhasil dihapus');
     }

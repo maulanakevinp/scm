@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
             $table->double('permintaan');
             $table->double('persediaan');
             $table->double('produksi');
@@ -24,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->enum('keterangan',['Belum diproses', 'Sedang dalam proses', 'Ditolak', 'Diterima'])->nullable();
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
         });
     }

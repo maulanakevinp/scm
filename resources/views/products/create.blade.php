@@ -42,7 +42,7 @@ Tambah Produk
                         <div class="row">
                             <div class="col-lg-6">
                                 <label class="form-control-label" for="input-avatar">Foto Produk</label><br>
-                                <a href="#" title="Tambah Foto Produk">
+                                <a href="#" title="Upload Foto Produk">
                                     <img id="img-avatar" src="{{ asset('/img/plus-img.png') }}" alt="{{ asset('/img/plus-img.png') }}" class="rounded-circle border" style="max-height: 150px; max-width: 200px;">
                                 </a>
                             </div>
@@ -195,6 +195,12 @@ Tambah Produk
     <script>
         const imgAvatar = document.getElementById("img-avatar");
         const inputAvatar = document.getElementById("input-avatar");
+        imgAvatar.onmouseenter = function(){
+            this.style.opacity = "0.5";
+        }
+        imgAvatar.onmouseleave = function(){
+            this.style.opacity = "1";
+        }
         imgAvatar.onclick = function () {
             inputAvatar.click();
         };

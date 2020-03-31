@@ -27,7 +27,12 @@
 @section('content')
     @if ($order->keterangan == 'Belum diproses')
         <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}.</strong>
+            @if ($order->bukti_transfer == 'public/noimage-produk.jpg')
+                <strong>Silahkan upload bukti transfer</strong>
+            @else
+                Harap tunggu konfirmasi dari kami
+            @endif
         </div>
     @elseif($order->keterangan == 'Sedang dalam proses')
         <div class="alert alert-warning" role="alert">
