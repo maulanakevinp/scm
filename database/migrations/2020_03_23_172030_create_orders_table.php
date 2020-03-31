@@ -18,11 +18,11 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->double('permintaan');
-            $table->double('persediaan');
-            $table->double('produksi');
+            $table->double('persediaan')->nullable();
+            $table->double('produksi')->nullable();
             $table->text('bukti_transfer')->nullable();
             $table->text('alasan_penolakan')->nullable();
-            $table->enum('keterangan',['Belum diproses', 'Sedang dalam proses', 'Ditolak', 'Diterima'])->nullable();
+            $table->enum('keterangan',['Belum diproses', 'Sedang dalam proses', 'Sedang dalam pengiriman', 'Ditolak', 'Diterima'])->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

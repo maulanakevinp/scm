@@ -64,11 +64,9 @@ class OrderController extends Controller
         ]);
 
         $data['user_id'] = auth()->user()->id;
-        $data['produksi'] = $this->produksi($request, $product);
         $data['keterangan'] = 'Belum diproses';
         $data['bukti_transfer'] = 'public/noimage-produk.jpg';
         $data['product_id'] = $product->id;
-        $data['persediaan'] = $product->persediaan;
 
         $order = Order::create($data);
         return redirect(route('order.show',$order))->with('success','Pesanan berhasil terkirim');
@@ -159,10 +157,10 @@ class OrderController extends Controller
         return view('orders.belanja', compact('products'));
     }
 
-    public function produksi($request, $product)
+    public function produksi($permintaan, $product)
     {
-        $permintaanTurun = ($product->permintaan_max - $request->permintaan) / ($product->permintaan_max - $product->permintaan_min);
-        $permintaanNaik = ($request->permintaan - $product->permintaan_min) / ($product->permintaan_max - $product->permintaan_min);
+        $permintaanTurun = ($product->permintaan_max - $permintaan) / ($product->permintaan_max - $product->permintaan_min);
+        $permintaanNaik = ($permintaan - $product->permintaan_min) / ($product->permintaan_max - $product->permintaan_min);
 
         $persediaanSedikit = ($product->persediaan_max - $product->persediaan) / ($product->persediaan_max - $product->persediaan_min);
         $persediaanBanyak = ($product->persediaan - $product->persediaan_min) / ($product->persediaan_max - $product->persediaan_min);
@@ -201,6 +199,24 @@ class OrderController extends Controller
 
     public function verification(Request $request, Order $order)
     {
-        return 'Sabar masih dalam proses pengembangan';
+        $product = Product::findOrFail($order->product_id);
+        if ($request->verifikasi == -1) {
+            $request->validate([
+                'alasan_penolakan' => ['required', 'string']
+            ]);
+            $order->alasan_penolakan = $request->alasan_penolakan;
+            $order->keterangan = "Ditolak";
+        } else {
+            $order->keterangan = "Sedang dalam proses";
+            $order->produksi = $this->produksi($order->permintaan, $order->product);
+            $order->persediaan = $product->persediaan;
+        }
+
+        $product->persediaan = ($product->persediaan - $order->persediaan);
+        $product->produksi = ($product->produksi + $order->produksi);
+
+        $order->save();
+
+        return redirect(route('product.show',$order->product))->with('success', 'Pesanan berhasil di verifikasi');
     }
 }

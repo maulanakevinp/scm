@@ -224,11 +224,16 @@ Detail Produk {{ $product->nama }}
         </li>
         <li class="nav-item">
             <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">
-                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan sedang diantar
+                <i class="ni ni-atom mr-2"></i>Pesanan dalam proses
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">
+                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">
                 <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai
             </a>
         </li>
@@ -334,6 +339,54 @@ Detail Produk {{ $product->nama }}
                 </div>
             </div>
             <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                <div class="table-responsive">
+                    <table class="table align-items-center table-dark table-flush">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Email Pemesan</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Tanggal Pesan</th>
+                                <th scope="col">Tanggal Disetujui</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!$product->orders->where('keterangan','Sedang dalam pengiriman')->count())
+                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                            @else
+                                @foreach ($product->orders->where('keterangan','Sedang dalam pengiriman') as $order)
+                                    <tr>
+                                        <th scope="row">
+                                            {{ $order->id }}
+                                        </th>
+                                        <td>
+                                            {{ $order->user->email }}
+                                        </td>
+                                        <td>
+                                            {{ $order->permintaan }}
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                        </td>
+                                        <td>
+                                            @if ($order->keterangan == "Diterima")
+                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
                 <div class="table-responsive">
                     <table class="table align-items-center table-dark table-flush">
                         <thead class="thead-dark">

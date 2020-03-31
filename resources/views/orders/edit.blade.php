@@ -86,6 +86,7 @@
                         <hr class="my-4" />
                         <div class="row">
                             <div class="col-4">
+                                <input type="hidden" name="verifikasi" value="1">
                                 <button type="submit" class="btn btn-success btn-block">Terima</button>
                             </div>
                             <div class="col-4">
@@ -126,30 +127,36 @@
             <div class="modal-content bg-gradient-danger">
 
                 <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-delete">Batal Memesan?</h6>
+                    <h6 class="modal-title" id="modal-title-delete">Tolak Pesanan?</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
 
-                <div class="modal-body">
+                <form action="{{ route('order.verification',$order) }}" method="POST" >
+                    @csrf @method('patch')
+                    <div class="modal-body">
 
-                    <div class="py-3 text-center">
-                        <i class="ni ni-bell-55 ni-3x"></i>
-                        <h4 class="heading mt-4">Perhatian!!</h4>
-                        <p><strong>Apakah Anda yakin batal memesan {{ $order->product->nama }} ???</strong></p>
+                        <div class="py-3 text-center">
+                            <div class="form-group">
+                                <label for="alasan">Alasan Penolakan</label>
+                                <textarea name="alasan_penolakan" id="alasan" rows="2" class="form-control @error('alasan_penolakan') is-invalid @enderror">{{ old("alasan_penolakan") }}</textarea>
+                                @error('alasan_penolakan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
-
-                <div class="modal-footer">
-                    <form action="{{ route('order.destroy',$order) }}" method="POST" >
-                        @csrf @method('delete')
+                    <div class="modal-footer">
+                        <input type="hidden" name="verifikasi" value="-1">
                         <button type="submit" class="btn btn-white">Yakin</button>
-                    </form>
-                    <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Tidak</button>
-                </div>
-
+                        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Tidak</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
