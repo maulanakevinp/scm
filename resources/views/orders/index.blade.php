@@ -69,7 +69,7 @@ Pesanan Saya
                 <table class="table align-items-center table-dark table-flush">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">No. Pesanan</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Harga</th>
                             <th scope="col">Jumlah</th>

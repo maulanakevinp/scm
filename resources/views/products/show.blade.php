@@ -242,7 +242,7 @@ Detail Produk {{ $product->nama }}
                     <table class="table align-items-center table-dark table-flush">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Email Pemesan</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Tanggal Pesan</th>
@@ -276,7 +276,7 @@ Detail Produk {{ $product->nama }}
                                             @endif
                                         </td>
                                         <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -290,7 +290,7 @@ Detail Produk {{ $product->nama }}
                     <table class="table align-items-center table-dark table-flush">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Email Pemesan</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Tanggal Pesan</th>
@@ -324,7 +324,7 @@ Detail Produk {{ $product->nama }}
                                             @endif
                                         </td>
                                         <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -338,7 +338,7 @@ Detail Produk {{ $product->nama }}
                     <table class="table align-items-center table-dark table-flush">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">No. Pesanan</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Email Pemesan</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Tanggal Pesan</th>
@@ -372,7 +372,7 @@ Detail Produk {{ $product->nama }}
                                             @endif
                                         </td>
                                         <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
