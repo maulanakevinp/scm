@@ -187,9 +187,9 @@ class ProductController extends Controller
         $product->save();
     }
 
-    public function getUpdatedAt($id)
+    public function getUpdatedAt(Request $request)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($request->id);
         if ($product->updated_at == $product->created_at) {
             echo 'Diperbarui : -';
         } else {
@@ -197,9 +197,9 @@ class ProductController extends Controller
         }
     }
 
-    public function getCreatedAt($id)
+    public function getCreatedAt(Request $request)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($request->id);
         echo 'Ditambahkan : '. Carbon::parse($product->created_at)->diffForHumans();
     }
 }

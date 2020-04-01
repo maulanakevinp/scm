@@ -26,23 +26,23 @@ Route::get('/kebijakan-privasi', 'HomeController@kebijakanPrivasi')->name('kebij
 Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/pengaturan', 'UsersController@pengaturan')->name('pengaturan');
-    Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
     Route::get('/profil', 'UsersController@profil')->name('profil');
-    Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
     Route::post('/update-avatar/{id}', 'UsersController@updateAvatar')->name('update-avatar');
-    Route::get('/users/get-updated-at/{id}', 'UsersController@getUpdatedAt');
-    Route::get('/users/get-created-at/{id}', 'UsersController@getCreatedAt');
+    Route::post('/users/get-updated-at', 'UsersController@getUpdatedAt');
+    Route::post('/users/get-created-at', 'UsersController@getCreatedAt');
+    Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
+    Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
 
     Route::group(['middleware' => ['can:isPemilik']], function () {
         Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
     });
     Route::group(['middleware' => ['can:isProdusen']], function () {
-        Route::get('/product/get-updated-at/{id}', 'ProductController@getUpdatedAt');
-        Route::get('/product/get-created-at/{id}', 'ProductController@getCreatedAt');
         Route::get('/product/cari', 'ProductController@cari')->name('product.cari');
         Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
-        Route::patch('/product/order/{order}', 'OrderController@verification')->name('order.verification');
+        Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');
+        Route::post('/product/get-created-at', 'ProductController@getCreatedAt');
         Route::post('/product/update-foto/{id}', 'ProductController@updateFoto')->name('product.update-foto');
+        Route::patch('/product/order/{order}', 'OrderController@verification')->name('order.verification');
         Route::resource('/product', 'ProductController');
     });
     Route::group(['middleware' => ['can:isDistributor']], function () {

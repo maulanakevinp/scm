@@ -193,6 +193,10 @@ Profil Pengguna
             const baseUrl = $('meta[name="base-url"]').attr('content');
             const id = $('meta[name="auth-id"]').attr('content');
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            const data = {
+                id: id,
+                _token: csrfToken,
+            };
             inputAvatar.onchange = function () {
                 if (this.files && this.files[0]) {
                     const avatar = inputAvatar.files[0];
@@ -226,8 +230,12 @@ Profil Pengguna
             };
             setInterval(function(){
                 if (navigator.onLine) {
-                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow")
-                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow")
+                    $.post(baseUrl + '/users/get-updated-at', data, function(hasil){
+                        document.getElementById('updated-at').innerHTML = hasil;
+                    });
+                    $.post(baseUrl + '/users/get-created-at', data, function(hasil){
+                        document.getElementById('created-at').innerHTML = hasil;
+                    });
                 } else {
                     alert('Harap periksa koneksi internet anda');
                 }

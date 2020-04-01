@@ -512,11 +512,19 @@ Detail Produk {{ $product->nama }}
 
             const id = $('meta[name="product-id"]').attr('content');
             const baseUrl = $('meta[name="base-url"]').attr('content');
-
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            const data = {
+                id: id,
+                _token: csrfToken,
+            };
             setInterval(function(){
                 if (navigator.onLine) {
-                    $('#updated-at').load(baseUrl + '/product/get-updated-at/' +id ).fadeIn("slow");
-                    $('#created-at').load(baseUrl + '/product/get-created-at/' +id ).fadeIn("slow");
+                    $.post(baseUrl + '/product/get-updated-at', data, function(hasil){
+                        document.getElementById('updated-at').innerHTML = hasil;
+                    });
+                    $.post(baseUrl + '/product/get-created-at', data, function(hasil){
+                        document.getElementById('created-at').innerHTML = hasil;
+                    });
                 } else {
                     alert('Harap periksa koneksi internet anda');
                 }

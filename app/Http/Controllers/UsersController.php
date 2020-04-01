@@ -240,9 +240,9 @@ class UsersController extends Controller
         $user->save();
     }
 
-    public function getUpdatedAt($id)
+    public function getUpdatedAt(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($request->id);
         if ($user->updated_at == $user->created_at) {
             echo 'Diperbarui : -';
         } else {
@@ -250,9 +250,9 @@ class UsersController extends Controller
         }
     }
 
-    public function getCreatedAt($id)
+    public function getCreatedAt(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($request->id);
         echo 'Bergabung : '. Carbon::parse($user->created_at)->diffForHumans();
     }
 }

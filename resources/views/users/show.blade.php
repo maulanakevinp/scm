@@ -211,12 +211,21 @@ Detail Pengguna
                 if(e.key === "Escape") modal.style.display = "none";
             });
 
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
             const id = $('meta[name="user-id"]').attr('content');
             const baseUrl = $('meta[name="base-url"]').attr('content');
+            const data = {
+                id: id,
+                _token: csrfToken,
+            };
             setInterval(function(){
                 if (navigator.onLine) {
-                    $('#updated-at').load(baseUrl + '/users/get-updated-at/' +id ).fadeIn("slow");
-                    $('#created-at').load(baseUrl + '/users/get-created-at/' +id ).fadeIn("slow");
+                    $.post(baseUrl + '/users/get-updated-at', data, function(hasil){
+                        document.getElementById('updated-at').innerHTML = hasil;
+                    });
+                    $.post(baseUrl + '/users/get-created-at', data, function(hasil){
+                        document.getElementById('created-at').innerHTML = hasil;
+                    });
                 } else {
                     alert('Harap periksa koneksi internet anda');
                 }
