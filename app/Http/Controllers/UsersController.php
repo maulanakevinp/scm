@@ -17,25 +17,18 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(5);
-        $totalUser = User::all()->count();
-        $distributor = 'Distributor';
-        $totalDistributor = User::whereHas('role', function($q) use($distributor){
-            $q->where('peran',$distributor);
-        })->count();
-        return view('users.index',compact('users','totalUser','totalDistributor'));
-    }
-
-    public function cari(Request $request)
-    {
-        $users = User::orWhereHas('role', function($q) use ($request){
-                $q->where('peran','like','%'.$request->cari.'%');
-            })->orWhere('nama','like','%'.$request->cari.'%')
-                ->orWhere('email','like','%'.$request->cari.'%')
-                ->orWhere('nomor_hp','like','%'.$request->cari.'%')
+        if ($request->q) {
+            $users = User::orWhereHas('role', function($q) use ($request){
+                    $q->where('peran','like','%'.$request->q.'%');
+                })->orWhere('nama','like','%'.$request->q.'%')
+                ->orWhere('email','like','%'.$request->q.'%')
+                ->orWhere('nomor_hp','like','%'.$request->q.'%')
                 ->paginate(5);
+        } else {
+            $users = User::paginate(5);
+        }
         $totalUser = User::all()->count();
         $distributor = 'Distributor';
         $totalDistributor = User::whereHas('role', function($q) use($distributor){

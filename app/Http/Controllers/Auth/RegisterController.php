@@ -69,6 +69,7 @@ class RegisterController extends Controller
             'peran'     => 3,
             'nama'      => $data['nama'],
             'email'     => $data['email'],
+            'avatar'    => 'noimage.jpg',
             'password'  => Hash::make($data['password']),
         ]);
     }

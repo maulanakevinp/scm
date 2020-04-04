@@ -63,7 +63,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::resource('/order', 'OrderController')->except(['create','store','edit'])->middleware('verified');
     });
     Route::group(['middleware' => ['can:isSuperadmin']], function () {
-        Route::get('/users/cari', 'UsersController@cari')->name('users.cari');
+        Route::get('/users/cari', 'UsersController@index')->name('users.cari');
         Route::resource('users', 'UsersController');
     });
 });
