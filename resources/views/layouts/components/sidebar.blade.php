@@ -24,7 +24,7 @@
                     <i class="ni ni-single-02"></i>
                     <span>Profil Saya</span>
                 </a>
-                <a href="{{ url('') }}"  class="dropdown-item">
+                <a href="{{ route('pengaturan') }}"  class="dropdown-item">
                     <i class="ni ni-settings-gear-65"></i>
                     <span>Pengaturan</span>
                 </a>
