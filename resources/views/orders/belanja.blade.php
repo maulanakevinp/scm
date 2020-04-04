@@ -11,7 +11,7 @@
 @section('form-search-mobile')
 <form form action="{{ route('belanja.cari') }}" method="GET" class="mt-4 mb-3 d-md-none">
     <div class="input-group input-group-rounded input-group-merge">
-        <input name="cari" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('cari') }}>
+        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
         <div class="input-group-prepend">
             <div class="input-group-text">
                 <span class="fa fa-search"></span>
@@ -28,7 +28,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                 </div>
-                <input name="cari" class="form-control" placeholder="Cari ..." type="text" value="{{ request('cari') }}">
+                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
             </div>
         </div>
     </form>

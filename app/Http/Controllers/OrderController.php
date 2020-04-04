@@ -16,28 +16,23 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::paginate(5);
-        return view('orders.index', compact('orders'));
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function cariPesanan(Request $request)
-    {
-        $orders = Order::orWhere('id','like','%'.$request->cari.'%')
+        if ($request->q) {
+            $orders = Order::orWhere('id','like','%'.$request->q.'%')
                         ->orWhereHas('product',function ($q) use ($request){
-                            $q->where('nama','like','%'.$request->cari.'%');
+                            $q->where('nama','like','%'.$request->q.'%');
                         })
                         ->orWhereHas('product',function ($q) use ($request){
-                            $q->where('harga','like','%'.$request->cari.'%');
+                            $q->where('harga','like','%'.$request->q.'%');
                         })
-                        ->orWhere('permintaan','like','%'.$request->cari.'%')
-                        ->orWhere('keterangan','like','%'.$request->cari.'%')
+                        ->orWhere('permintaan','like','%'.$request->q.'%')
+                        ->orWhere('keterangan','like','%'.$request->q.'%')
                         ->paginate(5);
+        } else {
+            $orders = Order::paginate(5);
+        }
+
         return view('orders.index', compact('orders'));
     }
 
@@ -138,26 +133,34 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function belanja()
+    public function belanja(Request $request)
     {
-        $products = Product::where('persediaan','!=',null)
-                            ->where('foto','!=','public/noimage-produk.jpg')
-                            ->where('persediaan_min','!=',null)
-                            ->where('persediaan_max','!=',null)
-                            ->where('permintaan_min','!=',null)
-                            ->where('permintaan_min','!=',null)
-                            ->where('produksi_max','!=',null)
-                            ->where('produksi_max','!=',null)
-                            ->paginate(6);
-        return view('orders.belanja', compact('products'));
-    }
+        if ($request->q) {
+            $products = Product::where('persediaan','!=',null)
+                                ->where('foto','!=','public/noimage-produk.jpg')
+                                ->where('persediaan_min','!=',null)
+                                ->where('persediaan_max','!=',null)
+                                ->where('permintaan_min','!=',null)
+                                ->where('permintaan_min','!=',null)
+                                ->where('produksi_max','!=',null)
+                                ->where('produksi_max','!=',null)
+                                ->where('nama','like','%'.$request->q.'%')
+                                ->orWhere('satuan','like','%'.$request->q.'%')
+                                ->orWhere('harga','like','%'.$request->q.'%')
+                                ->orWhere('persediaan','like','%'.$request->q.'%')
+                                ->paginate(6);
+        } else {
+            $products = Product::where('persediaan','!=',null)
+                                ->where('foto','!=','public/noimage-produk.jpg')
+                                ->where('persediaan_min','!=',null)
+                                ->where('persediaan_max','!=',null)
+                                ->where('permintaan_min','!=',null)
+                                ->where('permintaan_min','!=',null)
+                                ->where('produksi_max','!=',null)
+                                ->where('produksi_max','!=',null)
+                                ->paginate(6);
+        }
 
-    public function cari(Request $request)
-    {
-        $products = Product::where('nama','like','%'.$request->cari.'%')
-                            ->orWhere('harga','like','%'.$request->cari.'%')
-                            ->orWhere('persediaan','like','%'.$request->cari.'%')
-                            ->paginate(6);
         return view('orders.belanja', compact('products'));
     }
 

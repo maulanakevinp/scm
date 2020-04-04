@@ -54,10 +54,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::resource('/product', 'ProductController');
     });
     Route::group(['middleware' => ['can:isDistributor']], function () {
-        Route::get('/belanja/cari', 'OrderController@cari')->name('belanja.cari');
+        Route::get('/belanja/cari', 'OrderController@belanja')->name('belanja.cari');
         Route::get('/belanja', 'OrderController@belanja')->name('belanja');
         Route::get('/belanja/pesan/{product}', 'OrderController@create')->name('pesan');
-        Route::get('/order/cari', 'OrderController@cariPesanan')->name('order.cari');
+        Route::get('/order/cari', 'OrderController@index')->name('order.cari');
         Route::post('/order/update-bukti-transfer/{id}', 'OrderController@updateBuktiTransfer')->name('order.update-bukti-transfer')->middleware('verified');
         Route::post('/order/store/{product}', 'OrderController@store')->name('order.store')->middleware('verified');
         Route::resource('/order', 'OrderController')->except(['create','store','edit'])->middleware('verified');
