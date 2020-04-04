@@ -10,6 +10,102 @@ Detail Produk {{ $product->nama }}
 
 @endsection
 
+@section('form-search-mobile')
+@if (Request::segment(3) == 'pesanan-masuk')
+<form form action="{{ route('product.cari-pesanan-masuk',$product) }}" method="GET" class="mt-4 mb-3 d-md-none">
+    <div class="input-group input-group-rounded input-group-merge">
+        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <span class="fa fa-search"></span>
+            </div>
+        </div>
+    </div>
+</form>
+@elseif (Request::segment(3) == 'pesanan-dalam-proses')
+<form form action="{{ route('product.cari-pesanan-dalam-proses',$product) }}" method="GET" class="mt-4 mb-3 d-md-none">
+    <div class="input-group input-group-rounded input-group-merge">
+        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <span class="fa fa-search"></span>
+            </div>
+        </div>
+    </div>
+</form>
+@elseif (Request::segment(3) == 'pesanan-dalam-pengiriman')
+<form form action="{{ route('product.cari-pesanan-dalam-pengiriman',$product) }}" method="GET" class="mt-4 mb-3 d-md-none">
+    <div class="input-group input-group-rounded input-group-merge">
+        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <span class="fa fa-search"></span>
+            </div>
+        </div>
+    </div>
+</form>
+@elseif (Request::segment(3) == 'pesanan-selesai')
+<form form action="{{ route('product.cari-pesanan-selesai',$product) }}" method="GET" class="mt-4 mb-3 d-md-none">
+    <div class="input-group input-group-rounded input-group-merge">
+        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <span class="fa fa-search"></span>
+            </div>
+        </div>
+    </div>
+</form>
+@endif
+@endsection
+
+@section('form-search')
+@if (Request::segment(3) == 'pesanan-masuk')
+    <form action="{{ route('product.cari-pesanan-masuk',$product) }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div class="form-group mb-0">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
+            </div>
+        </div>
+    </form>
+@elseif (Request::segment(3) == 'pesanan-dalam-proses')
+    <form action="{{ route('product.cari-pesanan-dalam-proses',$product) }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div class="form-group mb-0">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
+            </div>
+        </div>
+    </form>
+@elseif (Request::segment(3) == 'pesanan-dalam-pengiriman')
+    <form action="{{ route('product.cari-pesanan-dalam-pengiriman',$product) }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div class="form-group mb-0">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
+            </div>
+        </div>
+    </form>
+@elseif (Request::segment(3) == 'pesanan-selesai')
+    <form action="{{ route('product.cari-pesanan-selesai',$product) }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div class="form-group mb-0">
+            <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
+            </div>
+        </div>
+    </form>
+@endif
+@endsection
+
 @section('content-header')
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
@@ -218,225 +314,279 @@ Detail Produk {{ $product->nama }}
 <div class="nav-wrapper pt-2">
     <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
         <li class="nav-item">
-            <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">
+            <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-masuk') active @endif" href="{{ route('product.pesanan-masuk',$product) }}">
                 <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">
+            <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-proses') active @endif" href="{{ route('product.pesanan-dalam-proses',$product) }}">
                 <i class="ni ni-atom mr-2"></i>Pesanan dalam proses <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam proses')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">
+            <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-pengiriman') active @endif" href="{{ route('product.pesanan-dalam-pengiriman',$product) }}">
                 <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam pengiriman')->count() }}</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">
+            <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-selesai') active @endif" href="{{ route('product.pesanan-selesai',$product) }}">
                 <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Diterima')->count() }}</span>
             </a>
         </li>
     </ul>
 </div>
-<div class="card bg-default shadow h-100 ">
-    <div class="card-body p-0">
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
-                <div class="table-responsive">
-                    <table class="table align-items-center table-dark table-flush">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Email Pemesan</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Tanggal Pesan</th>
-                                <th scope="col">Tanggal Disetujui</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!$product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count())
-                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
-                            @else
-                                @foreach ($product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg') as $order)
-                                    <tr>
-                                        <th scope="row">
-                                            {{ $order->id }}
-                                        </th>
-                                        <td>
-                                            {{ $order->user->email }}
-                                        </td>
-                                        <td>
-                                            {{ $order->permintaan }}
-                                        </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
-                                        </td>
-                                        <td>
-                                            @if ($order->keterangan == "Diterima")
-                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
-                <div class="table-responsive">
-                    <table class="table align-items-center table-dark table-flush">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Email Pemesan</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Tanggal Pesan</th>
-                                <th scope="col">Tanggal Disetujui</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!$product->orders->where('keterangan','Sedang dalam proses')->count())
-                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
-                            @else
-                                @foreach ($product->orders->where('keterangan','Sedang dalam proses') as $order)
-                                    <tr>
-                                        <th scope="row">
-                                            {{ $order->id }}
-                                        </th>
-                                        <td>
-                                            {{ $order->user->email }}
-                                        </td>
-                                        <td>
-                                            {{ $order->permintaan }}
-                                        </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
-                                        </td>
-                                        <td>
-                                            @if ($order->keterangan == "Diterima")
-                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
-                <div class="table-responsive">
-                    <table class="table align-items-center table-dark table-flush">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Email Pemesan</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Tanggal Pesan</th>
-                                <th scope="col">Tanggal Disetujui</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!$product->orders->where('keterangan','Sedang dalam pengiriman')->count())
-                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
-                            @else
-                                @foreach ($product->orders->where('keterangan','Sedang dalam pengiriman') as $order)
-                                    <tr>
-                                        <th scope="row">
-                                            {{ $order->id }}
-                                        </th>
-                                        <td>
-                                            {{ $order->user->email }}
-                                        </td>
-                                        <td>
-                                            {{ $order->permintaan }}
-                                        </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
-                                        </td>
-                                        <td>
-                                            @if ($order->keterangan == "Diterima")
-                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
-                <div class="table-responsive">
-                    <table class="table align-items-center table-dark table-flush">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Email Pemesan</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Tanggal Pesan</th>
-                                <th scope="col">Tanggal Disetujui</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!$product->orders->where('keterangan','Diterima')->count())
-                                <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
-                            @else
-                                @foreach ($product->orders->where('keterangan','Diterima') as $order)
-                                    <tr>
-                                        <th scope="row">
-                                            {{ $order->id }}
-                                        </th>
-                                        <td>
-                                            {{ $order->user->email }}
-                                        </td>
-                                        <td>
-                                            {{ $order->permintaan }}
-                                        </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
-                                        </td>
-                                        <td>
-                                            @if ($order->keterangan == "Diterima")
-                                                {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+
+@if (Request::segment(3) == 'pesanan-masuk')
+    <div class="card bg-default shadow" id="pesanan" tabindex="-1">
+        <div class="card-header bg-transparent border-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0 text-white">Pesanan Masuk</h3>
                 </div>
             </div>
         </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email Pemesan</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal Pesan</th>
+                        <th scope="col">Tanggal Disetujui</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$pesananMasuk->count())
+                        <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                    @else
+                        @foreach ($pesananMasuk as $order)
+                            <tr>
+                                <th scope="row">
+                                    {{ $order->id }}
+                                </th>
+                                <td>
+                                    {{ $order->user->email }}
+                                </td>
+                                <td>
+                                    {{ $order->permintaan }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                </td>
+                                <td>
+                                    @if ($order->keterangan == "Diterima")
+                                        {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-transparent border-0 py-4">
+            <nav aria-label="...">
+                {{ $pesananMasuk->links() }}
+            </nav>
+        </div>
     </div>
-</div>
+@endif
+
+@if (Request::segment(3) == 'pesanan-dalam-proses')
+    <div class="card bg-default shadow" id="pesanan" tabindex="-1">
+        <div class="card-header bg-transparent border-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0 text-white">Pesanan Dalam Proses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email Pemesan</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal Pesan</th>
+                        <th scope="col">Tanggal Disetujui</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$pesananProses->count())
+                        <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                    @else
+                        @foreach ($pesananProses as $order)
+                            <tr>
+                                <th scope="row">
+                                    {{ $order->id }}
+                                </th>
+                                <td>
+                                    {{ $order->user->email }}
+                                </td>
+                                <td>
+                                    {{ $order->permintaan }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                </td>
+                                <td>
+                                    @if ($order->keterangan == "Diterima")
+                                        {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-transparent border-0 py-4">
+            <nav aria-label="...">
+                {{ $pesananProses->links() }}
+            </nav>
+        </div>
+    </div>
+@endif
+
+@if (Request::segment(3) == 'pesanan-dalam-pengiriman')
+    <div class="card bg-default shadow" id="pesanan" tabindex="-1">
+        <div class="card-header bg-transparent border-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0 text-white">Pesanan Dalam Pengiriman</h3>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email Pemesan</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal Pesan</th>
+                        <th scope="col">Tanggal Disetujui</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$pesananKirim->count())
+                        <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                    @else
+                        @foreach ($pesananKirim as $order)
+                            <tr>
+                                <th scope="row">
+                                    {{ $order->id }}
+                                </th>
+                                <td>
+                                    {{ $order->user->email }}
+                                </td>
+                                <td>
+                                    {{ $order->permintaan }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                </td>
+                                <td>
+                                    @if ($order->keterangan == "Diterima")
+                                        {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-transparent border-0 py-4">
+            <nav aria-label="...">
+                {{ $pesananKirim->links() }}
+            </nav>
+        </div>
+    </div>
+@endif
+
+@if (Request::segment(3) == 'pesanan-selesai')
+    <div class="card bg-default shadow" id="pesanan" tabindex="-1">
+        <div class="card-header bg-transparent border-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0 text-white">Pesanan Selesai</h3>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email Pemesan</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal Pesan</th>
+                        <th scope="col">Tanggal Disetujui</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$pesananSelesai->count())
+                        <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
+                    @else
+                        @foreach ($pesananSelesai as $order)
+                            <tr>
+                                <th scope="row">
+                                    {{ $order->id }}
+                                </th>
+                                <td>
+                                    {{ $order->user->email }}
+                                </td>
+                                <td>
+                                    {{ $order->permintaan }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                                </td>
+                                <td>
+                                    @if ($order->keterangan == "Diterima")
+                                        {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-info btn-sm" href="{{ route('order.edit',$order) }}" title="Detail"><i class="fas fa-fw fa-eye text-default"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-transparent border-0 py-4">
+            <nav aria-label="...">
+                {{ $pesananSelesai->links() }}
+            </nav>
+        </div>
+    </div>
+@endif
 
 <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
     <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
@@ -487,6 +637,7 @@ Detail Produk {{ $product->nama }}
 @push('scripts')
     <script>
         $(document).ready(function(){
+            $("#pesanan").focus();
             // Get the modal
             const modal = document.getElementById("foto-profil");
 

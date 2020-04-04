@@ -37,6 +37,14 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
     });
     Route::group(['middleware' => ['can:isProdusen']], function () {
+        Route::get('/product/{product}/pesanan-masuk', 'ProductController@show')->name('product.pesanan-masuk');
+        Route::get('/product/{product}/pesanan-masuk/cari', 'ProductController@show')->name('product.cari-pesanan-masuk');
+        Route::get('/product/{product}/pesanan-dalam-proses', 'ProductController@show')->name('product.pesanan-dalam-proses');
+        Route::get('/product/{product}/pesanan-dalam-proses/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-proses');
+        Route::get('/product/{product}/pesanan-dalam-pengiriman', 'ProductController@show')->name('product.pesanan-dalam-pengiriman');
+        Route::get('/product/{product}/pesanan-dalam-pengiriman/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-pengiriman');
+        Route::get('/product/{product}/pesanan-selesai', 'ProductController@show')->name('product.pesanan-selesai');
+        Route::get('/product/{product}/pesanan-selesai/cari', 'ProductController@show')->name('product.cari-pesanan-selesai');
         Route::get('/product/cari', 'ProductController@cari')->name('product.cari');
         Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
         Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');

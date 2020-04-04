@@ -83,9 +83,20 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request,Product $product)
     {
-        return view('products.show', compact('product'));
+        $pesananMasuk = Order::where('product_id',$product->id)->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->paginate(5);
+        $pesananProses = Order::where('product_id',$product->id)->where('keterangan','Sedang dalam proses')->paginate(5);
+        $pesananKirim = Order::where('product_id',$product->id)->where('keterangan','Sedang dalam pengantaran')->paginate(5);
+        $pesananSelesai = Order::where('product_id',$product->id)->where('keterangan','Diterima')->paginate(5);
+
+        if($request->q){
+            $pesananMasuk = Order::where('id','like',$request->q)->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->paginate(5);
+            $pesananProses = Order::where('id','like',$request->q)->where('keterangan','Sedang dalam proses')->paginate(5);
+            $pesananKirim = Order::where('id','like',$request->q)->where('keterangan','Sedang dalam pengantaran')->paginate(5);
+            $pesananSelesai = Order::where('id','like',$request->q)->where('keterangan','Diterima')->paginate(5);
+        }
+        return view('products.show', compact('product','pesananMasuk','pesananProses','pesananKirim','pesananSelesai'));
     }
 
     /**

@@ -97,7 +97,7 @@
                         <img id="img-bukti-transfer" class="mw-100" src="{{asset(Storage::url($order->bukti_transfer))}}" alt="{{asset(Storage::url($order->bukti_transfer))}}">
                     </a>
                     @if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak')
-                        <button title="klik untuk mengupload bukti transfer" id="btn-upload" class="btn btn-success btn-block mt-2">Upload</button>
+                        <button title="klik untuk mengupload bukti transfer" id="btn-upload" class="btn btn-success btn-block mt-2"><i class="ni ni-cloud-upload-96"></i> Upload</button>
                     @endif
                 </div>
             </div>
