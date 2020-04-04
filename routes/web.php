@@ -45,7 +45,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/product/{product}/pesanan-dalam-pengiriman/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-pengiriman');
         Route::get('/product/{product}/pesanan-selesai', 'ProductController@show')->name('product.pesanan-selesai');
         Route::get('/product/{product}/pesanan-selesai/cari', 'ProductController@show')->name('product.cari-pesanan-selesai');
-        Route::get('/product/cari', 'ProductController@cari')->name('product.cari');
+        Route::get('/product/cari', 'ProductController@index')->name('product.cari');
         Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
         Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');
         Route::post('/product/get-created-at', 'ProductController@getCreatedAt');
