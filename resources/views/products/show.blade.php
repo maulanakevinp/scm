@@ -376,7 +376,7 @@ Detail Produk {{ $product->nama }}
                                     {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                 </td>
                                 <td>
-                                    @if ($order->keterangan == "Diterima")
+                                    @if ($order->keterangan == "Sedang dalam proses")
                                         {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                     @else
                                         -
@@ -439,7 +439,7 @@ Detail Produk {{ $product->nama }}
                                     {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                 </td>
                                 <td>
-                                    @if ($order->keterangan == "Diterima")
+                                    @if ($order->keterangan == "Sedang dalam proses")
                                         {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                     @else
                                         -
@@ -502,7 +502,7 @@ Detail Produk {{ $product->nama }}
                                     {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                 </td>
                                 <td>
-                                    @if ($order->keterangan == "Diterima")
+                                    @if ($order->keterangan != "Belum diproses" || $order->keterangan != "Ditolak" )
                                         {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                     @else
                                         -
@@ -565,7 +565,7 @@ Detail Produk {{ $product->nama }}
                                     {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                 </td>
                                 <td>
-                                    @if ($order->keterangan == "Diterima")
+                                    @if ($order->keterangan == "Sedang dalam proses")
                                         {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                     @else
                                         -
