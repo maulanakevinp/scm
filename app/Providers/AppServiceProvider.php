@@ -56,5 +56,16 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
         });
+        Gate::define('isPemilikSuperadminProdusen', function ($user){
+            if ($user->role->peran == 'Pemilik') {
+                return true;
+            } elseif($user->role->peran == 'Superadmin') {
+                return true;
+            } elseif($user->role->peran == 'Produsen') {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 }

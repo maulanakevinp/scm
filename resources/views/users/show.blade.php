@@ -75,18 +75,20 @@ Detail Pengguna
                     <div class="col-8">
                         <h3 class="mb-0">Akun {{ $user->nama }}</h3>
                     </div>
-                    <div class="col-4 text-right">
-                        <div class="dropdown">
-                            <a class="btn btn-sm btn-icon-only" href="#" role="button" title="Option"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a class="dropdown-item" href="{{ route('users.edit',$user) }}"><i class="fas fa-fw fa-edit"></i>Ubah</a>
-                                <a class="dropdown-item" data-toggle="modal" href="#modal-delete"><i class="fas fa-fw fa-trash"></i>Hapus</a>
+                    @can('isSuperadmin')
+                        <div class="col-4 text-right">
+                            <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only" href="#" role="button" title="Option"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" href="{{ route('users.edit',$user) }}"><i class="fas fa-fw fa-edit"></i>Ubah</a>
+                                    <a class="dropdown-item" data-toggle="modal" href="#modal-delete"><i class="fas fa-fw fa-trash"></i>Hapus</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

@@ -1,37 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-Manajemen Produk
+Dashboard
 @endsection
 
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
-@endsection
-
-@section('form-search-mobile')
-<form form action="{{ route('product.cari') }}" method="GET" class="mt-4 mb-3 d-md-none">
-    <div class="input-group input-group-rounded input-group-merge">
-        <input name="q" type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Cari ..." aria-label="Search" {{ request('q') }}>
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-                <span class="fa fa-search"></span>
-            </div>
-        </div>
-    </div>
-</form>
-@endsection
-
-@section('form-search')
-    <form action="{{ route('product.cari') }}" method="GET" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-        <div class="form-group mb-0">
-            <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-search"></i></span>
-                </div>
-                <input name="q" class="form-control" placeholder="Cari ..." type="text" value="{{ request('q') }}">
-            </div>
-        </div>
-    </form>
 @endsection
 
 @section('content-header')
@@ -45,8 +19,8 @@ Manajemen Produk
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Produk</h5>
-                                    <span class="h2 font-weight-bold mb-0">{{ $totalProduk }}</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Produk Terjual</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $productTerjual }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -99,7 +73,7 @@ Manajemen Produk
                                     <th scope="row">
                                         <div class="media align-items-center">
                                             <a href="#" class="avatar rounded-circle">
-                                                <img class="img-foto" alt="{{ asset(Storage::url($product->foto)) }}" src="{{ asset(Storage::url($product->foto)) }}">
+                                                <img class="img-foto-product" alt="{{ asset(Storage::url($product->foto)) }}" src="{{ asset(Storage::url($product->foto)) }}">
                                             </a>
                                         </div>
                                     </th>
@@ -163,13 +137,98 @@ Manajemen Produk
     </div>
 </div>
 
+<div class="row mt-3">
+    <div class="col">
+        <div class="card bg-default shadow">
+            <div class="card-header bg-transparent border-0">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="mb-0 text-white">Daftar Pengguna</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-dark table-flush">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Foto</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Nomor Hp</th>
+                            <th scope="col">Peran</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <a href="#" class="avatar rounded-circle">
+                                            <img class="img-foto" alt="{{ asset(Storage::url($user->avatar)) }}" src="{{ asset(Storage::url($user->avatar)) }}">
+                                        </a>
+                                    </div>
+                                </th>
+                                <td>
+                                    <a href="{{ route("users.show",$user) }}">
+                                        {{ $user->email }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ $user->nama }}
+                                </td>
+                                <td>
+                                    @if ($user->nomor_hp)
+                                        {{ $user->nomor_hp }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $user->role->peran }}
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item" href="{{ route('users.show',$user) }}"><i class="fas fa-fw fa-eye"></i>Detail</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-transparent border-0 py-4">
+                <nav aria-label="...">
+                    {{ $users->links() }}
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- The Modal -->
 <div id="foto-profil" class="modal-full">
     <!-- The Close Button -->
     <span class="tutup">&times;</span>
     <!-- Modal Content (The Image) -->
     <div class="container">
-        <img class="image-zoom mw-100 img-center" id="img01">
+        <img class="image-zoom mw-100 img-center" id="img-profil">
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="foto-product" class="modal-full">
+    <!-- The Close Button -->
+    <span class="tutup">&times;</span>
+    <!-- Modal Content (The Image) -->
+    <div class="container">
+        <img class="image-zoom mw-100 img-center" id="img-product">
     </div>
 </div>
 @endsection
@@ -179,29 +238,26 @@ Manajemen Produk
         $(document).ready(function(){
             const baseUrl = $('meta[name="base-url"]').attr('content');
 
-            // Get the modal
-            const modal = document.getElementById("foto-profil");
+            $('.img-foto-product').on('click',function () {
+                $('#foto-product').css('display','block');
+                $('#img-product').attr('src', $(this).attr('src'));
+            });
 
-            // Get the image and insert it inside the modal - use its "alt" text as a caption
-            const img = document.querySelectorAll('.img-foto');
-            const modalImg = document.getElementById("img01");
-            for (let index = 0; index < img.length; index++) {
-                img[index].onclick = function(){
-                    modal.style.display = "block";
-                    modalImg.src = this.src;
-                };
-            }
+            $('.img-foto').on('click',function () {
+                $('#foto-profil').css('display','block');
+                $('#img-profil').attr('src', $(this).attr('src'));
+            });
 
-            // Get the <span> element that tutups the modal
-            const span = document.getElementsByClassName("tutup")[0];
-
-            // When the user clicks on <span> (x), tutup the modal
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
+            $('.tutup').on('click',function(){
+                $('#foto-product').css('display','none');
+                $('#foto-profil').css('display','none');
+            });
 
             document.addEventListener('keyup',(e) => {
-                if(e.key === "Escape") modal.style.display = "none";
+                if(e.key === "Escape") {
+                    $('#foto-produk').css('display','none');
+                    $('#foto-profil').css('display','none');
+                }
             });
 
         });

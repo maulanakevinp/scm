@@ -367,7 +367,9 @@ Detail Produk {{ $product->nama }}
                                     {{ $order->id }}
                                 </th>
                                 <td>
-                                    {{ $order->user->email }}
+                                    <a href="{{ route('users.show',$order->user_id) }}" target="_blank">
+                                        {{ $order->user->email }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $order->permintaan }}
@@ -430,7 +432,9 @@ Detail Produk {{ $product->nama }}
                                     {{ $order->id }}
                                 </th>
                                 <td>
-                                    {{ $order->user->email }}
+                                    <a href="{{ route('users.show',$order->user_id) }}" target="_blank">
+                                        {{ $order->user->email }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $order->permintaan }}
@@ -493,7 +497,9 @@ Detail Produk {{ $product->nama }}
                                     {{ $order->id }}
                                 </th>
                                 <td>
-                                    {{ $order->user->email }}
+                                    <a href="{{ route('users.show',$order->user_id) }}" target="_blank">
+                                        {{ $order->user->email }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $order->permintaan }}
@@ -556,7 +562,9 @@ Detail Produk {{ $product->nama }}
                                     {{ $order->id }}
                                 </th>
                                 <td>
-                                    {{ $order->user->email }}
+                                    <a href="{{ route('users.show',$order->user_id) }}" target="_blank">
+                                        {{ $order->user->email }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $order->permintaan }}

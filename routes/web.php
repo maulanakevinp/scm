@@ -50,9 +50,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
     });
 
+    Route::group(['middleware' => ['can:isPemilikSuperadminProdusen']], function () {
+        Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+    });
+
     Route::group(['middleware' => ['can:isPemilikSuperadmin']], function () {
         Route::get('/users/cari', 'UsersController@index')->name('users.cari');
-        Route::get('/users/{user}', 'UsersController@show')->name('users.show');
     });
 
     Route::group(['middleware' => ['can:isPemilik']], function () {
