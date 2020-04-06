@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +23,8 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        # code...
+        $products = Product::orderBy('id','desc')->paginate(5);
+        $totalProduk = Product::all()->count();
+        return view('dashboard', compact('products','totalProduk'));
     }
 }

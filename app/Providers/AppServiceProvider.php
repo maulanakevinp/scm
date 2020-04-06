@@ -38,5 +38,23 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('isSuperadmin', function($user){
             return $user->role->peran == 'Superadmin';
         });
+        Gate::define('isPemilikProdusen', function ($user){
+            if ($user->role->peran == 'Pemilik') {
+                return true;
+            } elseif($user->role->peran == 'Produsen') {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        Gate::define('isPemilikSuperadmin', function ($user){
+            if ($user->role->peran == 'Pemilik') {
+                return true;
+            } elseif($user->role->peran == 'Superadmin') {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 }

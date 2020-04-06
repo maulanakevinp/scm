@@ -28,9 +28,9 @@ class OrderController extends Controller
                         })
                         ->orWhere('permintaan','like','%'.$request->q.'%')
                         ->orWhere('keterangan','like','%'.$request->q.'%')
-                        ->paginate(5);
+                        ->orderBy('id','desc')->paginate(5);
         } else {
-            $orders = Order::paginate(5);
+            $orders = Order::orderBy('id','desc')->paginate(5);
         }
 
         return view('orders.index', compact('orders'));
@@ -98,9 +98,11 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $data = $request->validate([
-            'permintaan' => ['required', new Minimal($order->product->permintaan_min), new Maximal($order->product->permintaan_max)]
-        ]);
+        if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') {
+            $data = $request->validate([
+                'permintaan' => ['required', new Minimal($order->product->permintaan_min), new Maximal($order->product->permintaan_max)]
+            ]);
+        }
 
         if ($request->verifikasi == 1) {
             $data['keterangan'] = 'Diterima';
@@ -220,13 +222,13 @@ class OrderController extends Controller
             $order->produksi = $this->produksi($product->permintaan, $product);
             $product->persediaan = ($product->persediaan - $order->permintaan + $order->produksi);
             $product->produksi = ($product->produksi + $order->produksi);
-            $product->save();
         } elseif($request->verifikasi == 2) {
             $product->permintaan = ($product->permintaan - $order->permintaan);
             $product->produksi = ($product->produksi - $order->produksi);
             $order->keterangan = "Sedang dalam pengiriman";
         }
 
+        $product->save();
         $order->save();
 
         return redirect(route('product.show',$order->product))->with('success', 'Pesanan berhasil di verifikasi');

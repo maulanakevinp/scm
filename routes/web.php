@@ -27,16 +27,16 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/pengaturan', 'UsersController@pengaturan')->name('pengaturan');
     Route::get('/profil', 'UsersController@profil')->name('profil');
+
     Route::post('/update-avatar/{id}', 'UsersController@updateAvatar')->name('update-avatar');
     Route::post('/users/get-updated-at', 'UsersController@getUpdatedAt');
     Route::post('/users/get-created-at', 'UsersController@getCreatedAt');
+    Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');
+    Route::post('/product/get-created-at', 'ProductController@getCreatedAt');
     Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
     Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
 
-    Route::group(['middleware' => ['can:isPemilik']], function () {
-        Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
-    });
-    Route::group(['middleware' => ['can:isProdusen']], function () {
+    Route::group(['middleware' => ['can:isPemilikProdusen']], function () {
         Route::get('/product/{product}/pesanan-masuk', 'ProductController@show')->name('product.pesanan-masuk');
         Route::get('/product/{product}/pesanan-masuk/cari', 'ProductController@show')->name('product.cari-pesanan-masuk');
         Route::get('/product/{product}/pesanan-dalam-proses', 'ProductController@show')->name('product.pesanan-dalam-proses');
@@ -46,13 +46,27 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/product/{product}/pesanan-selesai', 'ProductController@show')->name('product.pesanan-selesai');
         Route::get('/product/{product}/pesanan-selesai/cari', 'ProductController@show')->name('product.cari-pesanan-selesai');
         Route::get('/product/cari', 'ProductController@index')->name('product.cari');
+        Route::get('/product/{product}', 'ProductController@show')->name('product.show');
         Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
+    });
+
+    Route::group(['middleware' => ['can:isPemilikSuperadmin']], function () {
+        Route::get('/users/cari', 'UsersController@index')->name('users.cari');
+        Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+    });
+
+    Route::group(['middleware' => ['can:isPemilik']], function () {
+        Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
+    });
+
+    Route::group(['middleware' => ['can:isProdusen']], function () {
         Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');
         Route::post('/product/get-created-at', 'ProductController@getCreatedAt');
         Route::post('/product/update-foto/{id}', 'ProductController@updateFoto')->name('product.update-foto');
         Route::patch('/product/order/{order}', 'OrderController@verification')->name('order.verification');
-        Route::resource('/product', 'ProductController');
+        Route::resource('/product', 'ProductController')->except('show');
     });
+
     Route::group(['middleware' => ['can:isDistributor']], function () {
         Route::get('/belanja/cari', 'OrderController@belanja')->name('belanja.cari');
         Route::get('/belanja', 'OrderController@belanja')->name('belanja');
@@ -62,9 +76,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::post('/order/store/{product}', 'OrderController@store')->name('order.store')->middleware('verified');
         Route::resource('/order', 'OrderController')->except(['create','store','edit'])->middleware('verified');
     });
+
     Route::group(['middleware' => ['can:isSuperadmin']], function () {
         Route::get('/users/cari', 'UsersController@index')->name('users.cari');
-        Route::resource('users', 'UsersController');
+        Route::resource('users', 'UsersController')->except('show');
     });
 });
 

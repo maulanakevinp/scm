@@ -62,11 +62,8 @@
         <ul class="navbar-nav">
             @can('isPemilik')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'dasboard')
-                        <a class="nav-link active" href="{{ route('dasboard') }}">
-                    @else
-                        <a class="nav-link" href="{{ route('dasboard') }}">
-                    @endif
+
+                    <a class="nav-link @if (Request::segment(1) == 'dashboard') active @endif" href="{{ route('dasboard') }}">
                         <i class="ni ni-planet text-blue"></i>
                         <span class="nav-link-inner--text">Dashboard</span>
                     </a>
@@ -74,11 +71,7 @@
             @endcan
             @can('isProdusen')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'product')
-                        <a class="nav-link active" href="{{ route('product.index') }}">
-                    @else
-                        <a class="nav-link" href="{{ route('product.index') }}">
-                    @endif
+                    <a class="nav-link @if (Request::segment(1) == 'product') active @endif" href="{{ route('product.index') }}">
                         <i class="ni ni-app text-blue"></i>
                         <span class="nav-link-inner--text">Manajemen Produk</span>
                     </a>
@@ -86,21 +79,13 @@
             @endcan
             @can('isDistributor')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'belanja')
-                        <a class="nav-link active" href="{{ route('belanja') }}">
-                    @else
-                        <a class="nav-link" href="{{ route('belanja') }}">
-                    @endif
+                    <a class="nav-link @if (Request::segment(1) == 'belanja') active @endif" href="{{ route('belanja') }}">
                         <i class="ni ni-basket text-primary"></i>
                         <span class="nav-link-inner--text">Belanja</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'order')
-                        <a class="nav-link active" href="{{ route('order.index') }}">
-                    @else
-                        <a class="nav-link" href="{{ route('order.index') }}">
-                    @endif
+                    <a class="nav-link @if (Request::segment(1) == 'order') active @endif" href="{{ route('order.index') }}">
                         <i class="fas fa-receipt text-green"></i>
                         <span class="nav-link-inner--text">Pesanan Saya</span>
                     </a>
@@ -108,31 +93,25 @@
             @endcan
             @can('isSuperadmin')
                 <li class="nav-item">
-                    @if (Request::segment(1) == 'users')
-                        <a class="nav-link active" href="{{ route('users.index') }}">
-                    @else
-                        <a class="nav-link" href="{{ route('users.index') }}">
-                    @endif
+                    <a class="nav-link @if (Request::segment(1) == 'users') active @endif" href="{{ route('users.index') }}">
                         <i class="fas fa-users text-blue"></i>
                         <span class="nav-link-inner--text">Manajemen Pengguna</span>
                     </a>
                 </li>
             @endcan
             <li class="nav-item">
-                @if (Request::segment(1) == 'profil')
-                    <a class="nav-link active" href="{{ route('profil') }}">
-                @else
-                    <a class="nav-link" href="{{ route('profil') }}">
-                @endif
-                    <i class="ni ni-single-02 text-yellow"></i> Profil Saya
+                <a class="nav-link @if (Request::segment(1) == 'profil') active @endif" href="{{ route('profil') }}">
+                    <i class="ni ni-single-02 text-yellow"></i>
+                    <span class="nav-link-inner--text">Profil Saya</span>
                 </a>
             </li>
         </ul>
         <hr class="my-3">
         <ul class="navbar-nav">
             <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="ni ni-user-run"></i> Keluar
+                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="ni ni-user-run"></i>
+                    <span class="nav-link-inner--text">Keluar</span>
                 </a>
             </li>
         </ul>

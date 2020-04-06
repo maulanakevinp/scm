@@ -25,9 +25,9 @@ class UsersController extends Controller
                 })->orWhere('nama','like','%'.$request->q.'%')
                 ->orWhere('email','like','%'.$request->q.'%')
                 ->orWhere('nomor_hp','like','%'.$request->q.'%')
-                ->paginate(5);
+                ->orderBy('id','desc')->paginate(5);
         } else {
-            $users = User::paginate(5);
+            $users = User::orderBy('id','desc')->paginate(5);
         }
         $totalUser = User::all()->count();
         $distributor = 'Distributor';

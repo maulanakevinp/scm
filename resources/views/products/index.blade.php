@@ -121,7 +121,7 @@ Manajemen Produk
                                     </td>
                                     <td>
                                         @if ($product->orders)
-                                            {{ $product->orders->count() }}
+                                            {{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}
                                         @else
                                             -
                                         @endif

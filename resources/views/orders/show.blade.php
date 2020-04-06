@@ -145,7 +145,7 @@
                         <div class="form-group">
                             <label class="form-control-label" for="input-permintaan">Jumlah Permintaan</label>
 
-                            <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan', $order->permintaan) }}" @if ($order->keterangan != "Belum diproses" || $order->keterangan != "Ditolak") disabled @endif>
+                            <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan', $order->permintaan) }}" @if ($order->keterangan != "Belum diproses" && $order->keterangan != "Ditolak") disabled @endif>
                             @error('permintaan')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

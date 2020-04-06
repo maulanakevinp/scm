@@ -90,7 +90,8 @@
                         <h2>Total Harga = <span id="total-harga">Rp. {{ $order->permintaan * $order->product->harga }}</span></h2>
                         <hr class="my-4" />
                         <div class="row">
-                            @if ($order->keterangan == "Belum diproses")
+                            @can('isProdusen')
+                                @if ($order->keterangan == "Belum diproses")
                                 <div class="col-4">
                                     <input type="hidden" name="verifikasi" value="1">
                                     <button type="submit" class="btn btn-success btn-block">Terima</button>
@@ -98,12 +99,13 @@
                                 <div class="col-4">
                                     <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Tolak</a>
                                 </div>
-                            @elseif($order->keterangan == "Sedang dalam proses")
+                                @elseif($order->keterangan == "Sedang dalam proses")
                                 <div class="col-4">
                                     <input type="hidden" name="verifikasi" value="2">
                                     <button type="submit" class="btn btn-success btn-block">Kirim</button>
                                 </div>
-                            @endif
+                                @endif
+                            @endcan
 
                             <div class="col-4">
                                 <a href="{{ route('product.show',$order->product) }}" class="btn btn-block btn-light">Kembali</a>
