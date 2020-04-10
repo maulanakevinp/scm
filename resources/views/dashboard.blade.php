@@ -5,7 +5,8 @@ Dashboard
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+<link rel="stylesheet" href="{{asset('css/style.css')}}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 @endsection
 
 @section('content-header')
@@ -39,176 +40,189 @@ Dashboard
 
 @section('content')
 @include('layouts.components.alert')
-<!-- Dark table -->
-<div class="row">
-    <div class="col">
-        <div class="card bg-default shadow">
-            <div class="card-header bg-transparent border-0">
-                <div class="row align-items-center">
-                    <div class="col-8">
-                        <h3 class="mb-0 text-white">Daftar Produk</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table align-items-center table-dark table-flush">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Foto</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Persediaan</th>
-                            <th scope="col">Pesanan</th>
-                            <th scope="col">Permintaan</th>
-                            <th scope="col">Produksi</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!$products->count())
-                            <tr><td colspan="7" class="text-center">Tidak ada data yang tersedia</td></tr>
-                        @else
-                            @foreach ($products as $product)
-                                <tr>
-                                    <th scope="row">
-                                        <div class="media align-items-center">
-                                            <a href="#" class="avatar rounded-circle">
-                                                <img class="img-foto-product" alt="{{ asset(Storage::url($product->foto)) }}" src="{{ asset(Storage::url($product->foto)) }}">
-                                            </a>
-                                        </div>
-                                    </th>
-                                    <td>
-                                        {{ $product->nama }}
-                                    </td>
-                                    <td>
-                                        Rp. {{ $product->harga }} / {{ $product->satuan }}
-                                    </td>
-                                    <td>
-                                        @if ($product->persediaan)
-                                            {{ $product->persediaan }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($product->orders)
-                                            {{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($product->permintaan)
-                                            {{ $product->permintaan }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($product->produksi)
-                                            {{ $product->produksi }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                <a class="dropdown-item" href="{{ route('product.show',$product) }}"><i class="fas fa-fw fa-eye"></i>Detail</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer bg-transparent border-0 py-4">
-                <nav aria-label="...">
-                    {{ $products->links() }}
-                </nav>
+<div class="card bg-default shadow mb-3">
+    <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+            <div class="col">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Grafik</h6>
+                <h2 class="mb-0 text-white">Total Penjualan</h2>
             </div>
         </div>
     </div>
+    <div class="card-body">
+        <!-- Chart -->
+        <div class="chart">
+            <canvas id="chart-penjualan" class="chart-canvas"></canvas>
+        </div>
+    </div>
 </div>
-
-<div class="row mt-3">
-    <div class="col">
-        <div class="card bg-default shadow">
-            <div class="card-header bg-transparent border-0">
-                <div class="row align-items-center">
-                    <div class="col-8">
-                        <h3 class="mb-0 text-white">Daftar Pengguna</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table align-items-center table-dark table-flush">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Foto</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Nomor Hp</th>
-                            <th scope="col">Peran</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <a href="#" class="avatar rounded-circle">
-                                            <img class="img-foto" alt="{{ asset(Storage::url($user->avatar)) }}" src="{{ asset(Storage::url($user->avatar)) }}">
-                                        </a>
-                                    </div>
-                                </th>
-                                <td>
-                                    <a href="{{ route("users.show",$user) }}">
-                                        {{ $user->email }}
-                                    </a>
-                                </td>
-                                <td>
-                                    {{ $user->nama }}
-                                </td>
-                                <td>
-                                    @if ($user->nomor_hp)
-                                        {{ $user->nomor_hp }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $user->role->peran }}
-                                </td>
-                                <td class="text-right">
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="{{ route('users.show',$user) }}"><i class="fas fa-fw fa-eye"></i>Detail</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer bg-transparent border-0 py-4">
-                <nav aria-label="...">
-                    {{ $users->links() }}
-                </nav>
+<div class="card bg-default shadow mb-3">
+    <div class="card-header bg-transparent border-0">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="mb-0 text-white">Daftar Produk</h3>
             </div>
         </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Foto</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Persediaan</th>
+                    <th scope="col">Pesanan</th>
+                    <th scope="col">Permintaan</th>
+                    <th scope="col">Produksi</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!$products->count())
+                <tr>
+                    <td colspan="7" class="text-center">Tidak ada data yang tersedia</td>
+                </tr>
+                @else
+                @foreach ($products as $product)
+                <tr>
+                    <th scope="row">
+                        <div class="media align-items-center">
+                            <a href="#" class="avatar rounded-circle">
+                                <img class="img-foto-product" alt="{{ asset(Storage::url($product->foto)) }}"
+                                    src="{{ asset(Storage::url($product->foto)) }}">
+                            </a>
+                        </div>
+                    </th>
+                    <td>
+                        {{ $product->nama }}
+                    </td>
+                    <td>
+                        Rp. {{ $product->harga }} / {{ $product->satuan }}
+                    </td>
+                    <td>
+                        @if ($product->persediaan)
+                        {{ $product->persediaan }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td>
+                        @if ($product->orders)
+                        {{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td>
+                        @if ($product->permintaan)
+                        {{ $product->permintaan }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td>
+                        @if ($product->produksi)
+                        {{ $product->produksi }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="{{ route('product.show',$product) }}"><i
+                                        class="fas fa-fw fa-eye"></i>Detail</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer bg-transparent border-0 py-4">
+        <nav aria-label="...">
+            {{ $products->links() }}
+        </nav>
+    </div>
+</div>
+
+<div class="card bg-default shadow">
+    <div class="card-header bg-transparent border-0">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="mb-0 text-white">Daftar Pengguna</h3>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Foto</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Nomor Hp</th>
+                    <th scope="col">Peran</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($users as $user)
+                <tr>
+                    <th scope="row">
+                        <div class="media align-items-center">
+                            <a href="#" class="avatar rounded-circle">
+                                <img class="img-foto" alt="{{ asset(Storage::url($user->avatar)) }}"
+                                    src="{{ asset(Storage::url($user->avatar)) }}">
+                            </a>
+                        </div>
+                    </th>
+                    <td>
+                        <a href="{{ route("users.show",$user) }}">
+                            {{ $user->email }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ $user->nama }}
+                    </td>
+                    <td>
+                        @if ($user->nomor_hp)
+                        {{ $user->nomor_hp }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td>
+                        {{ $user->role->peran }}
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="{{ route('users.show',$user) }}"><i
+                                        class="fas fa-fw fa-eye"></i>Detail</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer bg-transparent border-0 py-4">
+        <nav aria-label="...">
+            {{ $users->links() }}
+        </nav>
     </div>
 </div>
 
@@ -234,33 +248,52 @@ Dashboard
 @endsection
 
 @push('scripts')
-    <script>
-        $(document).ready(function(){
-            const baseUrl = $('meta[name="base-url"]').attr('content');
+<script>
+    $(document).ready(function () {
+        const baseUrl = $('meta[name="base-url"]').attr('content');
 
-            $('.img-foto-product').on('click',function () {
-                $('#foto-product').css('display','block');
-                $('#img-product').attr('src', $(this).attr('src'));
-            });
-
-            $('.img-foto').on('click',function () {
-                $('#foto-profil').css('display','block');
-                $('#img-profil').attr('src', $(this).attr('src'));
-            });
-
-            $('.tutup').on('click',function(){
-                $('#foto-product').css('display','none');
-                $('#foto-profil').css('display','none');
-            });
-
-            document.addEventListener('keyup',(e) => {
-                if(e.key === "Escape") {
-                    $('#foto-produk').css('display','none');
-                    $('#foto-profil').css('display','none');
-                }
-            });
-
+        $('.img-foto-product').on('click', function () {
+            $('#foto-product').css('display', 'block');
+            $('#img-product').attr('src', $(this).attr('src'));
         });
 
-    </script>
+        $('.img-foto').on('click', function () {
+            $('#foto-profil').css('display', 'block');
+            $('#img-profil').attr('src', $(this).attr('src'));
+        });
+
+        $('.tutup').on('click', function () {
+            $('#foto-product').css('display', 'none');
+            $('#foto-profil').css('display', 'none');
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === "Escape") {
+                $('#foto-produk').css('display', 'none');
+                $('#foto-profil').css('display', 'none');
+            }
+        });
+
+        var ctx = document.getElementById('chart-penjualan').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgba(255, 255, 255,0.1)',
+                    borderColor: 'rgba(100, 100, 255)',
+                    data: [0, 10, 5, 2, 20, 30, 45]
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    });
+
+</script>
 @endpush

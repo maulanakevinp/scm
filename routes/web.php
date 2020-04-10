@@ -1,5 +1,6 @@
 <?php
 
+use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,27 +37,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
     Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
 
-    Route::group(['middleware' => ['can:isPemilikProdusen']], function () {
-        Route::get('/product/{product}/pesanan-masuk', 'ProductController@show')->name('product.pesanan-masuk');
-        Route::get('/product/{product}/pesanan-masuk/cari', 'ProductController@show')->name('product.cari-pesanan-masuk');
-        Route::get('/product/{product}/pesanan-dalam-proses', 'ProductController@show')->name('product.pesanan-dalam-proses');
-        Route::get('/product/{product}/pesanan-dalam-proses/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-proses');
-        Route::get('/product/{product}/pesanan-dalam-pengiriman', 'ProductController@show')->name('product.pesanan-dalam-pengiriman');
-        Route::get('/product/{product}/pesanan-dalam-pengiriman/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-pengiriman');
-        Route::get('/product/{product}/pesanan-selesai', 'ProductController@show')->name('product.pesanan-selesai');
-        Route::get('/product/{product}/pesanan-selesai/cari', 'ProductController@show')->name('product.cari-pesanan-selesai');
-        Route::get('/product/cari', 'ProductController@index')->name('product.cari');
-        Route::get('/product/{product}', 'ProductController@show')->name('product.show');
-        Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
-    });
-
-    Route::group(['middleware' => ['can:isPemilikSuperadminProdusen']], function () {
-        Route::get('/users/{user}', 'UsersController@show')->name('users.show');
-    });
-
-    Route::group(['middleware' => ['can:isPemilikSuperadmin']], function () {
-        Route::get('/users/cari', 'UsersController@index')->name('users.cari');
-    });
 
     Route::group(['middleware' => ['can:isPemilik']], function () {
         Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
@@ -83,6 +63,28 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::group(['middleware' => ['can:isSuperadmin']], function () {
         Route::get('/users/cari', 'UsersController@index')->name('users.cari');
         Route::resource('users', 'UsersController')->except('show');
+    });
+
+    Route::group(['middleware' => ['can:isPemilikProdusen']], function () {
+        Route::get('/product/{product}/pesanan-masuk', 'ProductController@show')->name('product.pesanan-masuk');
+        Route::get('/product/{product}/pesanan-masuk/cari', 'ProductController@show')->name('product.cari-pesanan-masuk');
+        Route::get('/product/{product}/pesanan-dalam-proses', 'ProductController@show')->name('product.pesanan-dalam-proses');
+        Route::get('/product/{product}/pesanan-dalam-proses/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-proses');
+        Route::get('/product/{product}/pesanan-dalam-pengiriman', 'ProductController@show')->name('product.pesanan-dalam-pengiriman');
+        Route::get('/product/{product}/pesanan-dalam-pengiriman/cari', 'ProductController@show')->name('product.cari-pesanan-dalam-pengiriman');
+        Route::get('/product/{product}/pesanan-selesai', 'ProductController@show')->name('product.pesanan-selesai');
+        Route::get('/product/{product}/pesanan-selesai/cari', 'ProductController@show')->name('product.cari-pesanan-selesai');
+        Route::get('/product/cari', 'ProductController@index')->name('product.cari');
+        Route::get('/product/{product}', 'ProductController@show')->name('product.show');
+        Route::get('/product/order/{order}', 'OrderController@edit')->name('order.edit');
+    });
+
+    Route::group(['middleware' => ['can:isPemilikSuperadminProdusen']], function () {
+        Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+    });
+
+    Route::group(['middleware' => ['can:isPemilikSuperadmin']], function () {
+        Route::get('/users/cari', 'UsersController@index')->name('users.cari');
     });
 });
 
