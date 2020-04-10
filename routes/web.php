@@ -1,6 +1,5 @@
 <?php
 
-use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
