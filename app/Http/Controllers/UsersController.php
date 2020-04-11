@@ -232,20 +232,4 @@ class UsersController extends Controller
         $user->avatar = $request->file('avatar')->store('public/avatar');
         $user->save();
     }
-
-    public function getUpdatedAt(Request $request)
-    {
-        $user = User::findOrFail($request->id);
-        if ($user->updated_at == $user->created_at) {
-            echo 'Diperbarui : -';
-        } else {
-            echo 'Diperbarui : '. Carbon::parse($user->updated_at)->diffForHumans();
-        }
-    }
-
-    public function getCreatedAt(Request $request)
-    {
-        $user = User::findOrFail($request->id);
-        echo 'Bergabung : '. Carbon::parse($user->created_at)->diffForHumans();
-    }
 }

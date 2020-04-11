@@ -6,6 +6,7 @@ Profil Pengguna
 
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 @endsection
 
 @section('content-header')
@@ -228,17 +229,10 @@ Profil Pengguna
                     }
                 }
             };
+            moment.locale('id');
             setInterval(function(){
-                if (navigator.onLine) {
-                    $.post(baseUrl + '/users/get-updated-at', data, function(hasil){
-                        document.getElementById('updated-at').innerHTML = hasil;
-                    });
-                    $.post(baseUrl + '/users/get-created-at', data, function(hasil){
-                        document.getElementById('created-at').innerHTML = hasil;
-                    });
-                } else {
-                    alert('Harap periksa koneksi internet anda');
-                }
+                document.getElementById('updated-at').innerHTML = "Diperbarui: "+ moment("{{auth()->user()->updated_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
+                document.getElementById('created-at').innerHTML = "Bergabung: "+moment("{{auth()->user()->created_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
             }, 1000);
         });
 

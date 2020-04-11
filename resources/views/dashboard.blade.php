@@ -6,7 +6,8 @@ Dashboard
 
 @section('styles')
 <link rel="stylesheet" href="{{asset('css/style.css')}}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="{{ asset('js/plugins/chart.js/dist/Chart.min.js') }}"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 @endsection
 
 @section('content-header')
@@ -43,9 +44,24 @@ Dashboard
 <div class="card bg-default shadow mb-3">
     <div class="card-header bg-transparent">
         <div class="row align-items-center">
-            <div class="col">
+            <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">Grafik</h6>
                 <h2 class="mb-0 text-white">Total Penjualan</h2>
+            </div>
+            <div class="col-9 ">
+                <form action="{{ route('dashboard') }}" method="get" class="form-inline justify-content-end">
+                    <select name="bulan" id="bulan" class="form-control mr-3">
+                        @foreach ($bulan as $key => $value)
+                            <option value="{{ $key }}" {{ date_format($orders[0]->updated_at, "m")  == $key ?  'selected=selected' : ''  }}>{{ $value }}</option>
+                        @endforeach
+                    </select>
+                    <select name="tahun" id="tahun" class="form-control mr-3">
+                        @foreach ($tahun as $data)
+                            <option value="{{ $data }}" {{date_format($orders[0]->updated_at, "Y")  == $data ?  'selected=selected' : ''}}>{{ $data }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btn-primary">Cari</button>
+                </form>
             </div>
         </div>
     </div>
@@ -274,24 +290,9 @@ Dashboard
             }
         });
 
-        var ctx = document.getElementById('chart-penjualan').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgba(255, 255, 255,0.1)',
-                    borderColor: 'rgba(100, 100, 255)',
-                    data: [0, 10, 5, 2, 20, 30, 45]
-                }]
-            },
-
-            // Configuration options go here
-            options: {}
+        axios.get(baseUrl + '/api/chart-penjualan-bulanan').then(function(response) {
+            var ctx = document.getElementById('chart-penjualan').getContext('2d');
+            var chart = new Chart(ctx, response.data);
         });
     });
 

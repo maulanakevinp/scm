@@ -194,20 +194,4 @@ class ProductController extends Controller
         $product->foto = $request->file('foto')->store('public/foto-produk');
         $product->save();
     }
-
-    public function getUpdatedAt(Request $request)
-    {
-        $product = Product::findOrFail($request->id);
-        if ($product->updated_at == $product->created_at) {
-            echo 'Diperbarui : -';
-        } else {
-            echo 'Diperbarui : '. Carbon::parse($product->updated_at)->diffForHumans();
-        }
-    }
-
-    public function getCreatedAt(Request $request)
-    {
-        $product = Product::findOrFail($request->id);
-        echo 'Ditambahkan : '. Carbon::parse($product->created_at)->diffForHumans();
-    }
 }

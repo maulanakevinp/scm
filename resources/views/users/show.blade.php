@@ -6,7 +6,7 @@ Detail Pengguna
 
 @section('styles')
     <meta name="user-id" content="{{ $user->id }}">
-
+    <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 @endsection
 
@@ -213,24 +213,10 @@ Detail Pengguna
                 if(e.key === "Escape") modal.style.display = "none";
             });
 
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-            const id = $('meta[name="user-id"]').attr('content');
-            const baseUrl = $('meta[name="base-url"]').attr('content');
-            const data = {
-                id: id,
-                _token: csrfToken,
-            };
+            moment.locale('id');
             setInterval(function(){
-                if (navigator.onLine) {
-                    $.post(baseUrl + '/users/get-updated-at', data, function(hasil){
-                        document.getElementById('updated-at').innerHTML = hasil;
-                    });
-                    $.post(baseUrl + '/users/get-created-at', data, function(hasil){
-                        document.getElementById('created-at').innerHTML = hasil;
-                    });
-                } else {
-                    alert('Harap periksa koneksi internet anda');
-                }
+                document.getElementById('updated-at').innerHTML = "Diperbarui: " + moment("{{$user->updated_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
+                document.getElementById('created-at').innerHTML = "Bergabung: " + moment("{{$user->created_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
             }, 1000);
         });
     </script>

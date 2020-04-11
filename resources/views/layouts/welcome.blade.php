@@ -80,7 +80,7 @@
                                 </a>
                             </li>
                         @else
-                            @can('isKepala')
+                            @can('isPemilik')
                                 <li class="nav-item">
                                     <a class="nav-link nav-link-icon" href="{{ route('dashboard') }}">
                                         <i class="ni ni-planet"></i>

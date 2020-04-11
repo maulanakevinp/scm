@@ -7,6 +7,7 @@ Detail Produk {{ $product->nama }}
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <meta name="product-id" content="{{ $product->id }}">
+    <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 
 @endsection
 
@@ -313,22 +314,22 @@ Detail Produk {{ $product->nama }}
 <h2 class="h1 mt-3 mb-0">Pesanan</h2>
 <div class="nav-wrapper pt-2">
     <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
-        <li class="nav-item">
+        <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-masuk') active @endif" href="{{ route('product.pesanan-masuk',$product) }}">
                 <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-proses') active @endif" href="{{ route('product.pesanan-dalam-proses',$product) }}">
                 <i class="ni ni-atom mr-2"></i>Pesanan dalam proses <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam proses')->count() }}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-pengiriman') active @endif" href="{{ route('product.pesanan-dalam-pengiriman',$product) }}">
                 <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam pengiriman')->count() }}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-selesai') active @endif" href="{{ route('product.pesanan-selesai',$product) }}">
                 <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Diterima')->count() }}</span>
             </a>
@@ -669,24 +670,10 @@ Detail Produk {{ $product->nama }}
                 if(e.key === "Escape") modal.style.display = "none";
             });
 
-            const id = $('meta[name="product-id"]').attr('content');
-            const baseUrl = $('meta[name="base-url"]').attr('content');
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-            const data = {
-                id: id,
-                _token: csrfToken,
-            };
+            moment.locale('id');
             setInterval(function(){
-                if (navigator.onLine) {
-                    $.post(baseUrl + '/product/get-updated-at', data, function(hasil){
-                        document.getElementById('updated-at').innerHTML = hasil;
-                    });
-                    $.post(baseUrl + '/product/get-created-at', data, function(hasil){
-                        document.getElementById('created-at').innerHTML = hasil;
-                    });
-                } else {
-                    alert('Harap periksa koneksi internet anda');
-                }
+                document.getElementById('updated-at').innerHTML = "Diperbarui: " + moment("{{$product->updated_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
+                document.getElementById('created-at').innerHTML = "Ditambahkan: " + moment("{{$product->created_at}}", "YYYY-MM-DD hh:mm:ss").fromNow();
             }, 1000);
         });
     </script>

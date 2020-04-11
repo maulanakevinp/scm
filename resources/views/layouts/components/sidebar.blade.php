@@ -62,8 +62,7 @@
         <ul class="navbar-nav">
             @can('isPemilik')
                 <li class="nav-item">
-
-                    <a class="nav-link @if (Request::segment(1) == 'dashboard') active @endif" href="{{ route('dasboard') }}">
+                    <a class="nav-link @if (Request::segment(1) == 'dashboard') active @endif" href="{{ route('dashboard') }}">
                         <i class="ni ni-planet text-blue"></i>
                         <span class="nav-link-inner--text">Dashboard</span>
                     </a>

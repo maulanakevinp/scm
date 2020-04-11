@@ -27,18 +27,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/pengaturan', 'UsersController@pengaturan')->name('pengaturan');
     Route::get('/profil', 'UsersController@profil')->name('profil');
-
     Route::post('/update-avatar/{id}', 'UsersController@updateAvatar')->name('update-avatar');
-    Route::post('/users/get-updated-at', 'UsersController@getUpdatedAt');
-    Route::post('/users/get-created-at', 'UsersController@getCreatedAt');
-    Route::post('/product/get-updated-at', 'ProductController@getUpdatedAt');
-    Route::post('/product/get-created-at', 'ProductController@getCreatedAt');
     Route::patch('/update-pengaturan/{user}', 'UsersController@updatePengaturan')->name('update-pengaturan');
     Route::patch('/update-profil/{user}', 'UsersController@updateProfil')->name('update-profil');
 
-
     Route::group(['middleware' => ['can:isPemilik']], function () {
-        Route::get('/dashboard', 'HomeController@dashboard')->name('dasboard');
+        Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
     });
 
     Route::group(['middleware' => ['can:isProdusen']], function () {
