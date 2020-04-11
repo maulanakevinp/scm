@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Order;
-use App\Http\Resources\Order as OrderResource;
-use App\Product;
-use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,9 +13,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function chartPenjualanBulanan()
+    public function chartPenjualanBulanan(Request $request)
     {
-        $orders = Order::where('keterangan','Diterima')->orderBy('id','desc')->get();
+        if ($request->tahun) {
+            $orders = Order::where('keterangan','Diterima')->whereYear('updated_at',$request->tahun)->get();
+        } else {
+            $orders = Order::where('keterangan','Diterima')->get();
+        }
+
         $arr = array();
         for ($i=0; $i < $orders->count(); $i++) {
             if (array_key_exists(date_format($orders[$i]->updated_at, "F"),$arr)) {

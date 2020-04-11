@@ -50,11 +50,6 @@ Dashboard
             </div>
             <div class="col-9 ">
                 <form action="{{ route('dashboard') }}" method="get" class="form-inline justify-content-end">
-                    <select name="bulan" id="bulan" class="form-control mr-3">
-                        @foreach ($bulan as $key => $value)
-                            <option value="{{ $key }}" {{ date_format($orders[0]->updated_at, "m")  == $key ?  'selected=selected' : ''  }}>{{ $value }}</option>
-                        @endforeach
-                    </select>
                     <select name="tahun" id="tahun" class="form-control mr-3">
                         @foreach ($tahun as $data)
                             <option value="{{ $data }}" {{date_format($orders[0]->updated_at, "Y")  == $data ?  'selected=selected' : ''}}>{{ $data }}</option>
@@ -289,8 +284,11 @@ Dashboard
                 $('#foto-profil').css('display', 'none');
             }
         });
-
-        axios.get(baseUrl + '/api/chart-penjualan-bulanan').then(function(response) {
+        url = baseUrl + '/api/chart-penjualan-bulanan';
+        @if(Request('tahun'))
+            url = baseUrl + "/api/chart-penjualan-bulanan?tahun={{Request('tahun')}}"
+        @endif
+        axios.get(url).then(function(response) {
             var ctx = document.getElementById('chart-penjualan').getContext('2d');
             var chart = new Chart(ctx, response.data);
         });
