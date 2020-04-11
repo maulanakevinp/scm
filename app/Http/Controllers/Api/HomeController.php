@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function chartPenjualanBulanan()
     {
-        $orders = Order::all();
+        $orders = Order::where('keterangan','Diterima')->orderBy('id','desc')->get();
         $arr = array();
         for ($i=0; $i < $orders->count(); $i++) {
             if (array_key_exists(date_format($orders[$i]->updated_at, "F"),$arr)) {
