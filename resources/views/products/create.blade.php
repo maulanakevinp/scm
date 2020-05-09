@@ -38,145 +38,73 @@ Tambah Produk
                 <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
-                    <div class="pl-lg-4">
+                    <div class="pl-md-4">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-md-2">
                                 <label class="form-control-label" for="input-avatar">Foto Produk</label><br>
                                 <a href="#" title="Upload Foto Produk">
-                                    <img id="img-avatar" src="{{ asset('/img/plus-img.png') }}" alt="{{ asset('/img/plus-img.png') }}" class="rounded-circle border" style="max-height: 150px; max-width: 200px;">
+                                    <img id="img-avatar" src="{{ asset('/img/plus-img.png') }}" alt="{{ asset('/img/plus-img.png') }}" class="rounded-circle border mw-100" style="max-height: 150px; max-width: 200px;">
                                 </a>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-nama">Nama <span class="text-red">*</span></label>
-                                    <input name="nama" type="text" id="input-nama" class="form-control form-control-alternative @error('nama') is-invalid @enderror" placeholder="Masukkan nama ..." value="{{ old('nama') }}">
-                                    @error('nama')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-nama">Nama <span class="text-red">*</span></label>
+                                            <input name="nama" type="text" id="input-nama" class="form-control form-control-alternative @error('nama') is-invalid @enderror" placeholder="Masukkan nama ..." value="{{ old('nama') }}">
+                                            @error('nama')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-persediaan">Persediaan</label>
+                                            <input name="persediaan" onkeypress="return hanyaAngka(event)" type="number" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan') }}">
+                                            @error('persediaan')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-harga">Harga <span class="text-red">*</span></label>
-                                    <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga') }}" type="text">
-                                    @error('harga')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-satuan">Satuan <span class="text-red">*</span></label>
-                                    <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan') }}" type="text">
-                                    @error('satuan')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan">Persediaan</label>
-                                    <input name="persediaan" type="number" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan') }}">
-                                    @error('persediaan')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan Permintaan -->
-                    <h6 class="heading-small text-muted mb-4">Batasan Permintaan</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-permintaan_min">Permintaan Minimal</label>
-                                    <input name="permintaan_min" type="number" id="input-permintaan_min" class="form-control form-control-alternative @error('permintaan_min') is-invalid @enderror" placeholder="Masukkan permintaan minimal ..." value="{{ old('permintaan_min') }}">
-                                    @error('permintaan_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-permintaan_max">Permintaan Maximal</label>
-                                    <input name="permintaan_max" type="number" id="input-permintaan_max" class="form-control form-control-alternative @error('permintaan_max') is-invalid @enderror" placeholder="Masukkan permintaan maximal ..." value="{{ old('permintaan_max') }}">
-                                    @error('permintaan_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan persediaan -->
-                    <h6 class="heading-small text-muted mb-4">Batasan persediaan</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan_min">Persediaan Minimal</label>
-                                    <input name="persediaan_min" type="number" id="input-persediaan_min" class="form-control form-control-alternative @error('persediaan_min') is-invalid @enderror" placeholder="Masukkan persediaan minimal ..." value="{{ old('persediaan_min') }}">
-                                    @error('persediaan_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan_max">Persediaan Maximal</label>
-                                    <input name="persediaan_max" type="number" id="input-persediaan_max" class="form-control form-control-alternative @error('persediaan_max') is-invalid @enderror" placeholder="Masukkan persediaan maximal ..." value="{{ old('persediaan_max') }}">
-                                    @error('persediaan_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan produksi -->
-                    <h6 class="heading-small text-muted mb-4">Batasan produksi</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-produksi_min">Produksi Minimal</label>
-                                    <input name="produksi_min" type="number" id="input-produksi_min" class="form-control form-control-alternative @error('produksi_min') is-invalid @enderror" placeholder="Masukkan produksi mininimal ..." value="{{ old('produksi_min') }}">
-                                    @error('produksi_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-produksi_max">Produksi Maximal</label>
-                                    <input name="produksi_max" type="number" id="input-produksi_max" class="form-control form-control-alternative @error('produksi_max') is-invalid @enderror" placeholder="Masukkan produksi maximal ..." value="{{ old('produksi_max') }}">
-                                    @error('produksi_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-harga">Harga <span class="text-red">*</span></label>
+                                            <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga') }}" type="text">
+                                            @error('harga')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-satuan">Satuan <span class="text-red">*</span></label>
+                                            <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan') }}" type="text">
+                                            @error('satuan')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-minimal_permintaan">Minimal Permintaan</label>
+                                            <input name="minimal_permintaan" onkeypress="return hanyaAngka(event)" type="number" id="input-minimal_permintaan" class="form-control form-control-alternative @error('minimal_permintaan') is-invalid @enderror" placeholder="Masukkan minimal permintaan ..." value="{{ old('minimal_permintaan') }}">
+                                            @error('minimal_permintaan')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -68,7 +68,7 @@
                     <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
                     <div class="pl-lg-4">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-nama">Nama</label>
                                     <input disabled type="text" id="input-nama" class="form-control form-control-alternative" placeholder="Masukkan nama ..." value="{{ $product->nama }}">
@@ -90,6 +90,12 @@
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-persediaan">Persediaan</label>
                                     <input disabled type="number" id="input-persediaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $product->persediaan }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-minimal_permintaan">Minimal Permintaan</label>
+                                    <input disabled type="number" id="input-minimal_permintaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $product->minimal_permintaan }}">
                                 </div>
                             </div>
                         </div>
@@ -158,9 +164,9 @@
                 if(e.key === "Escape") modal.style.display = "none";
             });
 
+            $('#total-harga').html('Rp. '+ $("#input-permintaan").val() * {{ $product->harga }});
             $('#input-permintaan').on('keyup', function(){
-                let totalHarga = $(this).val() * {{ $product->harga }};
-                $('#total-harga').html('Rp. '+ totalHarga);
+                $('#total-harga').html('Rp. '+ $("#input-permintaan").val() * {{ $product->harga }});
             });
 
             $('#input-permintaan').on('change', function(){

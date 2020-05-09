@@ -49,7 +49,7 @@
                         </div>
                         @if ($order->product->persediaan)
                             <div class="h5 mt-4">
-                                @if ($order->keterangan == 'Belum diproses')
+                                @if ($order->status_id == 1)
                                     Persediaan : {{ $order->product->persediaan }}
                                 @else
                                     Persediaan : {{ $order->persediaan }} <br>
@@ -91,7 +91,7 @@
                         <hr class="my-4" />
                         <div class="row">
                             @can('isProdusen')
-                                @if ($order->keterangan == "Belum diproses")
+                                @if ($order->status_id == 1)
                                 <div class="col-4">
                                     <input type="hidden" name="verifikasi" value="1">
                                     <button type="submit" class="btn btn-success btn-block">Terima</button>
@@ -99,7 +99,7 @@
                                 <div class="col-4">
                                     <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Tolak</a>
                                 </div>
-                                @elseif($order->keterangan == "Sedang dalam proses")
+                                @elseif($order->status_id == 3)
                                 <div class="col-4">
                                     <input type="hidden" name="verifikasi" value="2">
                                     <button type="submit" class="btn btn-success btn-block">Kirim</button>

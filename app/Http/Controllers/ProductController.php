@@ -53,15 +53,10 @@ class ProductController extends Controller
         $data = $request->validate([
             'nama'              => ['required','string','max:32'],
             'satuan'            => ['required','string','max:16'],
-            'harga'             => ['required','digits_between:3,11','min:0'],
+            'harga'             => ['required','digits_between:3,11','min:1'],
             'foto'              => ['nullable','image','mimes:jpeg,png','max:2048'],
-            'persediaan'        => ['nullable','numeric','min:0', new Antara($request->persediaan_min, $request->persediaan_max)],
-            'persediaan_min'    => ['nullable','numeric','min:0', new Maximal($request->persediaan_max)],
-            'persediaan_max'    => ['nullable','numeric', new Minimal($request->persediaan_min)],
-            'permintaan_min'    => ['nullable','numeric','min:0', new Maximal($request->permintaan_max)],
-            'permintaan_max'    => ['nullable','numeric', new Minimal($request->permintaan_min)],
-            'produksi_min'      => ['nullable','numeric','min:0', new Maximal($request->produksi_max)],
-            'produksi_max'      => ['nullable','numeric', new Minimal($request->produksi_min)],
+            'persediaan'        => ['nullable','numeric','min:1'],
+            'minimal_permintaan'=> ['nullable','numeric','min:1'],
         ]);
 
         if ($request->file('foto')) {
@@ -83,15 +78,15 @@ class ProductController extends Controller
     public function show(Request $request,Product $product)
     {
         if($request->q){
-            $pesananMasuk = Order::where('id','like',$request->q)->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->orderBy('id','desc')->paginate(5);
-            $pesananProses = Order::where('id','like',$request->q)->where('keterangan','Sedang dalam proses')->orderBy('id','desc')->paginate(5);
-            $pesananKirim = Order::where('id','like',$request->q)->where('keterangan','Sedang dalam pengiriman')->orderBy('id','desc')->paginate(5);
-            $pesananSelesai = Order::where('id','like',$request->q)->where('keterangan','Diterima')->orderBy('id','desc')->paginate(5);
+            $pesananMasuk = Order::where('id','like',$request->q)->where('status_id',1)->where('bukti_transfer','!=','public/noimage-produk.jpg')->orderBy('id','desc')->paginate(5);
+            $pesananProses = Order::where('id','like',$request->q)->where('status_id',3)->orderBy('id','desc')->paginate(5);
+            $pesananKirim = Order::where('id','like',$request->q)->where('status_id',4)->orderBy('id','desc')->paginate(5);
+            $pesananSelesai = Order::where('id','like',$request->q)->where('status_id',5)->orderBy('id','desc')->paginate(5);
         } else {
-            $pesananMasuk = Order::where('product_id',$product->id)->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->orderBy('id','desc')->paginate(5);
-            $pesananProses = Order::where('product_id',$product->id)->where('keterangan','Sedang dalam proses')->orderBy('id','desc')->paginate(5);
-            $pesananKirim = Order::where('product_id',$product->id)->where('keterangan','Sedang dalam pengiriman')->orderBy('id','desc')->paginate(5);
-            $pesananSelesai = Order::where('product_id',$product->id)->where('keterangan','Diterima')->orderBy('id','desc')->paginate(5);
+            $pesananMasuk = Order::where('product_id',$product->id)->where('status_id',1)->where('bukti_transfer','!=','public/noimage-produk.jpg')->orderBy('id','desc')->paginate(5);
+            $pesananProses = Order::where('product_id',$product->id)->where('status_id',3)->orderBy('id','desc')->paginate(5);
+            $pesananKirim = Order::where('product_id',$product->id)->where('status_id',4)->orderBy('id','desc')->paginate(5);
+            $pesananSelesai = Order::where('product_id',$product->id)->where('status_id',5)->orderBy('id','desc')->paginate(5);
         }
         return view('products.show', compact('product','pesananMasuk','pesananProses','pesananKirim','pesananSelesai'));
     }
@@ -120,40 +115,26 @@ class ProductController extends Controller
             $data = $request->validate([
                 'nama'              => ['required','string','max:32'],
                 'satuan'            => ['required','string','max:16'],
-                'harga'             => ['required','digits_between:3,11','min:0'],
-                'persediaan'        => ['required','numeric','min:0', new Antara($request->persediaan_min, $request->persediaan_max)],
-                'persediaan_min'    => ['required','numeric','min:0', new Maximal($request->persediaan_max)],
-                'persediaan_max'    => ['required','numeric', new Minimal($request->persediaan_min)],
-                'permintaan_min'    => ['required','numeric','min:0', new Maximal($request->permintaan_max)],
-                'permintaan_max'    => ['required','numeric', new Minimal($request->permintaan_min)],
-                'produksi_min'      => ['required','numeric','min:0', new Maximal($request->produksi_max)],
-                'produksi_max'      => ['required','numeric',new Minimal($request->produksi_min)],
+                'harga'             => ['required','digits_between:3,11','min:1'],
+                'foto'              => ['nullable','image','mimes:jpeg,png','max:2048'],
+                'persediaan'        => ['nullable','numeric','min:1'],
+                'minimal_permintaan'=> ['nullable','numeric','min:1'],
             ]);
         } else {
             $data = $request->validate([
                 'nama'              => ['required','string','max:32'],
                 'satuan'            => ['required','string','max:16'],
-                'harga'             => ['required','digits_between:3,11','min:0'],
-                'persediaan'        => ['nullable','numeric','min:0', new Antara($request->persediaan_min, $request->persediaan_max)],
-                'persediaan_min'    => ['nullable','numeric','min:0', new Maximal($request->persediaan_max)],
-                'persediaan_max'    => ['nullable','numeric', new Minimal($request->persediaan_min)],
-                'permintaan_min'    => ['nullable','numeric','min:0', new Maximal($request->permintaan_max)],
-                'permintaan_max'    => ['nullable','numeric', new Minimal($request->permintaan_min)],
-                'produksi_min'      => ['nullable','numeric','min:0', new Maximal($request->produksi_max)],
-                'produksi_max'      => ['nullable','numeric', new Minimal($request->produksi_min)],
+                'harga'             => ['required','digits_between:3,11','min:1'],
+                'foto'              => ['nullable','image','mimes:jpeg,png','max:2048'],
+                'persediaan'        => ['nullable','numeric','min:1'],
+                'minimal_permintaan'=> ['nullable','numeric','min:1'],
             ]);
         }
 
         if ($request->nama == $product->nama &&
             $request->harga == $product->harga &&
-            $request->persediaan == $product->persediaan &&
-            $request->persediaan_min == $product->persediaan_min &&
-            $request->persediaan_max == $product->persediaan_max &&
-            $request->permintaan_min == $product->permintaan_min &&
-            $request->permintaan_max == $product->permintaan_max &&
-            $request->produksi_min == $product->produksi_min &&
-            $request->produksi_max == $product->produksi_max
-        ) {
+            $request->persediaan == $product->persediaan)
+        {
             return redirect()->back()->with('error','Tidak ada perubahan yang berhasil disimpan');
         }
 

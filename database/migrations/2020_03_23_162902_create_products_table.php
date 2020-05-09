@@ -20,14 +20,9 @@ class CreateProductsTable extends Migration
             $table->text('foto')->nullable();
             $table->string('satuan',16);
             $table->double('permintaan')->nullable();
-            $table->double('permintaan_min')->nullable();
-            $table->double('permintaan_max')->nullable();
+            $table->double('minimal_permintaan')->nullable();
             $table->double('persediaan')->nullable();
-            $table->double('persediaan_min')->nullable();;
-            $table->double('persediaan_max')->nullable();;
-            $table->double('produksi')->nullable();;
-            $table->double('produksi_min')->nullable();;
-            $table->double('produksi_max')->nullable();;
+            $table->double('produksi')->nullable();
             $table->timestamps();
         });
     }

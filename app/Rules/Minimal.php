@@ -30,7 +30,7 @@ class Minimal implements Rule
         if ($this->min == null) {
             $this->kosong = true;
         } else {
-            if ($value > $this->min) {
+            if ($value >= $this->min) {
                 return true;
             } else {
                 return false;
@@ -49,7 +49,7 @@ class Minimal implements Rule
         if ($this->kosong) {
             return 'Nilai batasan minimal tidak boleh kosong';
         } else {
-            return 'Nilai :attribute harus diatas '.$this->min;
+            return 'Nilai :attribute minimal '.$this->min;
         }
 
     }

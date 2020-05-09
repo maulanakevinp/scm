@@ -8,6 +8,7 @@ use App\Rules\Maximal;
 use App\Rules\Minimal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -27,7 +28,9 @@ class OrderController extends Controller
                             $q->where('harga','like','%'.$request->q.'%');
                         })
                         ->orWhere('permintaan','like','%'.$request->q.'%')
-                        ->orWhere('keterangan','like','%'.$request->q.'%')
+                        ->orWhereHas('status',function ($q) use ($request){
+                            $q->where('keterangan','like','%'.$request->q.'%');
+                        })
                         ->orderBy('id','desc')->paginate(5);
         } else {
             $orders = Order::orderBy('id','desc')->paginate(5);
@@ -55,11 +58,11 @@ class OrderController extends Controller
     public function store(Request $request, Product $product)
     {
         $data = $request->validate([
-            'permintaan' => ['required', new Minimal($product->permintaan_min), new Maximal($product->permintaan_max)]
+            'permintaan' => ['required', 'numeric', new Minimal($product->minimal_permintaan)]
         ]);
 
         $data['user_id'] = auth()->user()->id;
-        $data['keterangan'] = 'Belum diproses';
+        $data['status_id'] = 1;
         $data['bukti_transfer'] = 'public/noimage-produk.jpg';
         $data['product_id'] = $product->id;
 
@@ -98,18 +101,17 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') {
+        if ($order->status_id == 1 || $order->status_id == 2) {
             $data = $request->validate([
-                'permintaan' => ['required', new Minimal($order->product->permintaan_min), new Maximal($order->product->permintaan_max)]
+                'permintaan' => ['required', 'numeric', 'min:1']
             ]);
         }
 
         if ($request->verifikasi == 1) {
-            $data['keterangan'] = 'Diterima';
+            $data['status_id'] = 5;
         } else {
-            $data['keterangan'] = 'Belum diproses';
+            $data['status_id'] = 1;
         }
-
 
         $order->update($data);
         return redirect(route('order.show',$order))->with('success','Pesanan berhasil diperbarui');
@@ -140,12 +142,6 @@ class OrderController extends Controller
         if ($request->q) {
             $products = Product::where('persediaan','!=',null)
                                 ->where('foto','!=','public/noimage-produk.jpg')
-                                ->where('persediaan_min','!=',null)
-                                ->where('persediaan_max','!=',null)
-                                ->where('permintaan_min','!=',null)
-                                ->where('permintaan_min','!=',null)
-                                ->where('produksi_max','!=',null)
-                                ->where('produksi_max','!=',null)
                                 ->where('nama','like','%'.$request->q.'%')
                                 ->orWhere('satuan','like','%'.$request->q.'%')
                                 ->orWhere('harga','like','%'.$request->q.'%')
@@ -154,25 +150,19 @@ class OrderController extends Controller
         } else {
             $products = Product::where('persediaan','!=',null)
                                 ->where('foto','!=','public/noimage-produk.jpg')
-                                ->where('persediaan_min','!=',null)
-                                ->where('persediaan_max','!=',null)
-                                ->where('permintaan_min','!=',null)
-                                ->where('permintaan_min','!=',null)
-                                ->where('produksi_max','!=',null)
-                                ->where('produksi_max','!=',null)
                                 ->paginate(6);
         }
 
         return view('orders.belanja', compact('products'));
     }
 
-    public function produksi($permintaan, $product)
+    public function produksi($dataPermintaan, $dataPersediaan, $dataProduksi, $permintaan, $persediaan)
     {
-        $permintaanTurun = ($product->permintaan_max - $permintaan) / ($product->permintaan_max - $product->permintaan_min);
-        $permintaanNaik = ($permintaan - $product->permintaan_min) / ($product->permintaan_max - $product->permintaan_min);
+        $permintaanTurun = (max($dataPermintaan) - $permintaan)     /(max($dataPermintaan) - min($dataPermintaan));
+        $permintaanNaik = ($permintaan - min($dataPermintaan))      /(max($dataPermintaan) - min($dataPermintaan));
 
-        $persediaanSedikit = ($product->persediaan_max - $product->persediaan) / ($product->persediaan_max - $product->persediaan_min);
-        $persediaanBanyak = ($product->persediaan - $product->persediaan_min) / ($product->persediaan_max - $product->persediaan_min);
+        $persediaanSedikit = (max($dataPersediaan) - $persediaan)   /(max($dataPersediaan) - min($dataPersediaan));
+        $persediaanBanyak = ($persediaan - min($dataPersediaan))    /(max($dataPersediaan) - min($dataPersediaan));
 
         $a1 = min($permintaanTurun, $persediaanBanyak);
         $a2 = min($permintaanTurun, $persediaanSedikit);
@@ -180,10 +170,10 @@ class OrderController extends Controller
         $a4 = min($permintaanNaik, $persediaanSedikit);
         $a  = $a1 + $a2 + $a3 + $a4;
 
-        $z1 = (($a1 * ($product->produksi_max - $product->produksi_min)) - $product->produksi_max) / -1;
-        $z2 = (($a2 * ($product->produksi_max - $product->produksi_min)) - $product->produksi_max) / -1;
-        $z3 = ($a3 * ($product->produksi_max - $product->produksi_min)) + $product->produksi_min;
-        $z4 = ($a4 * ($product->produksi_max - $product->produksi_min)) + $product->produksi_min;
+        $z1 = (($a1 * (max($dataProduksi) - min($dataProduksi))) - max($dataProduksi)) / -1;
+        $z2 = (($a2 * (max($dataProduksi) - min($dataProduksi))) - max($dataProduksi)) / -1;
+        $z3 = ($a3 * (max($dataProduksi) - min($dataProduksi))) + min($dataProduksi);
+        $z4 = ($a4 * (max($dataProduksi) - min($dataProduksi))) + min($dataProduksi);
 
         $az1  = $a1 * $z1;
         $az2  = $a2 * $z2;
@@ -192,42 +182,108 @@ class OrderController extends Controller
         $az   = $az1 + $az2 + $az3 + $az4;
 
         $produksi = $az / $a;
+        // var_dump('permintaan Maximal = '.max($dataPermintaan));
+        // var_dump('permintaan Minimal = '.min($dataPermintaan));
+        // var_dump('permintaan = '.$permintaan);
+        // var_dump('persediaan Maximal = '.max($dataPersediaan));
+        // var_dump('persediaan Minimal = '.min($dataPersediaan));
+        // var_dump('persediaan = '.$persediaan);
+        // var_dump('produksi Maximal = '.max($dataProduksi));
+        // var_dump('produksi Minimal = '.min($dataProduksi));
+        // var_dump('permintaan Turun = '.$permintaanTurun);
+        // var_dump('permintaan Naik = '.$permintaanNaik);
+        // var_dump('persediaan Banyak = '.$persediaanBanyak);
+        // var_dump('persediaan Sedikit = '.$persediaanSedikit);
+        // var_dump('a1 = '.$a1);
+        // var_dump('a2 = '.$a2);
+        // var_dump('a3 = '.$a3);
+        // var_dump('a4 = '.$a4);
+        // var_dump('a = '.$a);
+        // var_dump('z1 = '.$z1);
+        // var_dump('z2 = '.$z2);
+        // var_dump('z3 = '.$z3);
+        // var_dump('z4 = '.$z4);
+        // var_dump('az1 = '.$az1);
+        // var_dump('az2 = '.$az2);
+        // var_dump('az3 = '.$az3);
+        // var_dump('az4 = '.$az4);
+        // var_dump('az = '.$az);
+        // var_dump('produksi = '.$produksi);
+        // die;
         return (int)$produksi;
     }
 
     public function updateBuktiTransfer(Request $request, $id)
     {
         $order = Order::findOrFail($id);
+        $validator = Validator::make($request->all(),[
+            'bukti_transfer' => ['required','image','mimes:jpeg,png','max:2048']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error'     => true,
+                'message'   => $validator->errors()->all(),
+                'bukti_transfer'    => $order->bukti_transfer
+            ]);
+        }
+
         if ($order->bukti_transfer != 'public/noimage-produk.jpg') {
             File::delete(storage_path('app/'.$order->bukti_transfer));
         }
         $order->bukti_transfer = $request->file('bukti_transfer')->store('public/bukti-transfer');
-        $order->keterangan = 'Belum diproses';
+        $order->status_id = 1;
         $order->save();
+
+        return response()->json([
+            'error'             => false,
+            'message'           => 'Bukti transfer berhasil dikirim',
+            'bukti_transfer'    => $order->bukti_transfer
+        ]);
     }
 
     public function verification(Request $request, Order $order)
     {
+        $orders = Order::whereProductId($order->product_id)->where('status_id','>',2)->get();
         $product = Product::findOrFail($order->product_id);
+        $permintaan = array();
+        $persediaan = array();
+        $produksi = array();
         if ($request->verifikasi == -1) {
             $request->validate([
                 'alasan_penolakan' => ['required', 'string']
             ]);
             $order->alasan_penolakan = $request->alasan_penolakan;
-            $order->keterangan = "Ditolak";
+            $order->status_id = 2;
         } elseif ($request->verifikasi == 1) {
-            $order->keterangan = "Sedang dalam proses";
-            $product->permintaan = ($product->permintaan + $order->permintaan);
-            $order->persediaan = $product->persediaan;
-            $order->produksi = $this->produksi($product->permintaan, $product);
-            $product->persediaan = ($product->persediaan - $order->permintaan + $order->produksi);
-            $product->produksi = ($product->produksi + $order->produksi);
-        } elseif($request->verifikasi == 2) {
-            $product->permintaan = ($product->permintaan - $order->permintaan);
-            $product->produksi = ($product->produksi - $order->produksi);
-            $order->keterangan = "Sedang dalam pengiriman";
-        }
+            $order->status_id      = 3;
+            $product->permintaan    = $product->permintaan + $order->permintaan;
+            if ($orders->count() >= 2) {
+                foreach ($orders as $data) {
+                    array_push($permintaan, $data->permintaan);
+                    array_push($persediaan, $data->persediaan);
+                    array_push($produksi, $data->produksi);
+                }
+                $order->produksi = $this->produksi($permintaan,$persediaan,$produksi,$product->permintaan,$product->persediaan);
+                if ($order->produksi < $order->permintaan) {
+                    $order->produksi = $order->produksi + $order->permintaan;
+                }
+            } else {
+                if ($order->permintaan > $product->persediaan) {
+                    $order->produksi = ($order->permintaan - $product->persediaan) + 1;
+                } else {
+                    $order->produksi = 1;
+                }
+            }
 
+            $order->persediaan      = $product->persediaan;
+            $product->produksi      = $product->produksi + $order->produksi;
+        } elseif($request->verifikasi == 2) {
+            $product->permintaan    = ($product->permintaan - $order->permintaan);
+            $product->persediaan    = $product->persediaan - $order->permintaan + $order->produksi;
+            $product->produksi      = ($product->produksi - $order->produksi);
+            $order->status_id       = 4;
+        }
         $product->save();
         $order->save();
 

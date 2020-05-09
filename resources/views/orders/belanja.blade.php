@@ -62,7 +62,8 @@
             </div>
         @else
             @foreach ($products as $product)
-                <div class="card shadow h-100 col-lg-3" style="width: 18rem;">
+            <div class="col-4">
+                <div class="card shadow h-100" style="width: 18rem;">
                     <img class="card-img-top" src="{{ asset(Storage::url($product->foto)) }}" alt="{{ asset(Storage::url($product->foto)) }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $product->nama }}</h5>
@@ -70,6 +71,7 @@
                         <a href="{{ route('pesan',$product) }}" class="btn btn-primary">Pesan</a>
                     </div>
                 </div>
+            </div>
             @endforeach
         @endif
         {{ $products->links() }}

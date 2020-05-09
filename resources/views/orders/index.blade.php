@@ -101,14 +101,14 @@ Pesanan Saya
                                         {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
                                     </td>
                                     <td>
-                                        @if ($order->keterangan != "Belum diproses" && $order->keterangan != "Ditolak")
+                                        @if ($order->status_id != 1 && $order->status_id != 2)
                                             {{ \Carbon\Carbon::parse($order->updated_at)->diffForHumans() }}
                                         @else
                                             -
                                         @endif
                                     </td>
                                     <td>
-                                        {{ $order->keterangan }}
+                                        {{ $order->status->keterangan }}
                                     </td>
                                     <td class="text-right">
                                         <a class="btn btn-info btn-sm" href="{{ route('order.show',$order) }}" title="Detail"><i class="fas fa-fw fa-eye"></i></a>

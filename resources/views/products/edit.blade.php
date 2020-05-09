@@ -27,7 +27,7 @@ Detail Produk {{ $product->nama }}
 @section('content')
 
 <div class="row">
-    <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+    <div class="col-xl-3 order-xl-2 mb-5 mb-xl-0">
         <div class="card card-profile shadow">
             <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
@@ -58,7 +58,7 @@ Detail Produk {{ $product->nama }}
             </div>
         </div>
     </div>
-    <div class="col-xl-8 order-xl-1">
+    <div class="col-xl-9 order-xl-1">
         <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
                 <h3 class="mb-0">Ubah Produk {{ $product->nama }}</h3>
@@ -67,134 +67,55 @@ Detail Produk {{ $product->nama }}
                 @include('layouts.components.alert')
                 <form method="POST" action="{{ route('product.update',$product) }}">
                     @csrf @method('patch')
-                    <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-nama">Nama</label>
-                                    <input name="nama" type="text" id="input-nama" class="form-control form-control-alternative @error('nama') is-invalid @enderror" placeholder="Masukkan nama ..." value="{{ old('nama',$product->nama) }}">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-harga">Harga</label>
-                                    <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga',$product->harga) }}" type="text">
-                                    @error('harga')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-satuan">Satuan</label>
-                                    <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan',$product->satuan) }}" type="text">
-                                    @error('satuan')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan">Persediaan</label>
-                                    <input name="persediaan" type="number" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan',$product->persediaan) }}">
-                                    @error('persediaan')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-nama">Nama</label>
+                                <input name="nama" type="text" id="input-nama" class="form-control form-control-alternative @error('nama') is-invalid @enderror" placeholder="Masukkan nama ..." value="{{ old('nama',$product->nama) }}">
                             </div>
                         </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan Permintaan -->
-                    <h6 class="heading-small text-muted mb-4">Batasan Permintaan</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-permintaan_min">Permintaan Minimal</label>
-                                    <input name="permintaan_min" type="number" id="input-permintaan_min" class="form-control form-control-alternative @error('permintaan_min') is-invalid @enderror" placeholder="Masukkan permintaan minimal ..." value="{{ old('permintaan_min',$product->permintaan_min) }}">
-                                    @error('permintaan_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-permintaan_max">Permintaan Maximal</label>
-                                    <input name="permintaan_max" type="number" id="input-permintaan_max" class="form-control form-control-alternative @error('permintaan_max') is-invalid @enderror" placeholder="Masukkan permintaan maximal ..." value="{{ old('permintaan_max',$product->permintaan_max) }}">
-                                    @error('permintaan_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-harga">Harga</label>
+                                <input name="harga" onkeypress="return hanyaAngka(event)" id="input-harga" class="form-control form-control-alternative @error('harga') is-invalid @enderror" placeholder="Masukkan harga ..." value="{{ old('harga',$product->harga) }}" type="text">
+                                @error('harga')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan persediaan -->
-                    <h6 class="heading-small text-muted mb-4">Batasan persediaan</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan_min">Persediaan Minimal</label>
-                                    <input name="persediaan_min" type="number" id="input-persediaan_min" class="form-control form-control-alternative @error('persediaan_min') is-invalid @enderror" placeholder="Masukkan persediaan minimal ..." value="{{ old('persediaan_min',$product->persediaan_min) }}">
-                                    @error('persediaan_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-persediaan_max">Persediaan Maximal</label>
-                                    <input name="persediaan_max" type="number" id="input-persediaan_max" class="form-control form-control-alternative @error('persediaan_max') is-invalid @enderror" placeholder="Masukkan persediaan maximal ..." value="{{ old('persediaan_max',$product->persediaan_max) }}">
-                                    @error('persediaan_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-satuan">Satuan</label>
+                                <input name="satuan" id="input-satuan" class="form-control form-control-alternative @error('satuan') is-invalid @enderror" placeholder="Masukkan satuan ..." value="{{ old('satuan',$product->satuan) }}" type="text">
+                                @error('satuan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
-                    </div>
-                    <hr class="my-4" />
-                    <!-- Batasan produksi -->
-                    <h6 class="heading-small text-muted mb-4">Batasan produksi</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-produksi_min">Produksi Minimal</label>
-                                    <input name="produksi_min" type="number" id="input-produksi_min" class="form-control form-control-alternative @error('produksi_min') is-invalid @enderror" placeholder="Masukkan produksi mininimal ..." value="{{ old('produksi_min',$product->produksi_min) }}">
-                                    @error('produksi_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-persediaan">Persediaan</label>
+                                <input name="persediaan" type="number" onkeypress="return hanyaAngka(event)" id="input-persediaan" class="form-control form-control-alternative @error('persediaan') is-invalid @enderror" placeholder="Masukkan persediaan ..." value="{{ old('persediaan',$product->persediaan) }}">
+                                @error('persediaan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-produksi_max">Produksi Maximal</label>
-                                    <input name="produksi_max" type="number" id="input-produksi_max" class="form-control form-control-alternative @error('produksi_max') is-invalid @enderror" placeholder="Masukkan produksi maximal ..." value="{{ old('produksi_max',$product->produksi_max) }}">
-                                    @error('produksi_max')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" onkeypress="return hanyaAngka(event)" for="input-minimal_permintaan">Minimal Permintaan</label>
+                                <input name="minimal_permintaan" type="number" id="input-minimal_permintaan" class="form-control form-control-alternative @error('minimal_permintaan') is-invalid @enderror" placeholder="Masukkan minimal_permintaan ..." value="{{ old('minimal_permintaan',$product->minimal_permintaan) }}">
+                                @error('minimal_permintaan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                     </div>

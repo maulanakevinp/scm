@@ -189,7 +189,7 @@ Detail Produk {{ $product->nama }}
 @endsection
 
 @section('content')
-@if ($product->foto == 'public/noimage-produk.jpg' || $product->persediaan == null || $product->persediaan_min == null || $product->persediaan_max == null || $product->permintaan_min == null || $product->permintaan_max == null || $product->produksi_min == null || $product->produksi_max == null )
+@if ($product->foto == 'public/noimage-produk.jpg' || $product->persediaan == null )
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <span class="alert-icon"><i class="ni ni-bell-55"></i></span>
         <span class="alert-text">
@@ -264,47 +264,29 @@ Detail Produk {{ $product->nama }}
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-4 border-right h5">
-                        <table class="">
-                            <tbody>
-                                <tr class="">
-                                    <td>Permintaan Maximal</td>
-                                    <td>: {{ $product->permintaan_max }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Permintaan Minimal</td>
-                                    <td>: {{ $product->permintaan_min }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-harga">Harga</label>
+                            <input disabled id="input-harga" class="form-control form-control-alternative" placeholder="Masukkan harga ..." value="{{ $product->harga }}" type="text">
+                        </div>
                     </div>
-                    <div class="col-lg-4 border-right h5" >
-                        <table class="">
-                            <tbody>
-                                <tr>
-                                    <td>Persediaan Maximal</td>
-                                    <td>: {{ $product->persediaan_max }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Persediaan Minimal</td>
-                                    <td>: {{ $product->persediaan_min }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-satuan">Satuan</label>
+                            <input disabled id="input-satuan" class="form-control form-control-alternative" placeholder="Masukkan satuan ..." value="{{ $product->satuan }}" type="text">
+                        </div>
                     </div>
-                    <div class="col-lg-4 h5" >
-                        <table class="">
-                            <tbody>
-                                <tr>
-                                    <td>Produksi Maximal</td>
-                                    <td>: {{ $product->produksi_max }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Produksi Minimal</td>
-                                    <td>: {{ $product->produksi_min }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-persediaan">Persediaan</label>
+                            <input disabled type="number" id="input-persediaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $product->persediaan }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-minimal_permintaan">Minimal Permintaan</label>
+                            <input disabled type="number" id="input-minimal_permintaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $product->minimal_permintaan }}">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -316,22 +298,22 @@ Detail Produk {{ $product->nama }}
     <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
         <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-masuk') active @endif" href="{{ route('product.pesanan-masuk',$product) }}">
-                <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Belum diproses')->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}</span>
+                <i class="ni ni-cloud-download-95 mr-2"></i>Pesanan masuk <span class="badge badge-default text-white">{{ $product->orders->where('status_id',1)->where('bukti_transfer','!=','public/noimage-produk.jpg')->count() }}</span>
             </a>
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-proses') active @endif" href="{{ route('product.pesanan-dalam-proses',$product) }}">
-                <i class="ni ni-atom mr-2"></i>Pesanan dalam proses <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam proses')->count() }}</span>
+                <i class="ni ni-atom mr-2"></i>Pesanan dalam proses <span class="badge badge-default text-white">{{ $product->orders->where('status_id',3)->count() }}</span>
             </a>
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-dalam-pengiriman') active @endif" href="{{ route('product.pesanan-dalam-pengiriman',$product) }}">
-                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Sedang dalam pengiriman')->count() }}</span>
+                <i class="ni ni-cloud-upload-96 mr-2"></i>Pesanan dalam pengiriman <span class="badge badge-default text-white">{{ $product->orders->where('status_id',4)->count() }}</span>
             </a>
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link mb-sm-3 mb-md-0 @if (Request::segment(3) == 'pesanan-selesai') active @endif" href="{{ route('product.pesanan-selesai',$product) }}">
-                <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai <span class="badge badge-default text-white">{{ $product->orders->where('keterangan','Diterima')->count() }}</span>
+                <i class="ni ni-check-bold mr-2"></i>Pesanan Selesai <span class="badge badge-default text-white">{{ $product->orders->where('status_id',5)->count() }}</span>
             </a>
         </li>
     </ul>

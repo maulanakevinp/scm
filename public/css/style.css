@@ -27,6 +27,7 @@
 .image-zoom {
     animation-name: zoom;
     animation-duration: 0.6s;
+    height: -webkit-fill-available;
 }
 
 @keyframes zoom {

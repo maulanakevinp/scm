@@ -209,8 +209,7 @@ Profil Pengguna
                     let fsize = avatar.size||avatar.fileSize;
                     if(fsize > 2000000) {
                         alert("Ukuran gambar terlalu besar. Max 2mb");
-                    }
-                    else {
+                    } else {
                         $.ajax({
                             url: baseUrl + "/update-avatar/" + id,
                             method: 'post',

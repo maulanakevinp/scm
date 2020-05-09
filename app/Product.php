@@ -12,14 +12,9 @@ class Product extends Model
         'foto',
         'satuan',
         'permintaan',
-        'permintaan_min',
-        'permintaan_max',
+        'minimal_permintaan',
         'persediaan',
-        'persediaan_min',
-        'persediaan_max',
         'produksi',
-        'produksi_min',
-        'produksi_max',
     ];
 
     public function orders()

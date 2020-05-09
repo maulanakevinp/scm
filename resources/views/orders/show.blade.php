@@ -25,31 +25,31 @@
 @endsection
 
 @section('content')
-    @if ($order->keterangan == 'Belum diproses')
+    @if ($order->status_id == 1)
         <div class="alert alert-info" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}.</strong>
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->status->keterangan }}.</strong>
             @if ($order->bukti_transfer == 'public/noimage-produk.jpg')
                 <strong>Silahkan upload bukti transfer</strong>
             @else
                 Harap tunggu konfirmasi dari kami
             @endif
         </div>
-    @elseif($order->keterangan == 'Sedang dalam proses')
-        <div class="alert alert-warning" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
-        </div>
-    @elseif($order->keterangan == 'Sedang dalam pengiriman')
-        <div class="alert alert-default" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
-        </div>
-    @elseif($order->keterangan == 'Ditolak')
+    @elseif($order->status_id == 2)
         <div class="alert alert-danger" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->status->keterangan }}</strong>
             <p>({{ $order->alasan_penolakan }})</p>
+        </div>
+    @elseif($order->status_id == 3)
+        <div class="alert alert-warning" role="alert">
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->status->keterangan }}</strong>
+        </div>
+    @elseif($order->status_id == 4)
+        <div class="alert alert-default" role="alert">
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->status->keterangan }}</strong>
         </div>
     @else
         <div class="alert alert-success" role="alert">
-            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->keterangan }}</strong>
+            <strong>Info!</strong> Status Keterangan : <strong>{{ $order->status->keterangan }}</strong>
         </div>
     @endif
     <div class="row">
@@ -74,11 +74,9 @@
                         <div class="h5 font-weight-300">
                             Rp. {{ $order->product->harga }} / {{ $order->product->satuan }}
                         </div>
-                        @if ($order->product->persediaan)
-                            <div class="h5 mt-4">
-                                Persediaan : {{ $order->product->persediaan }}
-                            </div>
-                        @endif
+                        <div class="h5 mt-4">
+                            Persediaan : {{ $order->persediaan ? $order->persediaan : $order->product->persediaan }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,7 +94,7 @@
                     <a href="#">
                         <img id="img-bukti-transfer" class="mw-100" src="{{asset(Storage::url($order->bukti_transfer))}}" alt="{{asset(Storage::url($order->bukti_transfer))}}">
                     </a>
-                    @if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak')
+                    @if ($order->status_id == 1 || $order->status_id == 2)
                         <button title="klik untuk mengupload bukti transfer" id="btn-upload" class="btn btn-success btn-block mt-2"><i class="ni ni-cloud-upload-96"></i> Upload</button>
                     @endif
                 </div>
@@ -107,8 +105,16 @@
                 <div class="card-header bg-white border-0">
                     <h3 class="mb-0">Pesan {{ $order->product->nama }}</h3>
                 </div>
-                <div class="card-body">
+                <div id="card" class="card-body">
                     @include('layouts.components.alert')
+                    <div id="alert" class="alert alert-dismissible fade show" role="alert">
+                        <span class="alert-icon"><i></i></span>
+                        <span class="alert-text">
+                        </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <form method="POST" action="{{ route('order.update',$order) }}">
                         @csrf @method('patch')
                         <h6 class="heading-small text-muted mb-4">Informasi Produk</h6>
@@ -135,7 +141,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-persediaan">Persediaan</label>
-                                        <input disabled type="number" id="input-persediaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $order->product->persediaan }}">
+                                        <input disabled type="number" id="input-persediaan" class="form-control form-control-alternative" placeholder="Masukkan persediaan ..." value="{{ $order->persediaan ? $order->persediaan : $order->product->persediaan }}">
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +151,7 @@
                         <div class="form-group">
                             <label class="form-control-label" for="input-permintaan">Jumlah Permintaan</label>
 
-                            <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan', $order->permintaan) }}" @if ($order->keterangan != "Belum diproses" && $order->keterangan != "Ditolak") disabled @endif>
+                            <input name="permintaan" type="number" id="input-permintaan" class="form-control form-control-alternative @error('permintaan') is-invalid @enderror" placeholder="Masukkan jumlah permintaan ..." value="{{ old('permintaan', $order->permintaan) }}" @if ($order->status_id != 1 && $order->status_id != 2) disabled @endif>
                             @error('permintaan')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -156,20 +162,20 @@
                         <h2>Total Harga = <span id="total-harga">Rp. {{ $order->permintaan * $order->product->harga }}</span></h2>
                         <hr class="my-4" />
                         <div class="row">
-                            @if ($order->keterangan == 'Sedang dalam pengiriman')
+                            @if ($order->status_id == 4)
                                 <div class="col-6">
                                     <input type="hidden" name="verifikasi" value="1">
                                     <button type="submit" class="btn btn-success btn-block">Terima</button>
                                 </div>
-                            @elseif($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak' )
-                                <div class="@if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') col-4 @else col-6 @endif">
+                            @elseif($order->status_id == 1 || $order->status_id == 2 )
+                                <div class="@if ($order->status_id == 1 || $order->status_id == 2) col-4 @else col-6 @endif">
                                     <button type="submit" class="btn btn-primary btn-block">Ubah</button>
                                 </div>
                                 <div class="col-4">
                                     <a href="#modal-delete" data-toggle="modal" class="btn btn-danger btn-block">Batal</a>
                                 </div>
                             @endif
-                            <div class="@if ($order->keterangan == 'Belum diproses' || $order->keterangan == 'Ditolak') col-4 @elseif($order->keterangan == 'Diterima' || $order->keterangan == 'Sedang dalam proses') col-12 @else col-6 @endif">
+                            <div class="@if ($order->status_id == 1 || $order->status_id == 2) col-4 @elseif($order->status_id == 5 || $order->status_id == 3) col-12 @else col-6 @endif">
                                 <a href="{{ route('order.index') }}" class="btn btn-block btn-light">Kembali</a>
                             </div>
                         </div>
@@ -236,7 +242,10 @@
 @endsection
 @push('scripts')
     <script>
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        const baseUrl = $('meta[name="base-url"]').attr('content');
         $(document).ready(function(){
+
             $('#img-foto-produk').on('click',function () {
                 $('#modal-foto-produk').css('display','block');
                 $('#img01').attr('src', $(this).attr('src'));
@@ -274,45 +283,65 @@
                 inputBuktiTransfer.click();
             });
 
+            $("#alert").hide();
+
             inputBuktiTransfer.onchange = function () {
                 if (this.files && this.files[0]) {
                     const buktiTransfer = inputBuktiTransfer.files[0];
-                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                    const baseUrl = $('meta[name="base-url"]').attr('content');
                     const id = $(this).data('id');
                     let formData = new FormData();
                     let oFReader = new FileReader();
-                    const ext = this.files[0].name.split('.').pop().toLowerCase();
                     formData.append("bukti_transfer", this.files[0]);
                     formData.append("_token", csrfToken);
                     oFReader.readAsDataURL(buktiTransfer);
-                    let fsize = buktiTransfer.size||buktiTransfer.fileSize;
-                    if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) {
-                        alert("File harus berupa gambar yang memiliki ekstensi (png, jpg, jpeg)");
-                    } else {
-                        if(fsize > 2000000) {
-                            alert("Ukuran gambar terlalu besar. Max 2mb");
-                        }
-                        else {
-                            $.ajax({
-                                url: baseUrl + "/order/update-bukti-transfer/" + id,
-                                method: 'post',
-                                data: formData,
-                                contentType: false,
-                                cache: false,
-                                processData: false,
-                                beforeSend:function(){
-                                    $('#img-bukti-transfer').attr('src',baseUrl + '/img/loading.gif');
-                                },
-                                success:function(){
-                                    window.location.href = baseUrl + '/order/' + id;
-                                },
-                                error: function(data){
-                                    alert('Error');
+                    $.ajax({
+                        url: baseUrl + "/order/update-bukti-transfer/" + id,
+                        method: 'post',
+                        data: formData,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend:function(){
+                            $('#img-bukti-transfer').attr('src',baseUrl + '/img/loading.gif');
+                            $(".close").click();
+                        },
+                        success:function(data){
+                            if (data.error) {
+                                $("#card").prepend(`
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                        <span class="alert-text">
+                                            <strong>Gagal</strong>
+                                            `+ data.message +`
+                                        </span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                let path = data.bukti_transfer;
+                                if (path != 'noimage.jpg') {
+                                    path = path.substring(6);
                                 }
-                            });
-                        }
-                    }
+                                $('#img-bukti-transfer').attr('src',baseUrl + '/storage' + path);
+                            } else {
+                                $("#card").prepend(`
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                                        <span class="alert-text">
+                                            <strong>Berhasil</strong>
+                                            `+ data.message +`
+                                        </span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                let path = data.bukti_transfer;
+                                $('#img-bukti-transfer').attr('src',baseUrl + '/storage' + path.substring(6));
+                            }
+                        },
+                    });
                 }
             };
         });
